@@ -1,2 +1,2 @@
-# TheWitchsCrucible
+# The Witch's Crucible
  MFA Thesis
