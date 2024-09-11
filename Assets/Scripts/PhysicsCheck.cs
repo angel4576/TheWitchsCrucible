@@ -19,14 +19,13 @@ public class PhysicsCheck : MonoBehaviour
 
     private void Awake() 
     {
-        col = GetComponent<CapsuleCollider2D>();
-
         
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        col = GetComponent<CapsuleCollider2D>();
         
     }
 

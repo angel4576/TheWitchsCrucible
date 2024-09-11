@@ -10,8 +10,11 @@ public class PlayerController : MonoBehaviour
     private Vector2 inputDirection;
     private Rigidbody2D rb;
     private CapsuleCollider2D col;
+    private int faceDir;
 
     private PhysicsCheck physicsCheck;
+    
+    public Pet pet;
 
     [Header("Movement")]
     public float speed;
@@ -19,15 +22,13 @@ public class PlayerController : MonoBehaviour
     [Header("Jump")]
     public float jumpForce;
 
+    [Header("Pet Control")]
+    public float petMoveDelayTime;
+    public float petJumpDelayTime;
+
     private void Awake() 
     {
         inputActions = new PlayerInputControl();
-
-        rb = GetComponent<Rigidbody2D>();
-        col = GetComponent<CapsuleCollider2D>();
-
-        // Get script reference
-        physicsCheck = GetComponent<PhysicsCheck>();
 
         // +=: register actions to action binding
         inputActions.Gameplay.Jump.started += Jump; // call jump when the moment corresponding button is pressed
@@ -48,7 +49,11 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<CapsuleCollider2D>();
+
+        // Get script reference
+        physicsCheck = GetComponent<PhysicsCheck>();
     }
 
     // Update is called once per frame
@@ -56,23 +61,60 @@ public class PlayerController : MonoBehaviour
     {
         // Read Vector2 value in Move action
         inputDirection = inputActions.Gameplay.Move.ReadValue<Vector2>();
+
+        FlipDirection();
     }
 
     private void FixedUpdate() 
     {
-        Move();    
+        Move();
     }
 
     private void Move()
     {
         rb.velocity = new Vector2(inputDirection.x * speed, rb.velocity.y);
+        if(inputDirection.x != 0 && !pet.canMove)
+        {
+            Invoke(nameof(ControlPetMovement), petMoveDelayTime);
+        }
+        
     }
 
     private void Jump(InputAction.CallbackContext context)
     {
         if(physicsCheck.isOnGround){
             rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+
+            // Pet jump
+            Invoke(nameof(ControlPetJump), petJumpDelayTime);
         }
+    }
+
+    private void ControlPetMovement()
+    {
+        pet.canMove = true;
+    }
+
+    private void ControlPetJump()
+    {
+        pet.canJump = true;
+    }
+
+    private void FlipDirection()
+    {
+        faceDir = Math.Sign(transform.localScale.x);
+
+        if(inputDirection.x < 0)
+        {
+            faceDir = -1;
+        }
+        else if(inputDirection.x > 0)
+        {
+            faceDir = 1;
+        }
+
+        transform.localScale = new Vector3(faceDir * Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        
     }
 
 
