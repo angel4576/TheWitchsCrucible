@@ -725,9 +725,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 466e098737472e241ae2002acd7a95de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  playerTransform: {fileID: 0}
+  playerScript: {fileID: 0}
   lantern: {fileID: 0}
-  speed: 12
+  moveSpeed: 10
+  chaseRange: 15
+  attackRange: 1
 --- !u!1 &1487118154
 GameObject:
   m_ObjectHideFlags: 0
