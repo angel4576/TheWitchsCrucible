@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Pet
   - Interactable
+  - Monster
+  - Lantern
   layers:
   - Default
   - TransparentFX
