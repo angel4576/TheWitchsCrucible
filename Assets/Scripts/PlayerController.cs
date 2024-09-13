@@ -117,5 +117,9 @@ public class PlayerController : MonoBehaviour
         
     }
 
-
+    // Player dies, for testing purposes
+    public void Die()
+    {
+        Debug.Log("Player died");
+    }
 }

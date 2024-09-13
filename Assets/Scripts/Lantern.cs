@@ -10,6 +10,7 @@ public class Lantern : MonoBehaviour
 
     // Boolean to track if the lantern is on or off
     private bool isLanternOn = false;
+    public bool IsLanternOn{get{return isLanternOn;}} // expose the state of the lantern as a read-only property
 
     // Rate at which light decreases per second
     public float lightDecayRate = 0.1f;
