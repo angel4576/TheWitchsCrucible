@@ -46,7 +46,10 @@ public class InteractionArea : MonoBehaviour
     // Item interaction
     private void Interact(InputAction.CallbackContext context)
     {
-        throw new NotImplementedException();
+        if (canInteract && interactableItem != null) 
+        {
+            interactableItem.Interact();
+        }
     }
 
 
