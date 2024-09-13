@@ -56,7 +56,6 @@ public class Pet : MonoBehaviour, IInteractable
             Jump();
         }
         
-        
     }
 
     private void MoveToPlayer()
@@ -84,6 +83,7 @@ public class Pet : MonoBehaviour, IInteractable
 
     private void CheckDistance()
     {
+        // Check distance between Pet and Pet chase target
         if(Vector2.Distance(transform.position, targetTrans.position) > loseDistance)
         {  
             isMiss = true;
@@ -93,7 +93,6 @@ public class Pet : MonoBehaviour, IInteractable
             isMiss = false;
         }
         
-
     }
 
     private void ResetPosition()
@@ -104,6 +103,16 @@ public class Pet : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        Debug.Log("SWITCH WORLD");
+        // bool isRealWorld = CheckCurrentWorld();
+
+        // Todo: Hug animation / wear cloak .etc
+        Debug.Log("Interact with Pet");
+        // gameObject.SetActive(isRealWorld);
     }
+
+    // private bool CheckCurrentWorld()
+    // {
+    //     return WorldControl.Instance.isRealWorld;
+    // }
+    
 }

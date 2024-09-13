@@ -4,15 +4,46 @@ using UnityEngine.InputSystem;
 
 public class WorldControl : MonoBehaviour
 {
-    public GameObject SpiritWorldObjects;
+    public static WorldControl Instance {get; private set;}
 
+    public GameObject SpiritWorldObjects;
     public GameObject RealWorldObjects;
 
-    private bool spiritInitActive = false;
+    [Header("World Status")]
+    public bool isRealWorld; 
+    public bool isSpiritWorld;
 
+    private bool spiritInitActive = false;
     private bool realInitActive = true;
 
+    public bool canSwitch;
+
     private PlayerInputControl playerInput;
+
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        playerInput = new PlayerInputControl();
+        
+        playerInput.Gameplay.SwitchWorld.performed += context => SwitchWorld();
+    }
+
+    void Start()
+    {
+        SetInitialState(SpiritWorldObjects, spiritInitActive);
+        SetInitialState(RealWorldObjects, realInitActive);
+    }
 
     public void SetInitialState(GameObject parent, bool initiallyActive)
     {
@@ -30,21 +61,13 @@ public class WorldControl : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        SetInitialState(SpiritWorldObjects, spiritInitActive);
-        SetInitialState(RealWorldObjects, realInitActive);
-    }
-
-    private void Awake()
-    {
-        playerInput = new PlayerInputControl();
-        
-        playerInput.Gameplay.SwitchWorld.performed += context => SwitchWorld();
-    }
-
     public void SwitchWorld()
     {
+        if(!canSwitch)
+        {
+            return;
+        }
+
         if (SpiritWorldObjects != null)
         {
             ToggleChildrenActive(SpiritWorldObjects);
@@ -55,4 +78,10 @@ public class WorldControl : MonoBehaviour
             ToggleChildrenActive(RealWorldObjects);
         }
     }
+
+    public void CheckCurrentWorld()
+    {
+        
+    }
+
 }

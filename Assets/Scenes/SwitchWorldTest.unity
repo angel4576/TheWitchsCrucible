@@ -1962,6 +1962,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 6340c106-f64e-4b5f-8369-45a729ca4c05
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 807b5734-cf91-4965-90be-bccb58a0b0e5
+    m_ActionName: Gameplay/ToggleLantern[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay

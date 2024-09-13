@@ -23,7 +23,6 @@ public class InteractionArea : MonoBehaviour
     }
 
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -56,6 +55,7 @@ public class InteractionArea : MonoBehaviour
         canInteract = true;
         if(other.CompareTag("Pet"))
         {
+            WorldControl.Instance.canSwitch = true;
             pet = other.GetComponent<IInteractable>();
         }
 
@@ -69,5 +69,12 @@ public class InteractionArea : MonoBehaviour
     private void OnTriggerExit2D(Collider2D other) 
     {
         canInteract = false;
+
+        if(other.CompareTag("Pet"))
+        {
+            // Leave pet
+            WorldControl.Instance.canSwitch = false;
+        }
+        
     }
 }
