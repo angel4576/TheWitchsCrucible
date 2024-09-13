@@ -13,6 +13,9 @@ public class Monster : MonoBehaviour
     public float chaseRange;
     public float attackRange;
 
+    [Header("For testing purposes")]
+    public bool idleIfPlayerOutOfRange = false;
+
     // status
     [HideInInspector]private bool isChasing;
     [HideInInspector]private bool canMove;
@@ -20,7 +23,7 @@ public class Monster : MonoBehaviour
     [HideInInspector]private Vector2 initialPosition;
 
     // flags
-    [HideInInspector]private bool isPlayerDead = false;
+    [HideInInspector]private bool isPlayerDead = false; // ensure that player is killed only once
 
     private void Awake()
     {
@@ -69,7 +72,15 @@ public class Monster : MonoBehaviour
             }
             else
             {
-                ReturnToInitialPosition();
+                // for test purposes
+                if(idleIfPlayerOutOfRange)
+                {
+                    Idle();
+                }
+                else
+                {
+                    ReturnToInitialPosition();
+                }
             }
         }
         else
