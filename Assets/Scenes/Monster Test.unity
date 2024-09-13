@@ -731,6 +731,7 @@ MonoBehaviour:
   moveSpeed: 10
   chaseRange: 15
   attackRange: 1
+  idleIfPlayerOutOfRange: 1
 --- !u!1 &1487118154
 GameObject:
   m_ObjectHideFlags: 0
