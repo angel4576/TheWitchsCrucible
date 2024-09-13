@@ -1824,7 +1824,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1553653607}
   - component: {fileID: 1553653608}
-  - component: {fileID: 1553653609}
   m_Layer: 0
   m_Name: WorldControl
   m_TagString: Untagged
@@ -1861,116 +1860,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpiritWorldObjects: {fileID: 1336320241}
   RealWorldObjects: {fileID: 1097695163}
---- !u!114 &1553653609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1553653606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 92ec01dc18c0f1840968097b07449f23, type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 8b092bd3-28e5-4f8d-bd16-ef118e728c9f
-    m_ActionName: Gameplay/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 395a0225-8213-4da0-ad2f-5ce560963c2d
-    m_ActionName: Gameplay/Look[/Mouse/delta]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 3d25fde9-6f01-4567-92f0-29558a4d98a0
-    m_ActionName: Gameplay/Fire[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 0f5dcc9a-7746-4623-960c-ecd81a242343
-    m_ActionName: Gameplay/Jump[/Keyboard/space]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1553653608}
-        m_TargetAssemblyTypeName: WorldControl, Assembly-CSharp
-        m_MethodName: SwitchWorld
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: f22923d6-efc2-4e0d-a8ae-ac3938c67f2e
-    m_ActionName: Gameplay/SwitchWorld[/Keyboard/e]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 5d0db487-0223-4342-8241-2f06a85fdc1b
-    m_ActionName: Gameplay/Interact[/Keyboard/f]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 4f0ff8da-ca5a-447c-a7bd-86bf6dda15e6
-    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: b2940684-4b14-4f4d-8466-c7e870b7744d
-    m_ActionName: UI/Submit[/Keyboard/enter]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 4b70286e-920c-4670-8915-cf91721bc886
-    m_ActionName: UI/Cancel[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 52952221-365a-49bc-bde2-81624d45dae0
-    m_ActionName: UI/Point[/Mouse/position]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 551ad673-8f63-498f-a479-f7feaea75657
-    m_ActionName: UI/Click[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 169ef8be-84ab-4309-aab1-8539d1cae805
-    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: ecab16f8-6bce-4dbd-88df-eeb25861062d
-    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 8d8f4cdc-73f0-4a6e-a604-ce0e69d35690
-    m_ActionName: UI/RightClick[/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: fb05c9cb-437a-419a-9e23-0ae5e1fdff68
-    m_ActionName: UI/TrackedDevicePosition
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 6340c106-f64e-4b5f-8369-45a729ca4c05
-    m_ActionName: UI/TrackedDeviceOrientation
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 807b5734-cf91-4965-90be-bccb58a0b0e5
-    m_ActionName: Gameplay/ToggleLantern[/Mouse/leftButton]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Gameplay
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
+  isRealWorld: 0
+  isSpiritWorld: 0
+  canSwitch: 0
 --- !u!1 &1976134938
 GameObject:
   m_ObjectHideFlags: 0

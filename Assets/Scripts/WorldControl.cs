@@ -18,7 +18,7 @@ public class WorldControl : MonoBehaviour
 
     public bool canSwitch;
 
-    private PlayerInputControl playerInput;
+    public PlayerInputControl playerInput;
 
 
     private void Awake()
@@ -36,8 +36,11 @@ public class WorldControl : MonoBehaviour
 
         playerInput = new PlayerInputControl();
         
-        playerInput.Gameplay.SwitchWorld.performed += context => SwitchWorld();
+        playerInput.Gameplay.SwitchWorld.started += context => SwitchWorld();
+
+        playerInput.Enable();
     }
+
 
     void Start()
     {
