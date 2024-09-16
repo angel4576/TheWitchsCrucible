@@ -109,10 +109,5 @@ public class Pet : MonoBehaviour, IInteractable
         Debug.Log("Interact with Pet");
         // gameObject.SetActive(isRealWorld);
     }
-
-    // private bool CheckCurrentWorld()
-    // {
-    //     return WorldControl.Instance.isRealWorld;
-    // }
     
 }
