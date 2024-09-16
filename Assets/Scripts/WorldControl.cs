@@ -10,16 +10,11 @@ public class WorldControl : MonoBehaviour
     public GameObject RealWorldObjects;
 
     [Header("World Status")]
-    public bool isRealWorld; 
-    public bool isSpiritWorld;
-
-    private bool spiritInitActive = false;
-    private bool realInitActive = true;
+    public bool isRealWorld;
 
     public bool canSwitch;
 
     public PlayerInputControl playerInput;
-
 
     private void Awake()
     {
@@ -35,6 +30,7 @@ public class WorldControl : MonoBehaviour
         }
 
         playerInput = new PlayerInputControl();
+        playerInput.Enable();
         
         playerInput.Gameplay.SwitchWorld.started += context => SwitchWorld();
 
@@ -44,24 +40,14 @@ public class WorldControl : MonoBehaviour
 
     void Start()
     {
-        SetInitialState(SpiritWorldObjects, spiritInitActive);
-        SetInitialState(RealWorldObjects, realInitActive);
+        SpiritWorldObjects.SetActive(false);
+        RealWorldObjects.SetActive(true);
+        isRealWorld = true;
     }
 
-    public void SetInitialState(GameObject parent, bool initiallyActive)
+    void ToggleActive(GameObject gameObject)
     {
-        foreach (Transform child in parent.transform)
-        {
-            child.gameObject.SetActive(initiallyActive);
-        }
-    }
-
-    void ToggleChildrenActive(GameObject parent)
-    {
-        foreach (Transform child in parent.transform)
-        {
-            child.gameObject.SetActive(!child.gameObject.activeSelf);
-        }
+        gameObject.SetActive(!gameObject.activeSelf);
     }
 
     public void SwitchWorld()
@@ -73,18 +59,13 @@ public class WorldControl : MonoBehaviour
 
         if (SpiritWorldObjects != null)
         {
-            ToggleChildrenActive(SpiritWorldObjects);
+            ToggleActive(SpiritWorldObjects);
         }
 
         if (RealWorldObjects != null)
         {
-            ToggleChildrenActive(RealWorldObjects);
+            ToggleActive(RealWorldObjects);
+            isRealWorld ^= true;
         }
     }
-
-    public void CheckCurrentWorld()
-    {
-        
-    }
-
 }
