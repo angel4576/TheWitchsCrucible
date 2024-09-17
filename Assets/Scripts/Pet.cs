@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Pet : MonoBehaviour, IInteractable
 {
@@ -22,6 +24,7 @@ public class Pet : MonoBehaviour, IInteractable
     
     private PhysicsCheck physicsCheck;
     private Rigidbody2D rb;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +32,16 @@ public class Pet : MonoBehaviour, IInteractable
         rb = GetComponent<Rigidbody2D>();
 
         canMove = true;
+
+    }
+
+    private void OnEnable() 
+    {
+
+    }
+
+    private void OnDisable() 
+    {
 
     }
 
@@ -41,7 +54,8 @@ public class Pet : MonoBehaviour, IInteractable
         {
             ResetPosition();
         }
-            
+
+        
     }
 
     private void FixedUpdate() 
@@ -103,11 +117,16 @@ public class Pet : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        // bool isRealWorld = CheckCurrentWorld();
-
-        // Todo: Hug animation / wear cloak .etc
-        Debug.Log("Interact with Pet");
-        // gameObject.SetActive(isRealWorld);
+        // Debug.Log("Interact with Pet");
+        
     }
+
+    public void OnPetSwitchWorld()
+    {
+        // Debug.Log("On pet switch");
+        // Play animation
+        gameObject.SetActive(WorldControl.Instance.isRealWorld);
+    }
+
     
 }

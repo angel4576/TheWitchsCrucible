@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class WorldControl : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class WorldControl : MonoBehaviour
     public bool canSwitch;
 
     public PlayerInputControl playerInput;
+    public UnityEvent onSwitchWorld;
 
     private void Awake()
     {
@@ -32,9 +34,8 @@ public class WorldControl : MonoBehaviour
         playerInput = new PlayerInputControl();
         playerInput.Enable();
         
-        playerInput.Gameplay.SwitchWorld.started += context => SwitchWorld();
+        playerInput.Gameplay.SwitchWorld.started += context => SwitchWorld(); // E key
 
-        playerInput.Enable();
     }
 
 
@@ -52,10 +53,10 @@ public class WorldControl : MonoBehaviour
 
     public void SwitchWorld()
     {
-        if(!canSwitch)
-        {
-            return;
-        }
+        // if(!canSwitch)
+        // {
+        //     return;
+        // }
 
         if (SpiritWorldObjects != null)
         {
@@ -67,5 +68,8 @@ public class WorldControl : MonoBehaviour
             ToggleActive(RealWorldObjects);
             isRealWorld ^= true;
         }
+
+        onSwitchWorld?.Invoke();
+ 
     }
 }
