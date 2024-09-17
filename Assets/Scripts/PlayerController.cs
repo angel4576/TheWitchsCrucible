@@ -132,6 +132,6 @@ public class PlayerController : MonoBehaviour
         if(WorldControl.Instance.isRealWorld)
             rend.color = Color.white;
         else
-            rend.color = Color.gray;
+            rend.color = Color.black;
     }
 }
