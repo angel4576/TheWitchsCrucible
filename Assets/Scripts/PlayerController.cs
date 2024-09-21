@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 inputDirection;
     private Rigidbody2D rb;
     private CapsuleCollider2D col;
+    private SpriteRenderer rend;
     private int faceDir;
 
     private PhysicsCheck physicsCheck;
@@ -35,11 +37,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
-
     private void OnEnable() 
     {
         inputActions.Enable();
     }
+
 
     private void OnDisable() 
     {
@@ -51,6 +53,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
+        rend = GetComponent<SpriteRenderer>();
 
         // Get script reference
         physicsCheck = GetComponent<PhysicsCheck>();
@@ -77,7 +80,6 @@ public class PlayerController : MonoBehaviour
         {
             Invoke(nameof(ControlPetMovement), petMoveDelayTime);
         }
-        
     }
 
     private void Jump(InputAction.CallbackContext context)
@@ -117,9 +119,19 @@ public class PlayerController : MonoBehaviour
         
     }
 
+
     // Player dies, for testing purposes
     public void Die()
     {
         Debug.Log("Player died");
+    }
+
+    public void OnPlayerSwitchWorld()
+    {
+        // Play animation
+        if(WorldControl.Instance.isRealWorld)
+            rend.color = Color.white;
+        else
+            rend.color = Color.black;
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class InteractionArea : MonoBehaviour
 {   
     public PlayerInputControl inputActions;
-    private IInteractable pet;
+    public Pet pet;
     private IInteractable interactableItem;
     private bool canInteract;
 
@@ -37,7 +37,7 @@ public class InteractionArea : MonoBehaviour
     
     private void InteractWithPet(InputAction.CallbackContext context)
     {
-        if(canInteract)
+        if(pet != null)
         {
             pet.Interact();
         }
@@ -56,13 +56,13 @@ public class InteractionArea : MonoBehaviour
     private void OnTriggerStay2D(Collider2D other)
     {
         canInteract = true;
-        if(other.CompareTag("Pet"))
-        {
-            WorldControl.Instance.canSwitch = true;
-            pet = other.GetComponent<IInteractable>();
-        }
+        // if(other.CompareTag("Pet"))
+        // {
+        //     WorldControl.Instance.canSwitch = true;
+        //     pet = other.GetComponent<IInteractable>();
+        // }
 
-        else if(other.CompareTag("Interactable"))
+        if(other.CompareTag("Interactable"))
         {
             interactableItem = other.GetComponent<IInteractable>();
         }
@@ -73,11 +73,11 @@ public class InteractionArea : MonoBehaviour
     {
         canInteract = false;
 
-        if(other.CompareTag("Pet"))
-        {
-            // Leave pet
-            WorldControl.Instance.canSwitch = false;
-        }
+        // if(other.CompareTag("Pet"))
+        // {
+        //     // Leave pet
+        //     WorldControl.Instance.canSwitch = false;
+        // }
         
     }
 }
