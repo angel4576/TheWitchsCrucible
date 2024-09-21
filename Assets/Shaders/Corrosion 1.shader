@@ -7,12 +7,17 @@ Shader "Corrosion 1"
 		[HideInInspector] _AlphaCutoff("Alpha Cutoff ", Range(0, 1)) = 0.5
 		[HideInInspector] _EmissionColor("Emission Color", Color) = (1,1,1,1)
 		_TextureSample1("Texture Sample 0", 2D) = "white" {}
-		_Intensity1("Intensity1", Range( 0 , 8)) = 0.5
+		_Intensity1("Intensity1", Range( 0 , 40)) = 1
 		_SharpnessMax("SharpnessMax", Range( 0 , 1)) = 0.5
 		_SharpnessMin("SharpnessMin", Range( 0 , 1)) = 0.5
 		_Tiling("Tiling", Vector) = (3,3,0,0)
+		_Tiling1("Tiling1", Vector) = (3,3,0,0)
 		_NoiseScale("NoiseScale", Range( 0 , 3)) = 0
+		_NoiseScale1("NoiseScale1", Range( 0 , 3)) = 0
 		_MoveSpd("MoveSpd", Range( 0 , 3)) = 0
+		_MoveSpd1("MoveSpd1", Range( 0 , 3)) = 0
+		_OffsetVal("OffsetVal", Vector) = (0,0,0,0)
+		_OffsetVal1("OffsetVal1", Vector) = (0,0,0,0)
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 
 		[HideInInspector][NoScaleOffset] unity_Lightmaps("unity_Lightmaps", 2DArray) = "" {}
@@ -93,14 +98,22 @@ Shader "Corrosion 1"
 
 			#include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/CombinedShapeLightShared.hlsl"
 
-			
+			#pragma multi_compile_instancing
+
 
 			sampler2D _TextureSample1;
+			UNITY_INSTANCING_BUFFER_START(Corrosion1)
+				UNITY_DEFINE_INSTANCED_PROP(float4, _TextureSample1_ST)
+				UNITY_DEFINE_INSTANCED_PROP(float2, _OffsetVal1)
+				UNITY_DEFINE_INSTANCED_PROP(float2, _OffsetVal)
+			UNITY_INSTANCING_BUFFER_END(Corrosion1)
 			CBUFFER_START( UnityPerMaterial )
-			float4 _TextureSample1_ST;
+			float2 _Tiling1;
 			float2 _Tiling;
 			float _SharpnessMin;
 			float _SharpnessMax;
+			float _MoveSpd1;
+			float _NoiseScale1;
 			float _MoveSpd;
 			float _NoiseScale;
 			float _Intensity1;
@@ -202,13 +215,18 @@ Shader "Corrosion 1"
 				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( IN );
 				float3 positionWS = IN.positionWS.xyz;
 
-				float2 uv_TextureSample1 = IN.texCoord0.xy * _TextureSample1_ST.xy + _TextureSample1_ST.zw;
+				float4 _TextureSample1_ST_Instance = UNITY_ACCESS_INSTANCED_PROP(Corrosion1,_TextureSample1_ST);
+				float2 uv_TextureSample1 = IN.texCoord0.xy * _TextureSample1_ST_Instance.xy + _TextureSample1_ST_Instance.zw;
 				float4 color8 = IsGammaSpace() ? float4(0,0,0,0) : float4(0,0,0,0);
-				float2 temp_cast_0 = (( _MoveSpd * ( _TimeParameters.x ) )).xx;
-				float2 texCoord15 = IN.texCoord0.xy * _Tiling + temp_cast_0;
+				float2 _OffsetVal1_Instance = UNITY_ACCESS_INSTANCED_PROP(Corrosion1,_OffsetVal1);
+				float2 texCoord42 = IN.texCoord0.xy * _Tiling1 + ( ( _MoveSpd1 * ( _TimeParameters.x ) ) * _OffsetVal1_Instance );
+				float simplePerlin2D44 = snoise( texCoord42*_NoiseScale1 );
+				simplePerlin2D44 = simplePerlin2D44*0.5 + 0.5;
+				float2 _OffsetVal_Instance = UNITY_ACCESS_INSTANCED_PROP(Corrosion1,_OffsetVal);
+				float2 texCoord15 = IN.texCoord0.xy * _Tiling + ( ( _MoveSpd * ( _TimeParameters.x ) ) * _OffsetVal_Instance );
 				float simplePerlin2D14 = snoise( texCoord15*_NoiseScale );
 				simplePerlin2D14 = simplePerlin2D14*0.5 + 0.5;
-				float smoothstepResult22 = smoothstep( _SharpnessMin , _SharpnessMax , saturate( pow( simplePerlin2D14 , _Intensity1 ) ));
+				float smoothstepResult22 = smoothstep( _SharpnessMin , _SharpnessMax , saturate( pow( max( simplePerlin2D44 , simplePerlin2D14 ) , _Intensity1 ) ));
 				float4 lerpResult7 = lerp( tex2D( _TextureSample1, uv_TextureSample1 ) , color8 , smoothstepResult22);
 				
 				float4 Color = lerpResult7;
@@ -267,14 +285,22 @@ Shader "Corrosion 1"
 			#include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/NormalsRenderingShared.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
-			
+			#pragma multi_compile_instancing
+
 
 			sampler2D _TextureSample1;
+			UNITY_INSTANCING_BUFFER_START(Corrosion1)
+				UNITY_DEFINE_INSTANCED_PROP(float4, _TextureSample1_ST)
+				UNITY_DEFINE_INSTANCED_PROP(float2, _OffsetVal1)
+				UNITY_DEFINE_INSTANCED_PROP(float2, _OffsetVal)
+			UNITY_INSTANCING_BUFFER_END(Corrosion1)
 			CBUFFER_START( UnityPerMaterial )
-			float4 _TextureSample1_ST;
+			float2 _Tiling1;
 			float2 _Tiling;
 			float _SharpnessMin;
 			float _SharpnessMax;
+			float _MoveSpd1;
+			float _NoiseScale1;
 			float _MoveSpd;
 			float _NoiseScale;
 			float _Intensity1;
@@ -376,13 +402,18 @@ Shader "Corrosion 1"
 				UNITY_SETUP_INSTANCE_ID( IN );
 				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( IN );
 
-				float2 uv_TextureSample1 = IN.texCoord0.xy * _TextureSample1_ST.xy + _TextureSample1_ST.zw;
+				float4 _TextureSample1_ST_Instance = UNITY_ACCESS_INSTANCED_PROP(Corrosion1,_TextureSample1_ST);
+				float2 uv_TextureSample1 = IN.texCoord0.xy * _TextureSample1_ST_Instance.xy + _TextureSample1_ST_Instance.zw;
 				float4 color8 = IsGammaSpace() ? float4(0,0,0,0) : float4(0,0,0,0);
-				float2 temp_cast_0 = (( _MoveSpd * ( _TimeParameters.x ) )).xx;
-				float2 texCoord15 = IN.texCoord0.xy * _Tiling + temp_cast_0;
+				float2 _OffsetVal1_Instance = UNITY_ACCESS_INSTANCED_PROP(Corrosion1,_OffsetVal1);
+				float2 texCoord42 = IN.texCoord0.xy * _Tiling1 + ( ( _MoveSpd1 * ( _TimeParameters.x ) ) * _OffsetVal1_Instance );
+				float simplePerlin2D44 = snoise( texCoord42*_NoiseScale1 );
+				simplePerlin2D44 = simplePerlin2D44*0.5 + 0.5;
+				float2 _OffsetVal_Instance = UNITY_ACCESS_INSTANCED_PROP(Corrosion1,_OffsetVal);
+				float2 texCoord15 = IN.texCoord0.xy * _Tiling + ( ( _MoveSpd * ( _TimeParameters.x ) ) * _OffsetVal_Instance );
 				float simplePerlin2D14 = snoise( texCoord15*_NoiseScale );
 				simplePerlin2D14 = simplePerlin2D14*0.5 + 0.5;
-				float smoothstepResult22 = smoothstep( _SharpnessMin , _SharpnessMax , saturate( pow( simplePerlin2D14 , _Intensity1 ) ));
+				float smoothstepResult22 = smoothstep( _SharpnessMin , _SharpnessMax , saturate( pow( max( simplePerlin2D44 , simplePerlin2D14 ) , _Intensity1 ) ));
 				float4 lerpResult7 = lerp( tex2D( _TextureSample1, uv_TextureSample1 ) , color8 , smoothstepResult22);
 				
 				float4 Color = lerpResult7;
@@ -432,14 +463,22 @@ Shader "Corrosion 1"
 			#include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/SurfaceData2D.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Debug/Debugging2D.hlsl"
 
-			
+			#pragma multi_compile_instancing
+
 
 			sampler2D _TextureSample1;
+			UNITY_INSTANCING_BUFFER_START(Corrosion1)
+				UNITY_DEFINE_INSTANCED_PROP(float4, _TextureSample1_ST)
+				UNITY_DEFINE_INSTANCED_PROP(float2, _OffsetVal1)
+				UNITY_DEFINE_INSTANCED_PROP(float2, _OffsetVal)
+			UNITY_INSTANCING_BUFFER_END(Corrosion1)
 			CBUFFER_START( UnityPerMaterial )
-			float4 _TextureSample1_ST;
+			float2 _Tiling1;
 			float2 _Tiling;
 			float _SharpnessMin;
 			float _SharpnessMax;
+			float _MoveSpd1;
+			float _NoiseScale1;
 			float _MoveSpd;
 			float _NoiseScale;
 			float _Intensity1;
@@ -541,13 +580,18 @@ Shader "Corrosion 1"
 
 				float3 positionWS = IN.positionWS.xyz;
 
-				float2 uv_TextureSample1 = IN.texCoord0.xy * _TextureSample1_ST.xy + _TextureSample1_ST.zw;
+				float4 _TextureSample1_ST_Instance = UNITY_ACCESS_INSTANCED_PROP(Corrosion1,_TextureSample1_ST);
+				float2 uv_TextureSample1 = IN.texCoord0.xy * _TextureSample1_ST_Instance.xy + _TextureSample1_ST_Instance.zw;
 				float4 color8 = IsGammaSpace() ? float4(0,0,0,0) : float4(0,0,0,0);
-				float2 temp_cast_0 = (( _MoveSpd * ( _TimeParameters.x ) )).xx;
-				float2 texCoord15 = IN.texCoord0.xy * _Tiling + temp_cast_0;
+				float2 _OffsetVal1_Instance = UNITY_ACCESS_INSTANCED_PROP(Corrosion1,_OffsetVal1);
+				float2 texCoord42 = IN.texCoord0.xy * _Tiling1 + ( ( _MoveSpd1 * ( _TimeParameters.x ) ) * _OffsetVal1_Instance );
+				float simplePerlin2D44 = snoise( texCoord42*_NoiseScale1 );
+				simplePerlin2D44 = simplePerlin2D44*0.5 + 0.5;
+				float2 _OffsetVal_Instance = UNITY_ACCESS_INSTANCED_PROP(Corrosion1,_OffsetVal);
+				float2 texCoord15 = IN.texCoord0.xy * _Tiling + ( ( _MoveSpd * ( _TimeParameters.x ) ) * _OffsetVal_Instance );
 				float simplePerlin2D14 = snoise( texCoord15*_NoiseScale );
 				simplePerlin2D14 = simplePerlin2D14*0.5 + 0.5;
-				float smoothstepResult22 = smoothstep( _SharpnessMin , _SharpnessMax , saturate( pow( simplePerlin2D14 , _Intensity1 ) ));
+				float smoothstepResult22 = smoothstep( _SharpnessMin , _SharpnessMax , saturate( pow( max( simplePerlin2D44 , simplePerlin2D14 ) , _Intensity1 ) ));
 				float4 lerpResult7 = lerp( tex2D( _TextureSample1, uv_TextureSample1 ) , color8 , smoothstepResult22);
 				
 				float4 Color = lerpResult7;
@@ -612,14 +656,22 @@ Shader "Corrosion 1"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
-			
+			#pragma multi_compile_instancing
+
 
 			sampler2D _TextureSample1;
+			UNITY_INSTANCING_BUFFER_START(Corrosion1)
+				UNITY_DEFINE_INSTANCED_PROP(float4, _TextureSample1_ST)
+				UNITY_DEFINE_INSTANCED_PROP(float2, _OffsetVal1)
+				UNITY_DEFINE_INSTANCED_PROP(float2, _OffsetVal)
+			UNITY_INSTANCING_BUFFER_END(Corrosion1)
 			CBUFFER_START( UnityPerMaterial )
-			float4 _TextureSample1_ST;
+			float2 _Tiling1;
 			float2 _Tiling;
 			float _SharpnessMin;
 			float _SharpnessMax;
+			float _MoveSpd1;
+			float _NoiseScale1;
 			float _MoveSpd;
 			float _NoiseScale;
 			float _Intensity1;
@@ -707,13 +759,18 @@ Shader "Corrosion 1"
 
 			half4 frag(VertexOutput IN ) : SV_TARGET
 			{
-				float2 uv_TextureSample1 = IN.ase_texcoord.xy * _TextureSample1_ST.xy + _TextureSample1_ST.zw;
+				float4 _TextureSample1_ST_Instance = UNITY_ACCESS_INSTANCED_PROP(Corrosion1,_TextureSample1_ST);
+				float2 uv_TextureSample1 = IN.ase_texcoord.xy * _TextureSample1_ST_Instance.xy + _TextureSample1_ST_Instance.zw;
 				float4 color8 = IsGammaSpace() ? float4(0,0,0,0) : float4(0,0,0,0);
-				float2 temp_cast_0 = (( _MoveSpd * ( _TimeParameters.x ) )).xx;
-				float2 texCoord15 = IN.ase_texcoord.xy * _Tiling + temp_cast_0;
+				float2 _OffsetVal1_Instance = UNITY_ACCESS_INSTANCED_PROP(Corrosion1,_OffsetVal1);
+				float2 texCoord42 = IN.ase_texcoord.xy * _Tiling1 + ( ( _MoveSpd1 * ( _TimeParameters.x ) ) * _OffsetVal1_Instance );
+				float simplePerlin2D44 = snoise( texCoord42*_NoiseScale1 );
+				simplePerlin2D44 = simplePerlin2D44*0.5 + 0.5;
+				float2 _OffsetVal_Instance = UNITY_ACCESS_INSTANCED_PROP(Corrosion1,_OffsetVal);
+				float2 texCoord15 = IN.ase_texcoord.xy * _Tiling + ( ( _MoveSpd * ( _TimeParameters.x ) ) * _OffsetVal_Instance );
 				float simplePerlin2D14 = snoise( texCoord15*_NoiseScale );
 				simplePerlin2D14 = simplePerlin2D14*0.5 + 0.5;
-				float smoothstepResult22 = smoothstep( _SharpnessMin , _SharpnessMax , saturate( pow( simplePerlin2D14 , _Intensity1 ) ));
+				float smoothstepResult22 = smoothstep( _SharpnessMin , _SharpnessMax , saturate( pow( max( simplePerlin2D44 , simplePerlin2D14 ) , _Intensity1 ) ));
 				float4 lerpResult7 = lerp( tex2D( _TextureSample1, uv_TextureSample1 ) , color8 , smoothstepResult22);
 				
 				float4 Color = lerpResult7;
@@ -758,14 +815,22 @@ Shader "Corrosion 1"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
-        	
+        	#pragma multi_compile_instancing
+
 
 			sampler2D _TextureSample1;
+			UNITY_INSTANCING_BUFFER_START(Corrosion1)
+				UNITY_DEFINE_INSTANCED_PROP(float4, _TextureSample1_ST)
+				UNITY_DEFINE_INSTANCED_PROP(float2, _OffsetVal1)
+				UNITY_DEFINE_INSTANCED_PROP(float2, _OffsetVal)
+			UNITY_INSTANCING_BUFFER_END(Corrosion1)
 			CBUFFER_START( UnityPerMaterial )
-			float4 _TextureSample1_ST;
+			float2 _Tiling1;
 			float2 _Tiling;
 			float _SharpnessMin;
 			float _SharpnessMax;
+			float _MoveSpd1;
+			float _NoiseScale1;
 			float _MoveSpd;
 			float _NoiseScale;
 			float _Intensity1;
@@ -851,13 +916,18 @@ Shader "Corrosion 1"
 
 			half4 frag(VertexOutput IN ) : SV_TARGET
 			{
-				float2 uv_TextureSample1 = IN.ase_texcoord.xy * _TextureSample1_ST.xy + _TextureSample1_ST.zw;
+				float4 _TextureSample1_ST_Instance = UNITY_ACCESS_INSTANCED_PROP(Corrosion1,_TextureSample1_ST);
+				float2 uv_TextureSample1 = IN.ase_texcoord.xy * _TextureSample1_ST_Instance.xy + _TextureSample1_ST_Instance.zw;
 				float4 color8 = IsGammaSpace() ? float4(0,0,0,0) : float4(0,0,0,0);
-				float2 temp_cast_0 = (( _MoveSpd * ( _TimeParameters.x ) )).xx;
-				float2 texCoord15 = IN.ase_texcoord.xy * _Tiling + temp_cast_0;
+				float2 _OffsetVal1_Instance = UNITY_ACCESS_INSTANCED_PROP(Corrosion1,_OffsetVal1);
+				float2 texCoord42 = IN.ase_texcoord.xy * _Tiling1 + ( ( _MoveSpd1 * ( _TimeParameters.x ) ) * _OffsetVal1_Instance );
+				float simplePerlin2D44 = snoise( texCoord42*_NoiseScale1 );
+				simplePerlin2D44 = simplePerlin2D44*0.5 + 0.5;
+				float2 _OffsetVal_Instance = UNITY_ACCESS_INSTANCED_PROP(Corrosion1,_OffsetVal);
+				float2 texCoord15 = IN.ase_texcoord.xy * _Tiling + ( ( _MoveSpd * ( _TimeParameters.x ) ) * _OffsetVal_Instance );
 				float simplePerlin2D14 = snoise( texCoord15*_NoiseScale );
 				simplePerlin2D14 = simplePerlin2D14*0.5 + 0.5;
-				float smoothstepResult22 = smoothstep( _SharpnessMin , _SharpnessMax , saturate( pow( simplePerlin2D14 , _Intensity1 ) ));
+				float smoothstepResult22 = smoothstep( _SharpnessMin , _SharpnessMax , saturate( pow( max( simplePerlin2D44 , simplePerlin2D14 ) , _Intensity1 ) ));
 				float4 lerpResult7 = lerp( tex2D( _TextureSample1, uv_TextureSample1 ) , color8 , smoothstepResult22);
 				
 				float4 Color = lerpResult7;
@@ -875,22 +945,33 @@ Shader "Corrosion 1"
 }
 /*ASEBEGIN
 Version=19603
-Node;AmplifyShaderEditor.RangedFloatNode;28;-1424,-448;Inherit;False;Property;_MoveSpd;MoveSpd;7;0;Create;True;0;0;0;False;0;False;0;0.24;0;3;0;1;FLOAT;0
-Node;AmplifyShaderEditor.TimeNode;30;-1408,-320;Inherit;False;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.Vector2Node;16;-1168,-624;Inherit;False;Property;_Tiling;Tiling;5;0;Create;True;0;0;0;False;0;False;3,3;9,9;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;29;-1152,-416;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.TextureCoordinatesNode;15;-944,-528;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode;26;-992,-336;Inherit;False;Property;_NoiseScale;NoiseScale;6;0;Create;True;0;0;0;False;0;False;0;0.27;0;3;0;1;FLOAT;0
-Node;AmplifyShaderEditor.NoiseGeneratorNode;14;-672,-560;Inherit;True;Simplex2D;True;False;2;0;FLOAT2;0,0;False;1;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;17;-656,-288;Inherit;False;Property;_Intensity1;Intensity1;2;0;Create;True;0;0;0;False;0;False;0.5;1.67;0;8;0;1;FLOAT;0
-Node;AmplifyShaderEditor.PowerNode;21;-352,-560;Inherit;True;False;2;0;FLOAT;0;False;1;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;24;-256,-240;Inherit;False;Property;_SharpnessMin;SharpnessMin;4;0;Create;True;0;0;0;False;0;False;0.5;0.096;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;23;-256,-176;Inherit;False;Property;_SharpnessMax;SharpnessMax;3;0;Create;True;0;0;0;False;0;False;0.5;0.432;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SaturateNode;25;-128,-480;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;28;-2032,-608;Inherit;False;Property;_MoveSpd;MoveSpd;8;0;Create;True;0;0;0;False;0;False;0;0.24;0;3;0;1;FLOAT;0
+Node;AmplifyShaderEditor.TimeNode;30;-1968,-544;Inherit;False;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.TimeNode;37;-2000,-960;Inherit;False;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;36;-2064,-1024;Inherit;False;Property;_MoveSpd1;MoveSpd1;9;0;Create;True;0;0;0;False;0;False;0;0.24;0;3;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;29;-1760,-560;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.Vector2Node;34;-1760,-448;Inherit;False;InstancedProperty;_OffsetVal;OffsetVal;10;0;Create;True;0;0;0;False;0;False;0,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;38;-1792,-976;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.Vector2Node;39;-1792,-864;Inherit;False;InstancedProperty;_OffsetVal1;OffsetVal1;11;0;Create;True;0;0;0;False;0;False;0,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
+Node;AmplifyShaderEditor.Vector2Node;16;-1648,-688;Inherit;False;Property;_Tiling;Tiling;4;0;Create;True;0;0;0;False;0;False;3,3;9,9;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;35;-1600,-528;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;41;-1632,-944;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.Vector2Node;40;-1680,-1104;Inherit;False;Property;_Tiling1;Tiling1;5;0;Create;True;0;0;0;False;0;False;3,3;9,9;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
+Node;AmplifyShaderEditor.TextureCoordinatesNode;15;-1424,-592;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;26;-1472,-400;Inherit;False;Property;_NoiseScale;NoiseScale;6;0;Create;True;0;0;0;False;0;False;0;0.27;0;3;0;1;FLOAT;0
+Node;AmplifyShaderEditor.TextureCoordinatesNode;42;-1456,-1008;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;43;-1504,-816;Inherit;False;Property;_NoiseScale1;NoiseScale1;7;0;Create;True;0;0;0;False;0;False;0;0.27;0;3;0;1;FLOAT;0
+Node;AmplifyShaderEditor.NoiseGeneratorNode;14;-1152,-624;Inherit;False;Simplex2D;True;False;2;0;FLOAT2;0,0;False;1;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.NoiseGeneratorNode;44;-1152,-880;Inherit;False;Simplex2D;True;False;2;0;FLOAT2;0,0;False;1;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMaxOpNode;48;-864,-768;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;17;-752,-448;Inherit;False;Property;_Intensity1;Intensity1;1;0;Create;True;0;0;0;False;0;False;1;1.67;0;40;0;1;FLOAT;0
+Node;AmplifyShaderEditor.PowerNode;21;-416,-640;Inherit;True;False;2;0;FLOAT;0;False;1;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;24;-256,-240;Inherit;False;Property;_SharpnessMin;SharpnessMin;3;0;Create;True;0;0;0;False;0;False;0.5;0.096;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;23;-256,-176;Inherit;False;Property;_SharpnessMax;SharpnessMax;2;0;Create;True;0;0;0;False;0;False;0.5;0.432;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SaturateNode;25;-112,-496;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SmoothstepOpNode;22;80,-368;Inherit;False;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SamplerNode;6;320,-592;Inherit;True;Property;_TextureSample1;Texture Sample 0;0;0;Create;True;0;0;0;False;0;False;-1;7e321607146dd584fb5b39627697f61f;7e321607146dd584fb5b39627697f61f;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.ColorNode;8;368,-192;Inherit;False;Constant;_Transparent;Transparent;2;0;Create;True;0;0;0;False;0;False;0,0,0,0;0,0,0,0;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.SamplerNode;6;320,-592;Inherit;True;Property;_TextureSample1;Texture Sample 0;1;0;Create;True;0;0;0;False;0;False;-1;7e321607146dd584fb5b39627697f61f;7e321607146dd584fb5b39627697f61f;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.SamplerNode;5;-832,-800;Inherit;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;0;False;0;False;-1;58094915c36f2054187a6e00aaabb5eb;58094915c36f2054187a6e00aaabb5eb;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.LerpOp;7;688,-448;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1;0,0;Float;False;False;-1;2;ASEMaterialInspector;0;16;New Amplify Shader;199187dac283dbe4a8cb1ea611d70c58;True;Sprite Normal;0;1;Sprite Normal;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;5;RenderPipeline=UniversalPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;UniversalMaterialType=Lit;ShaderGraphShader=true;True;0;True;12;all;0;False;True;2;5;False;;10;False;;3;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=NormalsRendering;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;2;0,0;Float;False;False;-1;2;ASEMaterialInspector;0;16;New Amplify Shader;199187dac283dbe4a8cb1ea611d70c58;True;Sprite Forward;0;2;Sprite Forward;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;5;RenderPipeline=UniversalPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;UniversalMaterialType=Lit;ShaderGraphShader=true;True;0;True;12;all;0;False;True;2;5;False;;10;False;;3;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=UniversalForward;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
@@ -899,11 +980,23 @@ Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;4;0,0;Float;False;False;-1;
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;0;912,-496;Float;False;True;-1;2;ASEMaterialInspector;0;16;Corrosion 1;199187dac283dbe4a8cb1ea611d70c58;True;Sprite Lit;0;0;Sprite Lit;6;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;5;RenderPipeline=UniversalPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;UniversalMaterialType=Lit;ShaderGraphShader=true;True;0;True;12;all;0;False;True;2;5;False;;10;False;;3;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=Universal2D;False;False;0;Hidden/InternalErrorShader;0;0;Standard;3;Vertex Position;1;0;Debug Display;0;0;External Alpha;0;0;0;5;True;True;True;True;True;False;;False;0
 WireConnection;29;0;28;0
 WireConnection;29;1;30;2
+WireConnection;38;0;36;0
+WireConnection;38;1;37;2
+WireConnection;35;0;29;0
+WireConnection;35;1;34;0
+WireConnection;41;0;38;0
+WireConnection;41;1;39;0
 WireConnection;15;0;16;0
-WireConnection;15;1;29;0
+WireConnection;15;1;35;0
+WireConnection;42;0;40;0
+WireConnection;42;1;41;0
 WireConnection;14;0;15;0
 WireConnection;14;1;26;0
-WireConnection;21;0;14;0
+WireConnection;44;0;42;0
+WireConnection;44;1;43;0
+WireConnection;48;0;44;0
+WireConnection;48;1;14;0
+WireConnection;21;0;48;0
 WireConnection;21;1;17;0
 WireConnection;25;0;21;0
 WireConnection;22;0;25;0
@@ -914,4 +1007,4 @@ WireConnection;7;1;8;0
 WireConnection;7;2;22;0
 WireConnection;0;1;7;0
 ASEEND*/
-//CHKSM=9633FEA69A40F551FB820A84AD929297CC84F49C
+//CHKSM=FCEA736CDBE663FB57194F94DFC49FD334CD753B

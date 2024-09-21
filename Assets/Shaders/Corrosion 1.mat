@@ -65,13 +65,18 @@ Material:
     - _Float0: 0.567
     - _Float1: 1.2281913
     - _FlowSpd: 2.54
-    - _Intensity1: 1.59
-    - _MoveSpd: 0.27
-    - _NoiseScale: 0.37
-    - _SharpnessMax: 0.5
-    - _SharpnessMin: 0.25
+    - _Intensity1: 2.2
+    - _MoveSpd: 0.18
+    - _MoveSpd1: 0.04
+    - _NoiseScale: 0.2
+    - _NoiseScale1: 0.08
+    - _SharpnessMax: 0.3
+    - _SharpnessMin: 0.21
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Tiling: {r: 9, g: 9, b: 0, a: 0}
+    - _OffsetVal: {r: 1, g: 0.4, b: 0, a: 0}
+    - _OffsetVal1: {r: -2, g: -1, b: 0, a: 0}
+    - _Tiling: {r: 14.78, g: 9, b: 0, a: 0}
+    - _Tiling1: {r: 13.63, g: 9, b: 0, a: 0}
     - _Vector0: {r: 9, g: 9, b: 0, a: 0}
   m_BuildTextureStacks: []
