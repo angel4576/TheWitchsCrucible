@@ -1,0 +1,74 @@
+skeleton.png
+	size: 1951, 522
+	filter: Linear, Linear
+	pma: true
+Bangs
+	bounds: 1738, 62, 197, 123
+	offsets: 435, 727, 1000, 1000
+Cape
+	bounds: 2, 77, 443, 422
+	offsets: 291, 217, 1000, 1000
+	rotate: 90
+Cape Left Sleeve
+	bounds: 1195, 12, 179, 218
+	offsets: 497, 423, 1000, 1000
+	rotate: 90
+Cape Right Sleeve
+	bounds: 1545, 53, 191, 226
+	offsets: 330, 411, 1000, 1000
+Dress
+	bounds: 426, 110, 280, 410
+	offsets: 379, 238, 1000, 1000
+Eyes
+	bounds: 2, 13, 87, 62
+	offsets: 455, 802, 1000, 1000
+Hair Background
+	bounds: 1355, 281, 239, 210
+	offsets: 373, 662, 1000, 1000
+	rotate: 90
+Head
+	bounds: 1726, 296, 224, 223
+	offsets: 389, 643, 1000, 1000
+	rotate: 90
+Hood Back1
+	bounds: 1037, 10, 156, 161
+	offsets: 345, 599, 1000, 1000
+Hood Back2
+	bounds: 1105, 193, 327, 248
+	offsets: 366, 617, 1000, 1000
+	rotate: 90
+Hood Front
+	bounds: 708, 125, 395, 286
+	offsets: 297, 602, 1000, 1000
+	rotate: 90
+Left Arm
+	bounds: 1415, 47, 128, 232
+	offsets: 528, 396, 1000, 1000
+Left Braid
+	bounds: 1738, 187, 107, 198
+	offsets: 541, 579, 1000, 1000
+	rotate: 90
+Left Ear
+	bounds: 225, 21, 54, 87
+	offsets: 459, 862, 1000, 1000
+	rotate: 90
+Left Leg
+	bounds: 996, 173, 107, 347
+	offsets: 494, 73, 1000, 1000
+Neck
+	bounds: 181, 18, 42, 57
+	offsets: 497, 604, 1000, 1000
+Right Arm
+	bounds: 794, 2, 121, 241
+	offsets: 384, 381, 1000, 1000
+	rotate: 90
+Right Braid
+	bounds: 1567, 294, 157, 226
+	offsets: 371, 555, 1000, 1000
+Right Ear
+	bounds: 91, 17, 88, 58
+	offsets: 297, 789, 1000, 1000
+Right Leg
+	bounds: 426, 5, 103, 366
+	offsets: 436, 74, 1000, 1000
+	rotate: 90
