@@ -68,7 +68,7 @@ public class PauseManager : MonoBehaviour
     public void RestartLevel()
     {
         Resume();
-        string currentSceneName = SceneManager.GetActiveScene().name;
-        SceneManager.LoadScene(currentSceneName);
+        string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneName);
     }
 }
