@@ -24,12 +24,14 @@ public class Pet : MonoBehaviour, IInteractable
     
     private PhysicsCheck physicsCheck;
     private Rigidbody2D rb;
+    private Animator ani;
     
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        ani = GetComponent<Animator>();
 
         canMove = true;
 
@@ -76,7 +78,8 @@ public class Pet : MonoBehaviour, IInteractable
     {
         Vector2 moveDir = (targetTrans.position - transform.position).normalized;
         rb.velocity = new Vector2(moveDir.x * speed, rb.velocity.y);
-
+        // set animation state
+        ani.SetBool("IsRunning", true);
         // Vector2 offset = new Vector2(2, 0);
         // Stop at a certain distance from player
         if(Vector2.Distance(transform.position, targetTrans.position) < 0.01f || 
@@ -84,6 +87,8 @@ public class Pet : MonoBehaviour, IInteractable
         {
             rb.velocity = Vector2.zero;
             canMove = false;
+            // set animation state
+            ani.SetBool("IsRunning", false);
         }
     }
 
