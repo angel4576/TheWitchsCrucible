@@ -27,6 +27,8 @@ public class Lantern : MonoBehaviour
     // Input Action for toggling the lantern
     private PlayerInputControl inputActions;
 
+    public GameObject PauseMenu;
+
     private void Awake()
     {
         inputActions = new PlayerInputControl();
@@ -102,14 +104,18 @@ public class Lantern : MonoBehaviour
     // Toggles the lantern on/off when left mouse button is pressed
     private void ToggleLantern()
     {
-        if (isLanternOn)
+        if (!PauseMenu.GetComponent<PauseManager>().isPaused)
         {
-            ToggleLanternOff();
+            if (isLanternOn)
+            {
+                ToggleLanternOff();
+            }
+            else
+            {
+                ToggleLanternOn();
+            }
         }
-        else
-        {
-            ToggleLanternOn();
-        }
+        
     }
 
     private void ToggleLanternOn()
