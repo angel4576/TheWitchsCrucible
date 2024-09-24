@@ -8,6 +8,7 @@ TagManager:
   - Interactable
   - Monster
   - Lantern
+  - Checkpoint
   layers:
   - Default
   - TransparentFX

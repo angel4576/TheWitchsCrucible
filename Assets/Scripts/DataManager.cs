@@ -131,6 +131,7 @@ public class PlayerData
     public float health = 100f;
     public float light = 3f;
     public Vec3 position = new Vec3(0, 0, 0);
+    public Vec3 checkPoint = new Vec3(0, 0, 0);
 }
 
 // World
