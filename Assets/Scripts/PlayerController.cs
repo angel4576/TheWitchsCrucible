@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.TextCore.Text;
 
 public class PlayerController : MonoBehaviour
 {
@@ -57,6 +59,7 @@ public class PlayerController : MonoBehaviour
 
         // Get script reference
         physicsCheck = GetComponent<PhysicsCheck>();
+
     }
 
     // Update is called once per frame
@@ -75,6 +78,11 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
+        if(inputDirection.y != 0)
+        {
+            inputDirection.x *= math.sqrt(2);
+        }
+
         rb.velocity = new Vector2(inputDirection.x * speed, rb.velocity.y);
         if(inputDirection.x != 0 && !pet.canMove)
         {
