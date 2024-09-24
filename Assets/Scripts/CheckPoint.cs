@@ -10,7 +10,7 @@ public class CheckPoint : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("Player reached checkpoint");
-            DataManager.Instance.playerData.checkPoint = new Vec3(other.transform.position);
+            DataManager.Instance.playerData.checkPoint = transform.position;
         }
     }
 }

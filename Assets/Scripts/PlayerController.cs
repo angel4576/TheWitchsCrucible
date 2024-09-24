@@ -124,6 +124,7 @@ public class PlayerController : MonoBehaviour
     public void Die()
     {
         Debug.Log("Player died");
+        SceneManager.Instance.ReloadScene();
     }
 
     public void OnPlayerSwitchWorld()

@@ -3,6 +3,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
+[System.Serializable]
 public class Vec3{
     public float x;
     public float y;
@@ -131,7 +132,7 @@ public class PlayerData
     public float health = 100f;
     public float light = 3f;
     public Vec3 position = new Vec3(0, 0, 0);
-    public Vec3 checkPoint = new Vec3(0, 0, 0);
+    public Vec3 checkPoint = null;
 }
 
 // World
