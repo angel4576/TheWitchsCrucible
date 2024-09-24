@@ -1,0 +1,36 @@
+skeleton.png
+	size: 405, 528
+	filter: Linear, Linear
+	pma: true
+Body
+	bounds: 2, 99, 427, 126
+	offsets: 294, 483, 1000, 1000
+	rotate: 90
+Eye
+	bounds: 112, 74, 16, 23
+	offsets: 746, 565, 1000, 1000
+Head
+	bounds: 296, 162, 179, 107
+	offsets: 610, 521, 1000, 1000
+	rotate: 90
+Left Ear
+	bounds: 2, 26, 48, 71
+	offsets: 710, 597, 1000, 1000
+Left Front Leg
+	bounds: 130, 2, 114, 142
+	offsets: 600, 412, 1000, 1000
+Left Hind Leg
+	bounds: 130, 146, 164, 195
+	offsets: 252, 410, 1000, 1000
+Right Hind Leg
+	bounds: 130, 146, 164, 195
+	offsets: 252, 410, 1000, 1000
+Right Ear
+	bounds: 52, 38, 58, 59
+	offsets: 660, 600, 1000, 1000
+Right Front Leg
+	bounds: 246, 3, 114, 141
+	offsets: 600, 412, 1000, 1000
+Tail
+	bounds: 130, 343, 272, 183
+	offsets: 82, 534, 1000, 1000

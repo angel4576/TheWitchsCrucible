@@ -89,6 +89,15 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""01551296-7c70-40e0-8765-77a39a47230f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -353,6 +362,17 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""ToggleLantern"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""52783bb3-de98-4383-8532-2cb94f608c9e"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -947,6 +967,7 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
         m_Gameplay_SwitchWorld = m_Gameplay.FindAction("SwitchWorld", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
         m_Gameplay_ToggleLantern = m_Gameplay.FindAction("ToggleLantern", throwIfNotFound: true);
+        m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1027,6 +1048,7 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_SwitchWorld;
     private readonly InputAction m_Gameplay_Interact;
     private readonly InputAction m_Gameplay_ToggleLantern;
+    private readonly InputAction m_Gameplay_Pause;
     public struct GameplayActions
     {
         private @PlayerInputControl m_Wrapper;
@@ -1038,6 +1060,7 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
         public InputAction @SwitchWorld => m_Wrapper.m_Gameplay_SwitchWorld;
         public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
         public InputAction @ToggleLantern => m_Wrapper.m_Gameplay_ToggleLantern;
+        public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1068,6 +1091,9 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
             @ToggleLantern.started += instance.OnToggleLantern;
             @ToggleLantern.performed += instance.OnToggleLantern;
             @ToggleLantern.canceled += instance.OnToggleLantern;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -1093,6 +1119,9 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
             @ToggleLantern.started -= instance.OnToggleLantern;
             @ToggleLantern.performed -= instance.OnToggleLantern;
             @ToggleLantern.canceled -= instance.OnToggleLantern;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -1282,6 +1311,7 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
         void OnSwitchWorld(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnToggleLantern(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

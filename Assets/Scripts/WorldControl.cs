@@ -23,7 +23,7 @@ public class WorldControl : MonoBehaviour
         if(Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
 
         else
@@ -35,12 +35,12 @@ public class WorldControl : MonoBehaviour
         playerInput.Enable();
         
         playerInput.Gameplay.SwitchWorld.started += context => SwitchWorld(); // E key
-
     }
-
 
     void Start()
     {
+        SpiritWorldObjects = GameObject.FindGameObjectsWithTag("SpiritWorld")[0];
+        RealWorldObjects = GameObject.FindGameObjectsWithTag("RealWorld")[0];
         SpiritWorldObjects.SetActive(false);
         RealWorldObjects.SetActive(true);
         isRealWorld = true;

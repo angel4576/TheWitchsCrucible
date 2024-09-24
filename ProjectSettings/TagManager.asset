@@ -9,6 +9,8 @@ TagManager:
   - Monster
   - Lantern
   - Checkpoint
+  - SpiritWorld
+  - RealWorld
   layers:
   - Default
   - TransparentFX
