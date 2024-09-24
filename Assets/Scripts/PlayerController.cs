@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private CapsuleCollider2D col;
     private SpriteRenderer rend;
     private int faceDir;
+    public GameObject PauseScreen;
 
     private PhysicsCheck physicsCheck;
     
@@ -34,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
         // +=: register actions to action binding
         inputActions.Gameplay.Jump.started += Jump; // call jump when the moment corresponding button is pressed
-
+        inputActions.Gameplay.Pause.started += Pause;
     }
 
     private void OnEnable() 
@@ -64,8 +65,10 @@ public class PlayerController : MonoBehaviour
     {
         // Read Vector2 value in Move action
         inputDirection = inputActions.Gameplay.Move.ReadValue<Vector2>();
-
-        FlipDirection();
+        if (!PauseScreen.GetComponent<PauseManager>().isPaused)
+        {
+            FlipDirection();
+        }
     }
 
     private void FixedUpdate() 
@@ -84,7 +87,8 @@ public class PlayerController : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext context)
     {
-        if(physicsCheck.isOnGround){
+        if(physicsCheck.isOnGround && !PauseScreen.GetComponent<PauseManager>().isPaused)
+        {
             rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
 
             // Pet jump
@@ -133,5 +137,10 @@ public class PlayerController : MonoBehaviour
             rend.color = Color.white;
         else
             rend.color = Color.black;
+    }
+
+    private void Pause(InputAction.CallbackContext context)
+    {
+        PauseScreen.GetComponent<PauseManager>().TogglePause();
     }
 }

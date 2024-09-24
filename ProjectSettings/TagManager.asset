@@ -8,6 +8,8 @@ TagManager:
   - Interactable
   - Monster
   - Lantern
+  - SpiritWorld
+  - RealWorld
   layers:
   - Default
   - TransparentFX
