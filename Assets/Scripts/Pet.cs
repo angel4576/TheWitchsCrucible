@@ -126,11 +126,13 @@ public class Pet : MonoBehaviour, IInteractable
         
     }
 
+    // bind to OnSwitchWorld in World Control (inspector)
     public void OnPetSwitchWorld()
     {
-        // Debug.Log("On pet switch");
+        Debug.Log("On pet switch");
         // Play animation
         gameObject.SetActive(WorldControl.Instance.isRealWorld);
+        ResetPosition();
     }
 
     
