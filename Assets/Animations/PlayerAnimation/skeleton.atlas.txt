@@ -20,8 +20,8 @@ Dress
 	bounds: 426, 110, 280, 410
 	offsets: 379, 238, 1000, 1000
 Eyes
-	bounds: 2, 13, 87, 62
-	offsets: 455, 802, 1000, 1000
+	bounds: 2, 7, 90, 68
+	offsets: 453, 798, 1000, 1000
 Hair Background
 	bounds: 1355, 281, 239, 210
 	offsets: 373, 662, 1000, 1000
@@ -49,14 +49,14 @@ Left Braid
 	offsets: 541, 579, 1000, 1000
 	rotate: 90
 Left Ear
-	bounds: 225, 21, 54, 87
+	bounds: 228, 21, 54, 87
 	offsets: 459, 862, 1000, 1000
 	rotate: 90
 Left Leg
 	bounds: 996, 173, 107, 347
 	offsets: 494, 73, 1000, 1000
 Neck
-	bounds: 181, 18, 42, 57
+	bounds: 184, 18, 42, 57
 	offsets: 497, 604, 1000, 1000
 Right Arm
 	bounds: 794, 2, 121, 241
@@ -66,7 +66,7 @@ Right Braid
 	bounds: 1567, 294, 157, 226
 	offsets: 371, 555, 1000, 1000
 Right Ear
-	bounds: 91, 17, 88, 58
+	bounds: 94, 17, 88, 58
 	offsets: 297, 789, 1000, 1000
 Right Leg
 	bounds: 426, 5, 103, 366
