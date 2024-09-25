@@ -5,12 +5,11 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/Checkpoint Test.unity
-    guid: d1fb32b19d9f99b429bcf32157a98334
+    path: Assets/Scenes/Levels/LevelBuild 1.unity
+    guid: 40003590a8b9c5d4cb6b8cd5eb81423a
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: e34afe00213015348876c9ca289ae994, type: 2}
-
