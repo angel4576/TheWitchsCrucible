@@ -12,6 +12,8 @@ public class Pet : MonoBehaviour, IInteractable
     [Header("Pet Movement")]
     public float speed;
     public float jumpForce;
+    private int faceDir;
+    private float xMoveDir;
     
     [Header("Pet Respawn")]
     public float loseDistance;
@@ -65,6 +67,7 @@ public class Pet : MonoBehaviour, IInteractable
         if(canMove)
         {
             MoveToPlayer(); 
+            FlipDirection();
         }
         
         if(canJump)
@@ -77,10 +80,11 @@ public class Pet : MonoBehaviour, IInteractable
     private void MoveToPlayer()
     {
         Vector2 moveDir = (targetTrans.position - transform.position).normalized;
+        xMoveDir = moveDir.x;
         rb.velocity = new Vector2(moveDir.x * speed, rb.velocity.y);
         // set animation state
         ani.SetBool("IsRunning", true);
-        // Vector2 offset = new Vector2(2, 0);
+
         // Stop at a certain distance from player
         if(Vector2.Distance(transform.position, targetTrans.position) < 0.01f || 
         Vector2.Distance(transform.position, player.position ) < 2f )
@@ -124,6 +128,22 @@ public class Pet : MonoBehaviour, IInteractable
     {
         // Debug.Log("Interact with Pet");
         
+    }
+
+    private void FlipDirection()
+    {
+        faceDir = Math.Sign(transform.localScale.x);
+
+        if (xMoveDir < 0)
+        {
+            faceDir = -1;
+        }
+        else if (xMoveDir > 0)
+        {
+            faceDir = 1;
+        }
+
+        transform.localScale = new Vector3(faceDir * Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
     }
 
     // bind to OnSwitchWorld in World Control (inspector)
