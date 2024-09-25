@@ -18,6 +18,11 @@ public class Pet : MonoBehaviour, IInteractable
     [Header("Pet Respawn")]
     public float loseDistance;
     public float respawnTime;
+    
+    [Header("Physics Check")]
+    public LayerMask groundLayer;
+    public float rayLength;
+    public Vector2 rayOffset;
 
     // Status
     [HideInInspector]public bool canMove;
@@ -75,6 +80,7 @@ public class Pet : MonoBehaviour, IInteractable
             Jump();
         }
         
+        PhysicsCheck();
     }
 
     private void MoveToPlayer()
@@ -85,7 +91,7 @@ public class Pet : MonoBehaviour, IInteractable
         // set animation state
         ani.SetBool("IsRunning", true);
 
-        // Stop at a certain distance from player
+        // Stop when reach chase point or within a certain distance with player
         if(Vector2.Distance(transform.position, targetTrans.position) < 0.01f || 
         Vector2.Distance(transform.position, player.position ) < 2f )
         {
@@ -144,6 +150,22 @@ public class Pet : MonoBehaviour, IInteractable
         }
 
         transform.localScale = new Vector3(faceDir * Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+    }
+
+    void PhysicsCheck()
+    {
+        Vector2 rayDirection = new Vector2(faceDir, 0);
+        Vector2 offset = new Vector2(rayOffset.x * faceDir, rayOffset.y);
+        RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position + offset, rayDirection, rayLength, groundLayer);
+
+        if (hit)
+        {
+            ani.SetBool("IsRunning", false);
+        }
+
+        Color rayColor = hit ? Color.red : Color.green;
+
+        Debug.DrawRay((Vector2)transform.position + offset, rayDirection * rayLength, rayColor);
     }
 
     // bind to OnSwitchWorld in World Control (inspector)
