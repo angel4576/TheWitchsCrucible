@@ -19,12 +19,15 @@ public class Pet : MonoBehaviour, IInteractable
     public float loseDistance;
     public float respawnTime;
     
-    [Header("Physics Check")]
+    [Header("Obstacle Check")]
     public LayerMask groundLayer;
     public float rayLength;
     public Vector2 rayOffset;
 
-    // Status
+    [Header("Pet Status")]
+    public float idleYDistance; // how long away from player to set to be idle
+    private bool isIdle;
+
     [HideInInspector]public bool canMove;
     [HideInInspector]public bool canJump;
     private bool isMiss;
@@ -71,18 +74,18 @@ public class Pet : MonoBehaviour, IInteractable
 
     private void FixedUpdate() 
     {   
-        if(canMove)
+        if(canMove && !isIdle)
         {
             MoveToPlayer(); 
             FlipDirection();
         }
         
-        if(canJump)
+        if(canJump && !isIdle)
         {
             Jump();
         }
         
-        CheckForwardObstacle();
+        // CheckForwardObstacle();
     }
 
     private void MoveToPlayer()
@@ -117,11 +120,24 @@ public class Pet : MonoBehaviour, IInteractable
         // Check distance between Pet and Pet chase target
         if(Vector2.Distance(transform.position, targetTrans.position) > loseDistance)
         {  
+            ani.SetBool("IsRunning", false);
             isMiss = true;
         }
         else
         {
             isMiss = false;
+        }
+
+        Vector2 yPetPos = new Vector2(0, transform.position.y);
+        Vector2 yTargetPos =  new Vector2(0, targetTrans.position.y);
+        if(Vector2.Distance(yPetPos, yTargetPos) > idleYDistance)
+        {  
+            ani.SetBool("IsRunning", false);
+            isIdle = true;
+        }
+        else
+        {
+            isIdle = false;
         }
         
     }

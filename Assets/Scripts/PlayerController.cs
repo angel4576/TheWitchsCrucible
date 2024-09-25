@@ -131,12 +131,14 @@ public class PlayerController : MonoBehaviour
 
     private void ControlPetMovement()
     {
-        pet.canMove = true;
+        if(pet.gameObject.activeSelf)
+            pet.canMove = true;
     }
 
     private void ControlPetJump()
     {
-        pet.canJump = true;
+        if(pet.gameObject.activeSelf)
+            pet.canJump = true;
     }
 
     private void FlipDirection()
