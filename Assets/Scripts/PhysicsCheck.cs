@@ -10,7 +10,10 @@ public class PhysicsCheck : MonoBehaviour
     public float checkRadius;
     public LayerMask groundLayer;
     
-    
+    [Header("Physics Material")]
+    public PhysicsMaterial2D smooth;
+    public PhysicsMaterial2D friction;
+
     [Header("Status")]
     public bool isOnGround;
 
@@ -32,12 +35,31 @@ public class PhysicsCheck : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+    }
+
+    void FixedUpdate() 
+    {
+        
         Check();
+        SwitchPhysicsMaterial();
     }
 
     private void Check()
     {
         isOnGround = Physics2D.OverlapCircle((Vector2)transform.position + bottomOffset, checkRadius, groundLayer);
+    }
+
+    void SwitchPhysicsMaterial()
+    {
+        if(isOnGround)
+        {
+            col.sharedMaterial = friction;
+        }
+        else
+        {
+            col.sharedMaterial = smooth;
+        }
     }
 
     private void OnDrawGizmosSelected() 

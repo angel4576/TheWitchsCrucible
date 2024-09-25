@@ -29,9 +29,10 @@ public class Pet : MonoBehaviour, IInteractable
     [HideInInspector]public bool canJump;
     private bool isMiss;
     
-    private PhysicsCheck physicsCheck;
+    // private PhysicsCheck physicsCheck;
     private Rigidbody2D rb;
     private Animator ani;
+    private CapsuleCollider2D coll;
     
 
     // Start is called before the first frame update
@@ -39,6 +40,7 @@ public class Pet : MonoBehaviour, IInteractable
     {
         rb = GetComponent<Rigidbody2D>();
         ani = GetComponent<Animator>();
+        coll = GetComponent<CapsuleCollider2D>();
 
         canMove = true;
 
@@ -80,7 +82,7 @@ public class Pet : MonoBehaviour, IInteractable
             Jump();
         }
         
-        PhysicsCheck();
+        CheckForwardObstacle();
     }
 
     private void MoveToPlayer()
@@ -152,7 +154,7 @@ public class Pet : MonoBehaviour, IInteractable
         transform.localScale = new Vector3(faceDir * Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
     }
 
-    void PhysicsCheck()
+    void CheckForwardObstacle()
     {
         Vector2 rayDirection = new Vector2(faceDir, 0);
         Vector2 offset = new Vector2(rayOffset.x * faceDir, rayOffset.y);
@@ -176,6 +178,5 @@ public class Pet : MonoBehaviour, IInteractable
         gameObject.SetActive(WorldControl.Instance.isRealWorld);
         ResetPosition();
     }
-
     
 }
