@@ -71,4 +71,9 @@ public class PauseManager : MonoBehaviour
         string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneName);
     }
+
+    public void StartFromCheckPoint()
+    {
+        //loadfromcheckpoint
+    }
 }

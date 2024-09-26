@@ -93,6 +93,12 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+
+        if (!physicsCheck.isOnGround)
+        {
+            rb.velocity += Vector2.down * Physics2D.gravity.y * Time.fixedDeltaTime;
+            Debug.Log("applying velocity" + rb.velocity);
+        }
     }
 
     private void Move()
