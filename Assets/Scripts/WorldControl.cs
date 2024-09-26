@@ -18,6 +18,8 @@ public class WorldControl : MonoBehaviour
     public PlayerInputControl playerInput;
     public UnityEvent onSwitchWorld;
 
+    public GameObject PauseScreen;
+
     private void Awake()
     {
         if(Instance == null)
@@ -57,19 +59,21 @@ public class WorldControl : MonoBehaviour
         // {
         //     return;
         // }
-
-        if (SpiritWorldObjects != null)
+        if (!PauseScreen.GetComponent<PauseManager>().isPaused)
         {
-            ToggleActive(SpiritWorldObjects);
-        }
+            if (SpiritWorldObjects != null)
+            {
+                ToggleActive(SpiritWorldObjects);
+            }
 
-        if (RealWorldObjects != null)
-        {
-            ToggleActive(RealWorldObjects);
-            isRealWorld ^= true;
-        }
+            if (RealWorldObjects != null)
+            {
+                ToggleActive(RealWorldObjects);
+                isRealWorld ^= true;
+            }
 
-        onSwitchWorld?.Invoke();
+            onSwitchWorld?.Invoke();
+        }
  
     }
 }
