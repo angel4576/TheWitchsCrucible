@@ -20,6 +20,7 @@ public class Monster : MonoBehaviour
     [HideInInspector]private bool isChasing;
     [HideInInspector]private bool canMove;
     [HideInInspector]private bool canChase;
+    [HideInInspector]private bool canAttack;
     [HideInInspector]private Vector2 initialPosition;
 
     // flags
@@ -42,21 +43,25 @@ public class Monster : MonoBehaviour
         isChasing = false;
         canChase = false;
         canMove = true;
+        canAttack = false;
     }
 
     // Update is called once per frame
     private void Update()
     {
         if(!lantern.IsLanternOn){
+            // if lantern is off, monster can move and chase player in range
             canMove = true;
             canChase = CheckPlayerInChaseRange();
+            canAttack = true;
         }
         else
-        {
+        {   
             canMove = false;
             canChase = false;
+            canAttack = false;
         }
-        if(CheckPlayerInAttackRange() && !isPlayerDead)
+        if(canAttack && CheckPlayerInAttackRange() && !isPlayerDead)
         {
             KillPlayer();
         }
