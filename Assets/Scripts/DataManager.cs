@@ -133,6 +133,8 @@ public class PlayerData
     public float light = 3f;
     public Vec3 position = new Vec3(0, 0, 0);
     public Vec3 checkPoint = null;
+    public bool hasPickedUpLantern = false;
+
 }
 
 // World
