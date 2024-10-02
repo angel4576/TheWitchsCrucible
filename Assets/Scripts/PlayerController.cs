@@ -32,6 +32,10 @@ public class PlayerController : MonoBehaviour
     public float petMoveDelayTime;
     public float petJumpDelayTime;
 
+    [Header("Lantern")]
+    public Lantern lantern;
+    private bool hasLantern;
+
     [Header("Animation")]
     private Animator ani;
     public SkeletonMecanim skeletonMecanim;  // Use SkeletonMecanim instead of SkeletonAnimation
@@ -240,5 +244,12 @@ public class PlayerController : MonoBehaviour
     private void Pause(InputAction.CallbackContext context)
     {
         PauseScreen.GetComponent<PauseManager>().TogglePause();
+    }
+
+    // Respond to OnLanternFirstPickedUp event in GameManager
+    public void SetLanternStatus()
+    {
+        // hasLantern = true;
+        lantern.gameObject.SetActive(true);
     }
 }

@@ -134,6 +134,7 @@ public class PlayerData
     public Vec3 position = new Vec3(0, 0, 0);
     public Vec3 checkPoint = null;
     public bool hasPickedUpLantern = false;
+    public bool canSwitchWorld = false;
 
 }
 
