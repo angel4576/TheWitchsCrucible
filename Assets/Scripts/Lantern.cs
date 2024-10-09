@@ -29,6 +29,11 @@ public class Lantern : MonoBehaviour
 
     public GameObject PauseMenu;
 
+    // player
+    private GameObject player;
+    private PlayerController playerController;
+
+
     private void Awake()
     {
         inputActions = new PlayerInputControl();
@@ -55,6 +60,15 @@ public class Lantern : MonoBehaviour
         // Initialize the light state (start with lantern off)
         lanternLight.enabled = false;
         lanternLight.intensity = lightIntensity;
+
+        // Get the player object if it exists
+        player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            playerController = player.GetComponent<PlayerController>();
+        }
+
+        playerController.DisableLamp();
     }
 
     private void Update()
@@ -124,6 +138,7 @@ public class Lantern : MonoBehaviour
         {
             isLanternOn = true;
             lanternLight.enabled = true;  // Turn on the 2D light
+            playerController.EnableLamp();
         }
     }
 
@@ -131,5 +146,6 @@ public class Lantern : MonoBehaviour
     {
         isLanternOn = false;
         lanternLight.enabled = false;  // Turn off the 2D light
+        playerController.DisableLamp();
     }
 }

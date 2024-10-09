@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     private Animator ani;
     public SkeletonMecanim skeletonMecanim;  // Use SkeletonMecanim instead of SkeletonAnimation
     private Spine.Slot[] cloakSlots;
+    private Spine.Slot[] lampSlots;
     private Dictionary<Spine.Slot, Spine.Attachment> originalCloakAttachments = new Dictionary<Spine.Slot, Spine.Attachment>();
 
 
@@ -73,6 +74,7 @@ public class PlayerController : MonoBehaviour
 
         // Get all slots related to cape
         GetAllCloakSlots();
+        GetLampSlot();
         if (WorldControl.Instance.isRealWorld)
         {
             DisableCloak();
@@ -88,6 +90,9 @@ public class PlayerController : MonoBehaviour
         {
             FlipDirection();
         }
+
+        // Set animation state
+        SetAnimation();
     }
 
     private void FixedUpdate()
@@ -108,15 +113,6 @@ public class PlayerController : MonoBehaviour
             inputDirection.x *= math.sqrt(2);
         }
         rb.velocity = new Vector2(inputDirection.x * speed, rb.velocity.y);
-        // set animation state
-        if (inputDirection.x != 0)
-        {
-            ani.SetBool("IsRunning", true);
-        }
-        else
-        {
-            ani.SetBool("IsRunning", false);
-        }
 
         if (inputDirection.x != 0 && !pet.canMove)
         {
@@ -128,12 +124,20 @@ public class PlayerController : MonoBehaviour
     {
         if (physicsCheck.isOnGround && !PauseScreen.GetComponent<PauseManager>().isPaused)
         {
-            rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+            // delay jump
+            StartCoroutine(DelayJump(0.2f));
 
             // Pet jump
             Invoke(nameof(ControlPetJump), petJumpDelayTime);
         }
     }
+
+    private IEnumerator DelayJump(float delay)
+{
+    ani.SetTrigger("JumpTrigger");
+    yield return new WaitForSeconds(delay);
+    rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+}
 
     private void ControlPetMovement()
     {
@@ -170,20 +174,28 @@ public class PlayerController : MonoBehaviour
         SceneManager.Instance.ReloadScene();
     }
 
+    // Set animation state
+    private void SetAnimation()
+    {
+        ani.SetFloat("X_velocity", math.abs(rb.velocity.x));
+        ani.SetFloat("Y_velocity", rb.velocity.y);
+        // ani.SetBool("IsGrounded", physicsCheck.isOnGround);
+    }
+
     public void OnPlayerSwitchWorld()
     {
         // Play animation
         if (WorldControl.Instance.isRealWorld)
         {
-            // rend.color = Color.white;
             // disable cape's spine slot
             DisableCloak();
+            ani.SetBool("IsLanternOn", false);
         }
         else
         {
-            // rend.color = Color.black;
             // enable cape's spine slot
             EnableCloak();
+            ani.SetBool("IsLanternOn", true);
         }
     }
 
@@ -213,6 +225,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
     private void DisableCloak()
     {
         // 遍历斗篷相关的所有插槽，将其 Attachment 设置为 null 来禁用它们
@@ -236,6 +249,58 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    private void GetLampSlot(){
+        var skeleton = skeletonMecanim.skeleton;
+        lampSlots = new Spine.Slot[2];
+        lampSlots[0] = skeleton.FindSlot("Lamp");
+        lampSlots[1] = skeleton.FindSlot("Handle");
+
+        foreach (var slot in lampSlots)
+        {
+            if (slot != null && slot.Attachment != null)
+            {
+                Debug.Log("lamp slot: " + slot);
+                originalCloakAttachments[slot] = slot.Attachment;
+            }
+        }
+
+
+    }
+
+    public void DisableLamp()
+    {
+        Debug.Log("Disable lamp");
+        if (lampSlots != null)
+        {
+            foreach (var slot in lampSlots)
+            {
+                if (slot != null)
+                {
+                    slot.Attachment = null;
+                }
+            }
+            ani.SetBool("IsLanternOn", false);
+        }
+    }
+
+    public void EnableLamp()
+    {
+        Debug.Log("Enable lamp");
+        if (lampSlots != null)
+        {
+            foreach (var slot in lampSlots)
+            {
+                if (slot != null && originalCloakAttachments.ContainsKey(slot))
+                {
+                    slot.Attachment = originalCloakAttachments[slot];
+                }
+            }
+            ani.SetBool("IsLanternOn", true);
+        }
+    }
+
+
 
     private void Pause(InputAction.CallbackContext context)
     {
