@@ -43,8 +43,10 @@ public class WorldControl : MonoBehaviour
     {
         SpiritWorldObjects = GameObject.FindGameObjectsWithTag("SpiritWorld")[0];
         RealWorldObjects = GameObject.FindGameObjectsWithTag("RealWorld")[0];
+        
         SpiritWorldObjects.SetActive(false);
         RealWorldObjects.SetActive(true);
+        
         isRealWorld = true;
     }
 
@@ -59,7 +61,9 @@ public class WorldControl : MonoBehaviour
         // {
         //     return;
         // }
-        if (!PauseScreen.GetComponent<PauseManager>().isPaused)
+
+        if (!PauseScreen.GetComponent<PauseManager>().isPaused 
+            && DataManager.Instance.playerData.canSwitchWorld)
         {
             if (SpiritWorldObjects != null)
             {
@@ -75,5 +79,11 @@ public class WorldControl : MonoBehaviour
             onSwitchWorld?.Invoke();
         }
  
+    }
+
+    // Respond to OnLanternFirstPickedUp event in GameManager
+    public void SetCanSwitch()
+    {
+        DataManager.Instance.playerData.canSwitchWorld = true;
     }
 }

@@ -31,7 +31,9 @@ public class Monster : MonoBehaviour
         // retrieve references
         playerTransform = GameObject.Find("Player").transform;
         playerScript = GameObject.Find("Player").GetComponent<PlayerController>();
-        lantern = GameObject.Find("Lantern").GetComponent<Lantern>();
+        // lantern = GameObject.Find("Lantern").GetComponent<Lantern>();        
+        
+        
         // for now, switching world enables/disables the monsters, if change, a reference to the real/mental world must be retrieved
         // and this script must be updated
     }
@@ -49,18 +51,28 @@ public class Monster : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if(!lantern.IsLanternOn){
-            // if lantern is off, monster can move and chase player in range
-            canMove = true;
-            canChase = CheckPlayerInChaseRange();
-            canAttack = true;
-        }
-        else
-        {   
+        if(lantern == null) // if player does not have lantern
+        {
             canMove = false;
             canChase = false;
             canAttack = false;
         }
+        else
+        {
+            if(!lantern.IsLanternOn){
+                // if lantern is off, monster can move and chase player in range
+                canMove = true;
+                canChase = CheckPlayerInChaseRange();
+                canAttack = true;
+            }
+            else
+            {   
+                canMove = false;
+                canChase = false;
+                canAttack = false;
+            }
+        }
+
         if(canAttack && CheckPlayerInAttackRange() && !isPlayerDead)
         {
             KillPlayer();
@@ -129,6 +141,11 @@ public class Monster : MonoBehaviour
         return Vector2.Distance(transform.position, playerTransform.position) < attackRange;
     }
 
+    // Respond to OnLanternFirstPickedUp event in Game Manager
+    public void AcquireLantern()
+    {
+        lantern = playerScript.GetComponentInChildren<Lantern>();
+    }
 
     // visualizing chase range
     private void OnDrawGizmosSelected() 

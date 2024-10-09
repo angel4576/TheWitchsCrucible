@@ -83,6 +83,24 @@ public class SceneManager : MonoBehaviour
         DataManager.Instance.worldData.curSceneIndex = currentSceneIndex; // Update the current scene index in the world data
         StartCoroutine(FadeOutAndLoadScene(sceneIndex));
         //UnityEngine.SceneManagement.SceneManager.LoadScene(scenes[sceneIndex]);
+
+        // Set if player can switch world based on scene index
+        if(sceneIndex != 0) // if not in level 1
+        {
+            DataManager.Instance.playerData.canSwitchWorld = true;
+        }
+        else if(sceneIndex == 0) 
+        {
+            if(DataManager.Instance.playerData.checkPoint != null) // pass level 1 check point
+            {
+                DataManager.Instance.playerData.canSwitchWorld = true;
+            }
+            else
+            {
+                DataManager.Instance.playerData.canSwitchWorld = false;
+            }
+        }
+
     }
 
     public void LoadScene(string sceneName)
