@@ -1,74 +1,83 @@
 skeleton.png
-	size: 1951, 522
+	size: 2015, 552
 	filter: Linear, Linear
 	pma: true
 Bangs
-	bounds: 1738, 62, 197, 123
+	bounds: 674, 15, 197, 123
 	offsets: 435, 727, 1000, 1000
 Cape
-	bounds: 2, 77, 443, 422
+	bounds: 2, 107, 443, 422
 	offsets: 291, 217, 1000, 1000
 	rotate: 90
 Cape Left Sleeve
-	bounds: 1195, 12, 179, 218
+	bounds: 1116, 3, 179, 218
 	offsets: 497, 423, 1000, 1000
-	rotate: 90
 Cape Right Sleeve
-	bounds: 1545, 53, 191, 226
+	bounds: 1538, 12, 191, 226
 	offsets: 330, 411, 1000, 1000
 Dress
-	bounds: 426, 110, 280, 410
+	bounds: 426, 140, 280, 410
 	offsets: 379, 238, 1000, 1000
 Eyes
-	bounds: 2, 7, 90, 68
+	bounds: 370, 15, 90, 68
 	offsets: 453, 798, 1000, 1000
+	rotate: 90
 Hair Background
-	bounds: 1355, 281, 239, 210
+	bounds: 1297, 11, 239, 210
 	offsets: 373, 662, 1000, 1000
+Handle
+	bounds: 1554, 263, 287, 67
+	offsets: 644, 461, 1000, 1000
 	rotate: 90
 Head
-	bounds: 1726, 296, 224, 223
+	bounds: 1731, 9, 224, 223
 	offsets: 389, 643, 1000, 1000
 	rotate: 90
 Hood Back1
-	bounds: 1037, 10, 156, 161
+	bounds: 1823, 235, 156, 161
 	offsets: 345, 599, 1000, 1000
+	rotate: 90
 Hood Back2
-	bounds: 1105, 193, 327, 248
+	bounds: 1105, 223, 327, 248
 	offsets: 366, 617, 1000, 1000
 	rotate: 90
 Hood Front
-	bounds: 708, 125, 395, 286
+	bounds: 708, 155, 395, 286
 	offsets: 297, 602, 1000, 1000
 	rotate: 90
+Lamp
+	bounds: 1355, 240, 197, 310
+	offsets: 800, 166, 1000, 1000
 Left Arm
-	bounds: 1415, 47, 128, 232
+	bounds: 440, 10, 128, 232
 	offsets: 528, 396, 1000, 1000
+	rotate: 90
 Left Braid
-	bounds: 1738, 187, 107, 198
+	bounds: 1623, 284, 107, 198
 	offsets: 541, 579, 1000, 1000
 	rotate: 90
 Left Ear
-	bounds: 228, 21, 54, 87
+	bounds: 1959, 463, 54, 87
 	offsets: 459, 862, 1000, 1000
-	rotate: 90
 Left Leg
-	bounds: 996, 173, 107, 347
+	bounds: 996, 203, 107, 347
 	offsets: 494, 73, 1000, 1000
 Neck
-	bounds: 184, 18, 42, 57
+	bounds: 996, 159, 42, 57
 	offsets: 497, 604, 1000, 1000
+	rotate: 90
 Right Arm
-	bounds: 794, 2, 121, 241
+	bounds: 873, 32, 121, 241
 	offsets: 384, 381, 1000, 1000
 	rotate: 90
 Right Braid
-	bounds: 1567, 294, 157, 226
+	bounds: 1731, 393, 157, 226
 	offsets: 371, 555, 1000, 1000
+	rotate: 90
 Right Ear
-	bounds: 94, 17, 88, 58
+	bounds: 1623, 492, 88, 58
 	offsets: 297, 789, 1000, 1000
 Right Leg
-	bounds: 426, 5, 103, 366
+	bounds: 2, 2, 103, 366
 	offsets: 436, 74, 1000, 1000
 	rotate: 90
