@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Threading.Tasks;
 
 public class Pet : MonoBehaviour, IInteractable
 {
@@ -100,6 +101,33 @@ public class Pet : MonoBehaviour, IInteractable
         ani.SetFloat("X_velocity", math.abs(rb.velocity.x));
         ani.SetFloat("Y_velocity", rb.velocity.y);
     }
+
+    public void SetAnimationState<T>(int flag, string param, T value)
+    {
+        Debug.Log($"SetAnimationState {flag} {param} {value}");
+        ani.SetTrigger("HugTrigger");
+        switch (flag)
+        {
+            case 0:
+            {
+                ani.SetFloat(param, Convert.ToSingle(value));
+                break;
+            }
+            case 1:
+            {
+                ani.SetBool(param, Convert.ToBoolean(value));
+                break;
+            }
+            case 2:
+            {
+                ani.SetTrigger(param);
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
     private void MoveToPlayer()
     {
         Vector2 moveDir = (targetTrans.position - transform.position).normalized;
@@ -200,11 +228,20 @@ public class Pet : MonoBehaviour, IInteractable
     }
 
     // bind to OnSwitchWorld in World Control (inspector)
-    public void OnPetSwitchWorld()
+    public async void OnPetSwitchWorld()
     {
         Debug.Log("On pet switch");
         // Play animation
-        gameObject.SetActive(WorldControl.Instance.isRealWorld);
+        Func<Task> delayDeactivate = async () =>
+        {
+            await Task.Delay(200);
+            gameObject.SetActive(WorldControl.Instance.isRealWorld);
+        }; 
+
+        if (!WorldControl.Instance.isRealWorld) 
+            await delayDeactivate();
+        else 
+            gameObject.SetActive(WorldControl.Instance.isRealWorld);
         ResetPosition();
     }
     

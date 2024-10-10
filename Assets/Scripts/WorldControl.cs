@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
+using System.Collections;
+using System.Collections.Generic;
 
 public class WorldControl : MonoBehaviour
 {
@@ -16,9 +18,11 @@ public class WorldControl : MonoBehaviour
     public bool canSwitch;
 
     public PlayerInputControl playerInput;
+    private Pet pet;
     public UnityEvent onSwitchWorld;
 
     public GameObject PauseScreen;
+    private bool isToggling = false;
 
     private void Awake()
     {
@@ -43,6 +47,7 @@ public class WorldControl : MonoBehaviour
     {
         SpiritWorldObjects = GameObject.FindGameObjectsWithTag("SpiritWorld")[0];
         RealWorldObjects = GameObject.FindGameObjectsWithTag("RealWorld")[0];
+        pet = GameObject.FindGameObjectWithTag("Pet").GetComponent<Pet>();
         
         SpiritWorldObjects.SetActive(false);
         RealWorldObjects.SetActive(true);
@@ -55,6 +60,25 @@ public class WorldControl : MonoBehaviour
         gameObject.SetActive(!gameObject.activeSelf);
     }
 
+    IEnumerator DelayToggleActive(GameObject[] gameObject, float delay)
+    {
+        if (delay > 0.00001f) // which means time to play hug animation
+        {
+            pet.SetAnimationState(2 ,"HugTrigger", 1);
+        }
+        yield return new WaitForSeconds(delay);
+        foreach (GameObject obj in gameObject)
+        {
+            ToggleActive(obj);
+        }
+
+        // set world status
+        isRealWorld = !isRealWorld;
+        pet.SetAnimationState(1 ,"IsReality", isRealWorld);
+        onSwitchWorld?.Invoke();
+        isToggling = false;
+    }
+
     public void SwitchWorld()
     {
         // if(!canSwitch)
@@ -65,19 +89,23 @@ public class WorldControl : MonoBehaviour
         if (!PauseScreen.GetComponent<PauseManager>().isPaused 
             && DataManager.Instance.playerData.canSwitchWorld)
         {
-            Debug.Log("Switching world");
-            if (SpiritWorldObjects != null)
+
+            float delay = 0.000000001f;
+            if (!SpiritWorldObjects.activeSelf && RealWorldObjects.activeSelf)
             {
-                ToggleActive(SpiritWorldObjects);
+                // if real world -> spirit world, set delay for animation
+                Debug.Log("Switching to Spirit World");
+                delay = 0.2f;
             }
 
-            if (RealWorldObjects != null)
+            if(SpiritWorldObjects != null && RealWorldObjects != null && !isToggling)
             {
-                ToggleActive(RealWorldObjects);
-                isRealWorld ^= true;
+                isToggling = true;
+                GameObject[] temp = new GameObject[2];
+                temp[0] = SpiritWorldObjects;
+                temp[1] = RealWorldObjects;
+                StartCoroutine(DelayToggleActive(temp, delay));
             }
-
-            onSwitchWorld?.Invoke();
         }
  
     }

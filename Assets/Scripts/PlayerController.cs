@@ -207,7 +207,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             // enable cape's spine slot
-            EnableCloak();
+            Invoke(nameof(EnableCloak), 0.2f);
             ani.SetBool("IsLanternOn", true);
         }
     }
