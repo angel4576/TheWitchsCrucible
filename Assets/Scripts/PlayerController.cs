@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Jump")]
     public float jumpForce;
+    private bool jumpTriggered;
 
     [Header("Pet Control")]
     public float petMoveDelayTime;
@@ -107,6 +108,11 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity += Vector2.down * Physics2D.gravity.y * Time.fixedDeltaTime;
             Debug.Log("applying velocity" + rb.velocity);
+            ani.SetBool("IsLanded", false);
+        }
+        else
+        {
+            ani.SetBool("IsLanded", true);
         }
     }
 
@@ -126,8 +132,9 @@ public class PlayerController : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext context)
     {
-        if (physicsCheck.isOnGround && !PauseScreen.GetComponent<PauseManager>().isPaused)
+        if (physicsCheck.isOnGround && !PauseScreen.GetComponent<PauseManager>().isPaused && !jumpTriggered)
         {
+            jumpTriggered = true;
             // delay jump
             StartCoroutine(DelayJump(0.2f));
 
@@ -141,6 +148,8 @@ public class PlayerController : MonoBehaviour
     ani.SetTrigger("JumpTrigger");
     yield return new WaitForSeconds(delay);
     rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+    yield return new WaitForSeconds(0.05f);
+    jumpTriggered = false;
 }
 
     private void ControlPetMovement()
@@ -272,6 +281,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public void DelayDisableLamp(float delay)
+    {
+        Invoke(nameof(DisableLamp), delay);
+    }
+    
     public void DisableLamp()
     {
         Debug.Log("Disable lamp");

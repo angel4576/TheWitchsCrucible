@@ -68,7 +68,7 @@ public class Lantern : MonoBehaviour
             playerController = player.GetComponent<PlayerController>();
         }
 
-        playerController.DisableLamp();
+        playerController.DelayDisableLamp(0.2f);
     }
 
     private void Update()
@@ -138,7 +138,7 @@ public class Lantern : MonoBehaviour
         {
             isLanternOn = true;
             lanternLight.enabled = true;  // Turn on the 2D light
-            playerController.EnableLamp();
+            // playerController.EnableLamp();
         }
     }
 
@@ -146,6 +146,6 @@ public class Lantern : MonoBehaviour
     {
         isLanternOn = false;
         lanternLight.enabled = false;  // Turn off the 2D light
-        playerController.DisableLamp();
+        // playerController.DelayDisableLamp(0.2f);
     }
 }
