@@ -65,6 +65,7 @@ public class WorldControl : MonoBehaviour
         if (!PauseScreen.GetComponent<PauseManager>().isPaused 
             && DataManager.Instance.playerData.canSwitchWorld)
         {
+            Debug.Log("Switching world");
             if (SpiritWorldObjects != null)
             {
                 ToggleActive(SpiritWorldObjects);

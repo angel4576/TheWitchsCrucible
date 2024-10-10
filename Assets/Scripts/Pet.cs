@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,6 +9,7 @@ public class Pet : MonoBehaviour, IInteractable
 {
     public Transform targetTrans;
     public Transform player;
+    private PhysicsCheck physicsCheck;
     
     [Header("Pet Movement")]
     public float speed;
@@ -44,6 +46,8 @@ public class Pet : MonoBehaviour, IInteractable
         rb = GetComponent<Rigidbody2D>();
         ani = GetComponent<Animator>();
         coll = GetComponent<CapsuleCollider2D>();
+        // Get script reference
+        physicsCheck = GetComponent<PhysicsCheck>();
 
         canMove = true;
 
@@ -63,7 +67,7 @@ public class Pet : MonoBehaviour, IInteractable
     void Update()
     {
         CheckDistance(); // Check distance between pet and player
-        
+        SetAnimationState();
         if(isMiss)
         {
             ResetPosition();
@@ -82,37 +86,48 @@ public class Pet : MonoBehaviour, IInteractable
         
         if(canJump && !isIdle)
         {
+            Debug.Log("ControlPetJump");
             Jump();
         }
         
+        ani.SetBool("IsLanded", physicsCheck.isOnGround);
         // CheckForwardObstacle();
     }
 
+    private void SetAnimationState()
+    {
+        // set animation state
+        ani.SetFloat("X_velocity", math.abs(rb.velocity.x));
+        ani.SetFloat("Y_velocity", rb.velocity.y);
+    }
     private void MoveToPlayer()
     {
         Vector2 moveDir = (targetTrans.position - transform.position).normalized;
         xMoveDir = moveDir.x;
         rb.velocity = new Vector2(moveDir.x * speed, rb.velocity.y);
-        // set animation state
-        ani.SetBool("IsRunning", true);
 
         // Stop when reach chase point or within a certain distance with player
         if(Vector2.Distance(transform.position, targetTrans.position) < 0.01f || 
         Vector2.Distance(transform.position, player.position ) < 2f )
         {
             rb.velocity = Vector2.zero;
+
             canMove = false;
-            // set animation state
-            ani.SetBool("IsRunning", false);
         }
     }
 
     private void Jump()
     {
-        rb.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
-
         canJump = false;
+        StartCoroutine(DelayJump(0.267f));
+        Debug.Log("Pet Jump");
+    }
 
+    IEnumerator DelayJump(float delay)
+    {
+        ani.SetTrigger("JumpTrigger");
+        yield return new WaitForSeconds(delay);
+        rb.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
     }
 
     private void CheckDistance()
@@ -120,7 +135,6 @@ public class Pet : MonoBehaviour, IInteractable
         // Check distance between Pet and Pet chase target
         if(Vector2.Distance(transform.position, targetTrans.position) > loseDistance)
         {  
-            ani.SetBool("IsRunning", false);
             isMiss = true;
         }
         else
@@ -132,7 +146,6 @@ public class Pet : MonoBehaviour, IInteractable
         Vector2 yTargetPos =  new Vector2(0, targetTrans.position.y);
         if(Vector2.Distance(yPetPos, yTargetPos) > idleYDistance)
         {  
-            ani.SetBool("IsRunning", false);
             isIdle = true;
         }
         else

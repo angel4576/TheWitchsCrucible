@@ -136,7 +136,7 @@ public class PlayerController : MonoBehaviour
         {
             jumpTriggered = true;
             // delay jump
-            StartCoroutine(DelayJump(0.2f));
+            StartCoroutine(DelayJump(0.233f));
 
             // Pet jump
             Invoke(nameof(ControlPetJump), petJumpDelayTime);
@@ -283,7 +283,10 @@ public class PlayerController : MonoBehaviour
 
     public void DelayDisableLamp(float delay)
     {
-        Invoke(nameof(DisableLamp), delay);
+        // current this method is not used as told by XIAODAN, the lantern will be carried most of the time by the player even when player is idle
+        // later on this method might be used when player havent got the lantern yet at the early stage of the game
+
+        // Invoke(nameof(DisableLamp), delay);
     }
     
     public void DisableLamp()
