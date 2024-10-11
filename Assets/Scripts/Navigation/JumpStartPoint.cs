@@ -9,12 +9,16 @@ public class JumpStartPoint : MonoBehaviour
     public float moveSpeed;
     public float jumpSpeed;
 
+    private float gravity; 
     private NavPoint startP;
     private NavPoint endP;
 
     // Start is called before the first frame update
     void Start()
     {
+        // gravity = NavManager.Instance.gravity;
+        // gravity = -9.81f * 5;
+
         startP = NavManager.Instance.FindNearestNavPoint(transform.position);
         endP = NavManager.Instance.FindNearestNavPoint(endPointTransform.position);
 
@@ -24,13 +28,13 @@ public class JumpStartPoint : MonoBehaviour
     private Vector2 GetJumpPosition(float t)
     {
         float x = transform.position.x + moveSpeed * t;
-        float y = transform.position.y + jumpSpeed * t + 0.5f * Physics2D.gravity.y * t * t;
+        float y = transform.position.y + jumpSpeed * t + 0.5f * (Physics2D.gravity.y * 5) * t * t;
         return new Vector2(x, y);
     }
 
     private void OnDrawGizmos() 
     {
-        float jumpDuration = 2 * (jumpSpeed / -Physics2D.gravity.y);
+        float jumpDuration = 2 * (jumpSpeed / -(Physics2D.gravity.y * 5));
         Gizmos.color = Color.red;
         
         // Draw jump trajectory

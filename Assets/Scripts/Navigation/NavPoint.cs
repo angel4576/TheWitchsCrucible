@@ -61,7 +61,7 @@ public class JumpTrajectory
 // link parameters
 public class Link 
 {
-    public int i, j; // target 
+    public int i, j; 
     public int type; // link type
     // -1: move
     // -2: fall

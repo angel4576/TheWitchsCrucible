@@ -11,7 +11,9 @@ public class NavManager : MonoBehaviour
     
     private NavPoint[,] grid;
 
+    [Header("Gizmos Draw")]
     public bool EnableOnDrawGizmos;
+    public bool IsInEditor = true;
 
     [Header("Nev Mesh Setting")]
     public Transform gridOrigin;
@@ -31,7 +33,9 @@ public class NavManager : MonoBehaviour
     public float AiJumpSpeed; // horizontal speed
 
     [Header("AI Setting")]
-    public float moveSpeed;
+    public GameObject Pet;
+    private float moveSpeed;
+    [HideInInspector]public float gravity;
 
     // AStar
     List<NavPoint> openList;
@@ -50,18 +54,24 @@ public class NavManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        grid = new NavPoint[gridH, gridW];
+        IsInEditor = false;
 
+        grid = new NavPoint[gridH, gridW];
         GenerateNavMesh();
         
         openList = new List<NavPoint>();
         closeList = new List<NavPoint>();
 
+        Rigidbody2D rb = Pet.GetComponent<Rigidbody2D>();
+        gravity = Physics2D.gravity.y * rb.gravityScale;
+
     }
 
     private void Start() 
     {
-        EnableOnDrawGizmos = true;
+        EnableOnDrawGizmos = false;
+
+        
     }
 
     public Vector2 GetWorldPosition(int i, int j) // grid position to world position
@@ -70,6 +80,21 @@ public class NavManager : MonoBehaviour
         return new Vector2(origin.x + (float)j * cellSize + cellSize * 0.5f, origin.y + (float)i * cellSize + cellSize * 0.5f);
     }
 
+    // get nearest navPoint to trajectory point
+    public NavPoint FindNearestNavPoint(Vector2 worldPos)
+    {
+        int j = math.max(0, (int)Math.Floor((worldPos.x - gridOrigin.position.x) / cellSize));
+        int i = math.max(0, (int)Math.Floor((worldPos.y - gridOrigin.position.y) / cellSize));
+
+        return grid[i, j];
+    }
+
+    public JumpTrajectory GetJumpTrajectory(int i, int j, int trajectoryIndex)
+    {
+        return grid[i, j].trajectories[trajectoryIndex];
+    }
+
+    #region Nav Mesh Generation
     public void GenerateNavMesh()
     {
         for(int i = 0; i < gridH; ++i)
@@ -278,16 +303,9 @@ public class NavManager : MonoBehaviour
         }
     }
 
-    // get nearest navPoint to trajectory point
-    public NavPoint FindNearestNavPoint(Vector2 worldPos)
-    {
-        int j = math.max(0, (int)Math.Floor((worldPos.x - gridOrigin.position.x) / cellSize));
-        int i = math.max(0, (int)Math.Floor((worldPos.y - gridOrigin.position.y) / cellSize));
-
-        return grid[i, j];
-    }
-
-    // AStar
+    #endregion
+    
+    #region AStar Path Finding
     public List<Link> PathFinding(NavPoint start, NavPoint dest)
     {
         openList.Clear();
@@ -306,6 +324,7 @@ public class NavManager : MonoBehaviour
             closeList.Add(u); 
             openList.RemoveAt(0); 
 
+            // Debug.Log(u.i);
             if(u == dest) // found destination
             {
                 Debug.Log("Found path");
@@ -346,7 +365,8 @@ public class NavManager : MonoBehaviour
             if(closeList.Contains(adjP) || openList.Contains(adjP))
                 continue;
 
-            adjP.father = new Link(u.i, u.j, i); // i ?
+            
+            adjP.father = new Link(u.i, u.j, u.links[i].type); // father to adjacent
             
             // Update f = g + h
             float hDistToEnd = cellSize * math.abs(dest.j - u.j);
@@ -355,7 +375,7 @@ public class NavManager : MonoBehaviour
 
             // calculate h
             adjP.h = hDistToEnd / moveSpeed; // horizontal time 
-            adjP.h += math.sqrt(2.0f * math.abs(vDistToEnd) / -Physics2D.gravity.y); // simplify by only considering fall
+            adjP.h += math.sqrt(2.0f * math.abs(vDistToEnd) / -gravity); // simplify by only considering fall
             
             // calculate vertical time
             // Should differentiate fall and jump 
@@ -378,7 +398,7 @@ public class NavManager : MonoBehaviour
             }
             else if(typeNum == -2) // fall
             {
-                adjP.g += math.sqrt(2.0f * cellSize * math.abs(u.i - adjP.i) / -Physics2D.gravity.y); // sqrt(2h/g)
+                adjP.g += math.sqrt(2.0f * cellSize * math.abs(u.i - adjP.i) / -gravity); // sqrt(2h/g)
             }
             else // jump
             {
@@ -397,66 +417,68 @@ public class NavManager : MonoBehaviour
         return x.f.CompareTo(y.f); // ascending order
     }
 
+    #endregion
+
+    // Debug draw
     private void OnDrawGizmos() 
     {
-        if(!EnableOnDrawGizmos)
+        // Initialize grid when is not in game (for debug)
+        if(IsInEditor)
         {
-            return;
+            grid = new NavPoint[gridH, gridW];
+            GenerateNavMesh();
         }
-        
-        // grid = new NavPoint[gridH, gridW];
 
-        // GenerateNavMesh();
-
-        for(int i = 0; i < gridH; i++)
+        // Draw grid
+        if(EnableOnDrawGizmos)
         {
-            for(int j = 0; j < gridW; j++)
+           for(int i = 0; i < gridH; i++)
             {
-                Vector2 pos = GetWorldPosition(i, j);
-                // Draw points
-                if(grid[i, j].type != NavPointType.None)
+                for(int j = 0; j < gridW; j++)
                 {
-                    if(grid[i, j].type == NavPointType.Platform)
-                        Gizmos.color = Color.green;
-                    else if(grid[i, j].type == NavPointType.LeftEdge)
-                        Gizmos.color = Color.red;
-                    else if(grid[i, j].type == NavPointType.RightEdge)
-                        Gizmos.color = Color.blue;
-                    else if(grid[i, j].type == NavPointType.Solo)
-                        Gizmos.color = Color.yellow;
+                    Vector2 pos = GetWorldPosition(i, j);
+                    // Draw points
+                    if(grid[i, j].type != NavPointType.None)
+                    {
+                        if(grid[i, j].type == NavPointType.Platform)
+                            Gizmos.color = Color.green;
+                        else if(grid[i, j].type == NavPointType.LeftEdge)
+                            Gizmos.color = Color.red;
+                        else if(grid[i, j].type == NavPointType.RightEdge)
+                            Gizmos.color = Color.blue;
+                        else if(grid[i, j].type == NavPointType.Solo)
+                            Gizmos.color = Color.yellow;
 
-                    Gizmos.DrawSphere(pos, 0.2f);
-                }
-                else // not platform
-                {
-                    // Gizmos.color = Color.yellow;
-                    // Gizmos.DrawSphere(pos, 0.2f);
-                }
+                        Gizmos.DrawSphere(pos, 0.2f);
+                    }
+                    else // not platform
+                    {
+                        // Gizmos.color = Color.yellow;
+                        // Gizmos.DrawSphere(pos, 0.2f);
+                    }
 
-                // Draw links
-                foreach(Link link in grid[i, j].links)
-                {
-                    Vector2 linkTargetPos = GetWorldPosition(link.i, link.j);
-                    if(link.type == -1) // move link
-                        Gizmos.color = Color.green;
-                    else if(link.type == -2) // fall link
-                        Gizmos.color = Color.blue;
-                    else // jump link
-                        Gizmos.color = Color.red; 
-                        
-                    Gizmos.DrawLine(pos, linkTargetPos);
+                    // Draw links
+                    foreach(Link link in grid[i, j].links)
+                    {
+                        Vector2 linkTargetPos = GetWorldPosition(link.i, link.j);
+                        if(link.type == -1) // move link
+                            Gizmos.color = Color.green;
+                        else if(link.type == -2) // fall link
+                            Gizmos.color = Color.blue;
+                        else // jump link
+                            Gizmos.color = Color.red; 
+                            
+                        Gizmos.DrawLine(pos, linkTargetPos);
+                    }
+                    
+                    
                 }
-                
-            
-                // Draw trajectory
-                // foreach(Vector2 trajectoryP in grid[i, j].trajectory.TrajectoryPoints)
-                // {
-                //     Gizmos.color = Color.white;
-                //     Gizmos.DrawSphere(trajectoryP, 0.2f);
-                // }
-                
             }
         }
+        
+        
+
+        
     }
     
 
