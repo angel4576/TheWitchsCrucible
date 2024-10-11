@@ -13,7 +13,7 @@ public class NavManager : MonoBehaviour
 
     [Header("Gizmos Draw")]
     public bool EnableOnDrawGizmos;
-    public bool IsInEditor = true;
+    private bool IsInEditor = true;
 
     [Header("Nev Mesh Setting")]
     public Transform gridOrigin;

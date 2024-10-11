@@ -1307,7 +1307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endPointTransform: {fileID: 1628042295}
-  moveSpeed: 6.75
+  moveSpeed: 6.69
   jumpSpeed: 18.16
 --- !u!212 &186304895
 SpriteRenderer:
@@ -16058,7 +16058,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnableOnDrawGizmos: 1
-  IsInEditor: 1
   gridOrigin: {fileID: 1366175450}
   gridH: 47
   gridW: 118
