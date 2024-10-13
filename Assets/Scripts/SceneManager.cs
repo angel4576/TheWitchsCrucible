@@ -36,7 +36,10 @@ public class SceneManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            DontDestroyOnLoad(fadeCanvas);
+            if(fadeCanvas != null){
+                DontDestroyOnLoad(fadeCanvas);
+                Debug.Log("fadeCanvas is not null");
+            } 
         }
         else
         {
@@ -48,32 +51,41 @@ public class SceneManager : MonoBehaviour
     private void Start()
     {
         Debug.Log("SceneManager started");
-        LoadScene(0);
+        if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Start Scene"){
+            LoadScene(0); // load the first scene if starts from the start scene
+        }
+        
     }
 
     private void Update()
     {
+        // test
         
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        StartCoroutine(FadeInRoutine());
         Debug.Log("Scene loaded: " + scene.name);
-        // register the current player's position as the first checkpoint
-        Transform player = GameObject.FindGameObjectWithTag("Player").transform;
-        if(player != null)
-        {
-            if (DataManager.Instance.playerData.checkPoint != null)
-            {
-                player.position = DataManager.Instance.playerData.checkPoint;
-                // isReloading = false;
-            }
-            else
-            {
-                DataManager.Instance.playerData.checkPoint = new Vec3(player.position);
-            }
+        // save level start data for restart purpose
+        if(!isReloading){
+            DataManager.Instance.WriteLevelStartData();
+            DataManager.Instance.WriteCheckpointData(DataManager.Instance.levelStartData.position);
         }
+        isReloading = false;
+
+        
+        
+
+        // check if the fade canvas is assigned, if not create one
+        if (fadeCanvas == null || fadeImage == null)
+        {
+            CreateFadeCanvas();
+        }
+
+        // re-register the event invoked by game manager
+        GameManager.Instance.RegisterEventLevel1();
+        
+        StartCoroutine(FadeInRoutine());
     }
 
 
@@ -91,14 +103,14 @@ public class SceneManager : MonoBehaviour
         }
         else if(sceneIndex == 0) 
         {
-            if(DataManager.Instance.playerData.checkPoint != null) // pass level 1 check point
-            {
-                DataManager.Instance.playerData.canSwitchWorld = true;
-            }
-            else
-            {
-                DataManager.Instance.playerData.canSwitchWorld = false;
-            }
+            // if(DataManager.Instance.playerData.checkPoint != null) // pass level 1 check point
+            // {
+            //     DataManager.Instance.playerData.canSwitchWorld = true;
+            // }
+            // else
+            // {
+            //     DataManager.Instance.playerData.canSwitchWorld = false;
+            // }
         }
 
     }
@@ -134,25 +146,28 @@ public class SceneManager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene(scenes[sceneIndex]);
     }
 
-    private IEnumerator FadeInRoutine()
+    public IEnumerator FadeInRoutine()
     {
         PauseGame();
         fadeCanvas.gameObject.SetActive(true);
+        fadeImage.gameObject.SetActive(true);
         float timer = 0;
         while (timer < fadeDuration)
         {
             timer += Time.unscaledDeltaTime;
-            fadeImage.color = new Color(0, 0, 0, 1 - timer / fadeDuration);
+            fadeImage.color = new Color(0, 0, 0, (1 - timer / fadeDuration));
             yield return null;
         }
         ResumeGame();
         fadeCanvas.gameObject.SetActive(false);
+        fadeImage.gameObject.SetActive(false);
     }
 
-    private IEnumerator FadeOutRoutine()
+    public IEnumerator FadeOutRoutine()
     {
         PauseGame();
         fadeCanvas.gameObject.SetActive(true);
+        fadeImage.gameObject.SetActive(true);
         float timer = 0;
         while (timer < fadeDuration)
         {
@@ -178,4 +193,32 @@ public class SceneManager : MonoBehaviour
         Debug.Log("Game Resumed");
     }
     
+    private void CreateFadeCanvas()
+    {
+        // Create FadeCanvas
+        fadeCanvas = new GameObject("FadeCanvas").AddComponent<Canvas>();
+        fadeCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        //fadeCanvas.gameObject.AddComponent<CanvasGroup>().alpha = 0;
+        fadeCanvas.gameObject.AddComponent<CanvasRenderer>();
+        fadeCanvas.gameObject.SetActive(true);
+        fadeCanvas.transform.SetParent(transform);
+        fadeCanvas.gameObject.layer = LayerMask.NameToLayer("UI");
+
+        // Create FadeImage as a child of FadeCanvas
+        GameObject fadeImageObject = new GameObject("FadeImage");
+        fadeImage = fadeImageObject.AddComponent<Image>();
+        fadeImage.color = Color.black;
+        fadeImageObject.transform.SetParent(fadeCanvas.transform);
+
+        // Set FadeImage to cover the full screen
+        RectTransform fadeRectTransform = fadeImage.GetComponent<RectTransform>();
+        fadeRectTransform.anchorMin = Vector2.zero; // Bottom-left corner
+        fadeRectTransform.anchorMax = Vector2.one;  // Top-right corner
+        fadeRectTransform.offsetMin = Vector2.zero; // Resetting position offsets
+        fadeRectTransform.offsetMax = Vector2.zero;
+
+        // Optionally, set FadeImage to inactive initially
+        fadeImageObject.SetActive(false);
+        Debug.Log("FadeCanvas created");
+    }
 }

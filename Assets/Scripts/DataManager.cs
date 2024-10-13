@@ -40,14 +40,16 @@ public class DataManager : MonoBehaviour
     private string playerDataPath;
     private string settingsDataPath;
     private string worldDataPath;
-
     private string configPath;
+    private string checkpointPath;
 
     [Header("Data")]
     public PlayerData playerData;
     public SettingsData settingsData;
     public WorldData worldData;
     public ConfigData configData;
+    public CheckpointData checkpointData;
+    public CheckpointData levelStartData;
 
     private void Awake()
     {
@@ -108,6 +110,127 @@ public class DataManager : MonoBehaviour
         configData = LoadData<ConfigData>(configPath) ?? new ConfigData();
     }
 
+    // checkpoint
+    public void WriteCheckpointData(Vector3 position)
+    {
+        checkpointData.position = position;
+        checkpointData.playerData = new PlayerData();
+        checkpointData.playerData.level = playerData.level;
+        checkpointData.playerData.health = playerData.health;
+        checkpointData.playerData.light = playerData.light;
+        checkpointData.playerData.hasPickedUpLantern = playerData.hasPickedUpLantern;
+        checkpointData.playerData.canSwitchWorld = playerData.canSwitchWorld;
+
+        WriteEnemies(checkpointData);
+        WriteItems(checkpointData);
+    }
+
+    public void WriteLevelStartData()
+    {
+        levelStartData.position = new Vec3(0, 0, 0);
+        Transform player = GameObject.FindGameObjectWithTag("Player").transform;
+        if(player != null)
+        {
+            levelStartData.position = new Vec3(player.position);
+        }
+        levelStartData.playerData = new PlayerData();
+        levelStartData.playerData.level = playerData.level;
+        levelStartData.playerData.health = playerData.health;
+        levelStartData.playerData.light = playerData.light;
+        levelStartData.playerData.hasPickedUpLantern = playerData.hasPickedUpLantern;
+        levelStartData.playerData.canSwitchWorld = playerData.canSwitchWorld;
+
+        // enermy
+        WriteEnemies(levelStartData);
+        WriteItems(levelStartData);
+    }
+
+    public void WriteEnemies(CheckpointData data){
+        data.enemies = new List<EnemyData>();
+        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+        foreach (GameObject monster in monsters)
+        {
+            EnemyData enemyData = new EnemyData();
+            enemyData.position = new Vec3(monster.transform.position);
+            enemyData.rotation = new Vec3(monster.transform.eulerAngles);
+            enemyData.scale = new Vec3(monster.transform.localScale);
+            data.enemies.Add(enemyData);
+        }
+    }
+
+    public void WriteItems(CheckpointData data){
+        data.items = new List<ItemData>();
+        GameObject[] items = GameObject.FindGameObjectsWithTag("Interactable");
+        foreach (GameObject item in items)
+        {
+            ItemData itemData = new ItemData();
+            itemData.position = new Vec3(item.transform.position);
+            itemData.itemType = ItemData.ItemType.Light; // only lights for now
+            itemData.isInteracted = false;
+            data.items.Add(itemData);
+        }
+    }
+
+    public void ResetDataToLastCheckpoint(Transform player = null){
+        if (player == null)
+        {
+            try{
+                player = GameObject.FindGameObjectWithTag("Player").transform;
+            }
+            catch{
+                Debug.Log("Player not found");
+            }
+        }
+        if(player != null){ 
+            player.position = checkpointData.position;
+            // remove any velocity on player
+            player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            // check lantern
+            if(!checkpointData.playerData.hasPickedUpLantern){
+                player.GetComponent<PlayerController>().lantern.gameObject.SetActive(false);
+            }
+        }
+        playerData = checkpointData.playerData;
+
+        // load enemies
+        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+        for (int i = 0; i < monsters.Length; i++)
+        {
+            monsters[i].transform.position = checkpointData.enemies[i].position;
+            monsters[i].transform.eulerAngles = checkpointData.enemies[i].rotation;
+            monsters[i].transform.localScale = checkpointData.enemies[i].scale;
+
+            // check lantern
+            if(!checkpointData.playerData.hasPickedUpLantern){
+                monsters[i].GetComponent<Monster>().lantern = null;
+            }
+            else{
+                monsters[i].GetComponent<Monster>().lantern = player.GetComponentInChildren<Lantern>();
+            }
+        }
+
+        // load items
+        GameObject[] items = GameObject.FindGameObjectsWithTag("Interactable");
+        // destory all items
+        foreach (GameObject item in items)
+        {
+            Destroy(item);
+        }
+        // load items
+        for (int i = 0; i < checkpointData.items.Length; i++)
+        {
+            
+        }
+        
+        // fade in
+        StartCoroutine(SceneManager.Instance.FadeInRoutine());
+    }
+
+    public void ResetDataToLevelStart(){
+        playerData = levelStartData.playerData;
+        SceneManager.Instance.ReloadScene();
+    }
+
     // template method for loading data
     private T LoadData<T>(string filePath) where T : class
     {
@@ -132,7 +255,7 @@ public class PlayerData
     public float health = 100f;
     public float light = 3f;
     public Vec3 position = new Vec3(0, 0, 0);
-    public Vec3 checkPoint = null;
+    //public Vec3 checkPoint = null;
     public bool hasPickedUpLantern = false;
     public bool canSwitchWorld = false;
 
@@ -162,6 +285,17 @@ public class ConfigData
     public List<ItemData> items = new List<ItemData>();
 }
 
+// Checkpoint
+[System.Serializable]
+public class CheckpointData
+{
+    public Vec3 position;
+    public PlayerData playerData;
+    
+    public List<EnemyData> enemies;
+    public List<ItemData> items;
+}
+
 [System.Serializable]
 public class EnemyData
 {
@@ -186,6 +320,8 @@ public class ItemData
         Door,
         Light,
     };
+
+    public GameObject gameObject;
 
     public ItemType itemType;
     public bool isInteracted;

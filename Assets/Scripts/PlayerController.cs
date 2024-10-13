@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
         if (!physicsCheck.isOnGround)
         {
             rb.velocity += Vector2.down * Physics2D.gravity.y * Time.fixedDeltaTime;
-            Debug.Log("applying velocity" + rb.velocity);
+//            Debug.Log("applying velocity" + rb.velocity);
         }
     }
 
@@ -171,7 +171,8 @@ public class PlayerController : MonoBehaviour
     public void Die()
     {
         Debug.Log("Player died");
-        SceneManager.Instance.ReloadScene();
+        DataManager.Instance.ResetDataToLastCheckpoint(transform);
+        //SceneManager.Instance.ReloadScene();
     }
 
     public void OnPlayerSwitchWorld()
