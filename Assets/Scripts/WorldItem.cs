@@ -53,7 +53,8 @@ public class WorldItem : MonoBehaviour, IInteractable
         DataManager.Instance.playerData.light += lightAmount;
         Debug.Log("Light picked up! Current light count: " + DataManager.Instance.playerData.light);
 
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     private void HandleDoorInteraction()

@@ -69,7 +69,7 @@ public class SceneManager : MonoBehaviour
         // save level start data for restart purpose
         if(!isReloading){
             DataManager.Instance.WriteLevelStartData();
-            DataManager.Instance.WriteCheckpointData(DataManager.Instance.levelStartData.position);
+            DataManager.Instance.WriteCheckpointData(DataManager.Instance.levelStartData.position, true);
         }
         isReloading = false;
 
@@ -138,6 +138,18 @@ public class SceneManager : MonoBehaviour
     {
         isReloading = true;
         LoadScene(currentSceneIndex);
+    }
+
+    public void RestartFromCheckPoint()
+    {
+        StartCoroutine(FadeOutAndStartFromCheckPoint());
+    }
+
+    private IEnumerator FadeOutAndStartFromCheckPoint()
+    {
+        yield return FadeOutRoutine();
+        DataManager.Instance.ResetDataToLastCheckpoint();
+        StartCoroutine(FadeInRoutine());
     }
 
     private IEnumerator FadeOutAndLoadScene(int sceneIndex)

@@ -171,7 +171,7 @@ public class PlayerController : MonoBehaviour
     public void Die()
     {
         Debug.Log("Player died");
-        DataManager.Instance.ResetDataToLastCheckpoint(transform);
+        SceneManager.Instance.RestartFromCheckPoint();
         //SceneManager.Instance.ReloadScene();
     }
 
@@ -252,5 +252,9 @@ public class PlayerController : MonoBehaviour
     {
         // hasLantern = true;
         lantern.gameObject.SetActive(true);
+
+        // reset the lantern to off
+        // this is not working because the lantern's Start() is queued to be called in next frame
+        //lantern.ResetLantern();
     }
 }

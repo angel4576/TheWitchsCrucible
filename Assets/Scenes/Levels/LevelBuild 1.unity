@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pet: {fileID: 0}
+  canInteract: 0
 --- !u!61 &19380923
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3982,6 +3983,10 @@ PrefabInstance:
       value: Lantern pickup
       objectReference: {fileID: 0}
     - target: {fileID: 841458585156516424, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 841458585156516424, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
       propertyPath: m_TagString
       value: Interactable
       objectReference: {fileID: 0}
@@ -7694,10 +7699,6 @@ MonoBehaviour:
       x: 0
       y: 0
       z: 0
-    checkPoint:
-      x: 0
-      y: 0
-      z: 0
     hasPickedUpLantern: 0
     canSwitchWorld: 0
   settingsData:
@@ -7707,6 +7708,42 @@ MonoBehaviour:
     curSceneIndex: 0
   configData:
     isInitialized: 0
+    enemies: []
+    items: []
+  checkpointData:
+    position:
+      x: 0
+      y: 0
+      z: 0
+    playerData:
+      level: 1
+      health: 100
+      light: 3
+      position:
+        x: 0
+        y: 0
+        z: 0
+      hasPickedUpLantern: 0
+      canSwitchWorld: 0
+    isInRealWorld: 0
+    enemies: []
+    items: []
+  levelStartData:
+    position:
+      x: 0
+      y: 0
+      z: 0
+    playerData:
+      level: 1
+      health: 100
+      light: 3
+      position:
+        x: 0
+        y: 0
+        z: 0
+      hasPickedUpLantern: 0
+      canSwitchWorld: 0
+    isInRealWorld: 0
     enemies: []
     items: []
 --- !u!4 &1187270263
@@ -9318,7 +9355,7 @@ GameObject:
   - component: {fileID: 1400597590}
   m_Layer: 0
   m_Name: CheckPoint
-  m_TagString: Untagged
+  m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12736,6 +12773,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d755b4db2d77f244287fd605fb0ab1e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 917230998}
+  monster: {fileID: 1867945970}
+  world: {fileID: 1553653608}
   OnLanternFirstPickedUp:
     m_PersistentCalls:
       m_Calls:

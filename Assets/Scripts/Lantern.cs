@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;  // For 2D lights
 public class Lantern : MonoBehaviour
 {
     // 2D Light component attached to the object
-    private Light2D lanternLight;
+    public Light2D lanternLight;
 
     // Boolean to track if the lantern is on or off
     private bool isLanternOn = false;
@@ -131,5 +131,15 @@ public class Lantern : MonoBehaviour
     {
         isLanternOn = false;
         lanternLight.enabled = false;  // Turn off the 2D light
+    }
+
+    // used for restarting the level
+    public void ResetLantern()
+    {
+        isLanternOn = false;
+        if (lanternLight != null)
+        {
+            lanternLight.enabled = false;
+        }
     }
 }

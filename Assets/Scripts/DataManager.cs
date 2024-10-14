@@ -111,7 +111,7 @@ public class DataManager : MonoBehaviour
     }
 
     // checkpoint
-    public void WriteCheckpointData(Vector3 position)
+    public void WriteCheckpointData(Vector3 position, bool isLevelStart = false)
     {
         checkpointData.position = position;
         checkpointData.playerData = new PlayerData();
@@ -120,6 +120,13 @@ public class DataManager : MonoBehaviour
         checkpointData.playerData.light = playerData.light;
         checkpointData.playerData.hasPickedUpLantern = playerData.hasPickedUpLantern;
         checkpointData.playerData.canSwitchWorld = playerData.canSwitchWorld;
+
+        checkpointData.isInRealWorld = WorldControl.Instance.isRealWorld;
+        // when loading the scene, isRealWorld is not ready, so manually assigned true
+        if(isLevelStart){
+            checkpointData.isInRealWorld = true;
+        }
+        
 
         WriteEnemies(checkpointData);
         WriteItems(checkpointData);
@@ -140,11 +147,15 @@ public class DataManager : MonoBehaviour
         levelStartData.playerData.hasPickedUpLantern = playerData.hasPickedUpLantern;
         levelStartData.playerData.canSwitchWorld = playerData.canSwitchWorld;
 
+        // assume in real world when level start
+        levelStartData.isInRealWorld = true;
+
         // enermy
         WriteEnemies(levelStartData);
         WriteItems(levelStartData);
     }
 
+    // WriteEnemies and WriteItems can be optimized by acquiring the reference once and storing it
     public void WriteEnemies(CheckpointData data){
         data.enemies = new List<EnemyData>();
         GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
@@ -164,9 +175,9 @@ public class DataManager : MonoBehaviour
         foreach (GameObject item in items)
         {
             ItemData itemData = new ItemData();
-            itemData.position = new Vec3(item.transform.position);
+            itemData.gameObject = item;
             itemData.itemType = ItemData.ItemType.Light; // only lights for now
-            itemData.isInteracted = false;
+            itemData.isInteracted = !item.activeSelf;
             data.items.Add(itemData);
         }
     }
@@ -210,17 +221,23 @@ public class DataManager : MonoBehaviour
         }
 
         // load items
-        GameObject[] items = GameObject.FindGameObjectsWithTag("Interactable");
-        // destory all items
-        foreach (GameObject item in items)
+        foreach (ItemData item in checkpointData.items)
         {
-            Destroy(item);
+            if(item.itemType == ItemData.ItemType.Light && !item.isInteracted){
+                item.gameObject.SetActive(true);
+            }
+            else{
+                item.gameObject.SetActive(false);
+            }
         }
-        // load items
-        for (int i = 0; i < checkpointData.items.Length; i++)
-        {
-            
+
+        // reset world
+        if(checkpointData.isInRealWorld != WorldControl.Instance.isRealWorld){
+            WorldControl.Instance.SwitchWorldNoInvoke();
         }
+
+        // reset lantern status to off
+        player.GetComponent<PlayerController>().lantern.ResetLantern();
         
         // fade in
         StartCoroutine(SceneManager.Instance.FadeInRoutine());
@@ -291,6 +308,7 @@ public class CheckpointData
 {
     public Vec3 position;
     public PlayerData playerData;
+    public bool isInRealWorld;
     
     public List<EnemyData> enemies;
     public List<ItemData> items;

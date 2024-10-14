@@ -85,7 +85,8 @@ public class PauseManager : MonoBehaviour
         //loadfromcheckpoint
         Resume();
         if(DataManager.Instance != null){
-            DataManager.Instance.ResetDataToLastCheckpoint();
+            //DataManager.Instance.ResetDataToLastCheckpoint();
+            SceneManager.Instance.RestartFromCheckPoint();
         }
         else{
             // not suppose to be enter here

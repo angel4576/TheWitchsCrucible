@@ -13,6 +13,10 @@ public class Monster : MonoBehaviour
     public float chaseRange;
     public float attackRange;
 
+    [Header("Monster Status")]
+    public float health;
+    
+
     [Header("For testing purposes")]
     public bool idleIfPlayerOutOfRange = false;
 
