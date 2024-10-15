@@ -116,7 +116,8 @@ public class DataManager : MonoBehaviour
         checkpointData.position = position;
         checkpointData.playerData = new PlayerData();
         checkpointData.playerData.level = playerData.level;
-        checkpointData.playerData.health = playerData.health;
+        checkpointData.playerData.maxHealth = playerData.maxHealth;
+        checkpointData.playerData.currentHealth = playerData.currentHealth;
         checkpointData.playerData.light = playerData.light;
         checkpointData.playerData.hasPickedUpLantern = playerData.hasPickedUpLantern;
         checkpointData.playerData.canSwitchWorld = playerData.canSwitchWorld;
@@ -142,7 +143,8 @@ public class DataManager : MonoBehaviour
         }
         levelStartData.playerData = new PlayerData();
         levelStartData.playerData.level = playerData.level;
-        levelStartData.playerData.health = playerData.health;
+        levelStartData.playerData.maxHealth = playerData.maxHealth;
+        levelStartData.playerData.currentHealth = playerData.currentHealth;
         levelStartData.playerData.light = playerData.light;
         levelStartData.playerData.hasPickedUpLantern = playerData.hasPickedUpLantern;
         levelStartData.playerData.canSwitchWorld = playerData.canSwitchWorld;
@@ -269,7 +271,8 @@ public class DataManager : MonoBehaviour
 public class PlayerData
 {
     public int level = 1;
-    public float health = 100f;
+    public float maxHealth = 100f;
+    public float currentHealth = 100f;
     public float light = 3f;
     public Vec3 position = new Vec3(0, 0, 0);
     //public Vec3 checkPoint = null;
@@ -319,9 +322,9 @@ public class EnemyData
 {
     public enum EnemyType
     {
-        Slime,
-        Goblin,
-        Skeleton
+        Melee,
+        Range,
+        Shiled
     };
 
     public EnemyType enemyType;

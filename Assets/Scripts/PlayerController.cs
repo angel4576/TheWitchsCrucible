@@ -167,6 +167,15 @@ public class PlayerController : MonoBehaviour
         transform.localScale = new Vector3(faceDir * Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
     }
 
+    public void TakeDamage(float damage)
+    {
+        DataManager.Instance.playerData.currentHealth -= damage;
+        if (DataManager.Instance.playerData.currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
     // Player dies, for testing purposes
     public void Die()
     {
