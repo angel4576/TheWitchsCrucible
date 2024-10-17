@@ -5,11 +5,13 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using System.Threading.Tasks;
 
 public class Pet : MonoBehaviour, IInteractable
 {
     public Transform targetTrans;
     public Transform player;
+    private PhysicsCheck physicsCheck;
     
     [Header("Pet Movement")]
     public float speed;
@@ -57,6 +59,8 @@ public class Pet : MonoBehaviour, IInteractable
         rb = GetComponent<Rigidbody2D>();
         ani = GetComponent<Animator>();
         coll = GetComponent<CapsuleCollider2D>();
+        // Get script reference
+        physicsCheck = GetComponent<PhysicsCheck>();
 
         physicsCheck = GetComponent<PhysicsCheck>(); 
 
@@ -80,7 +84,7 @@ public class Pet : MonoBehaviour, IInteractable
     void Update()
     {
         // CheckDistance(); // Check distance between pet and player
-        
+        SetAnimationState();
         // if(isMiss)
         // {
         //     ResetPosition();
@@ -102,12 +106,47 @@ public class Pet : MonoBehaviour, IInteractable
         //     FlipDirection();
         // }
         
+
         // if(canJump && !isIdle)
         // {
         //     Jump();
         // }
         
+        ani.SetBool("IsLanded", physicsCheck.isOnGround);
         // CheckForwardObstacle();
+    }
+
+    private void SetAnimationState()
+    {
+        // set animation state
+        ani.SetFloat("X_velocity", math.abs(rb.velocity.x));
+        ani.SetFloat("Y_velocity", rb.velocity.y);
+    }
+
+    public void SetAnimationState<T>(int flag, string param, T value)
+    {
+        Debug.Log($"SetAnimationState {flag} {param} {value}");
+        ani.SetTrigger("HugTrigger");
+        switch (flag)
+        {
+            case 0:
+            {
+                ani.SetFloat(param, Convert.ToSingle(value));
+                break;
+            }
+            case 1:
+            {
+                ani.SetBool(param, Convert.ToBoolean(value));
+                break;
+            }
+            case 2:
+            {
+                ani.SetTrigger(param);
+                break;
+            }
+            default:
+                break;
+        }
     }
 
     private void MoveToPlayer()
@@ -115,26 +154,29 @@ public class Pet : MonoBehaviour, IInteractable
         Vector2 moveDir = (targetTrans.position - transform.position).normalized;
         xMoveDir = moveDir.x;
         rb.velocity = new Vector2(moveDir.x * speed, rb.velocity.y);
-        // set animation state
-        ani.SetBool("IsRunning", true);
 
         // Stop when reach chase point or within a certain distance with player
         if(Vector2.Distance(transform.position, targetTrans.position) < 0.01f || 
         Vector2.Distance(transform.position, player.position ) < 2f )
         {
             rb.velocity = Vector2.zero;
+
             canMove = false;
-            // set animation state
-            ani.SetBool("IsRunning", false);
         }
     }
 
     private void Jump()
     {
-        rb.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
-
         canJump = false;
+        StartCoroutine(DelayJump(0.267f));
+        Debug.Log("Pet Jump");
+    }
 
+    IEnumerator DelayJump(float delay)
+    {
+        ani.SetTrigger("JumpTrigger");
+        yield return new WaitForSeconds(delay);
+        rb.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
     }
 
     private void CheckDistance()
@@ -142,7 +184,6 @@ public class Pet : MonoBehaviour, IInteractable
         // Check distance between Pet and Pet chase target
         if(Vector2.Distance(transform.position, targetTrans.position) > loseDistance)
         {  
-            ani.SetBool("IsRunning", false);
             isMiss = true;
         }
         else
@@ -154,7 +195,6 @@ public class Pet : MonoBehaviour, IInteractable
         Vector2 yTargetPos =  new Vector2(0, targetTrans.position.y);
         if(Vector2.Distance(yPetPos, yTargetPos) > idleYDistance)
         {  
-            ani.SetBool("IsRunning", false);
             isIdle = true;
         }
         else
@@ -338,11 +378,20 @@ public class Pet : MonoBehaviour, IInteractable
     #endregion
 
     // bind to OnSwitchWorld in World Control (inspector)
-    public void OnPetSwitchWorld()
+    public async void OnPetSwitchWorld()
     {
         Debug.Log("On pet switch");
         // Play animation
-        gameObject.SetActive(WorldControl.Instance.isRealWorld);
+        Func<Task> delayDeactivate = async () =>
+        {
+            await Task.Delay(200);
+            gameObject.SetActive(WorldControl.Instance.isRealWorld);
+        }; 
+
+        if (!WorldControl.Instance.isRealWorld) 
+            await delayDeactivate();
+        else 
+            gameObject.SetActive(WorldControl.Instance.isRealWorld);
         ResetPosition();
     }
     
