@@ -165,18 +165,22 @@ public class Pet : MonoBehaviour, IInteractable
         }
     }
 
-    private void Jump()
+    private void Jump(float hSpeed, float vSpeed) 
     {
-        canJump = false;
-        StartCoroutine(DelayJump(0.267f));
-        Debug.Log("Pet Jump");
+        // canJump = false;
+        isJumping = true;
+        StartCoroutine(DelayJump(0.267f, hSpeed, vSpeed));
+        // Debug.Log("Pet Jump");
     }
 
-    IEnumerator DelayJump(float delay)
+    IEnumerator DelayJump(float delay, float hSpeed, float vSpeed)
     {
+        rb.velocity = Vector2.zero;
         ani.SetTrigger("JumpTrigger");
         yield return new WaitForSeconds(delay);
-        rb.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
+        // rb.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
+        rb.velocity = new Vector2(hSpeed, vSpeed); // set preset jump parameters
+
     }
 
     private void CheckDistance()
@@ -272,7 +276,7 @@ public class Pet : MonoBehaviour, IInteractable
 
         if(curPointIndex >= path.Count - 1) // arrive
         {
-            Debug.Log("Arrived");
+            Debug.Log("Arrived Path Destination");
             ani.SetBool("IsRunning", false);
             rb.velocity = Vector2.zero;
             // rb.velocity = new Vector2(1.0f, 0);
@@ -280,7 +284,7 @@ public class Pet : MonoBehaviour, IInteractable
             return;
         }
 
-        int curI = path[curPointIndex].i; // current ij
+        int curI = path[curPointIndex].i; // current path point ij
         int curJ = path[curPointIndex].j;
         
         int nextI = path[curPointIndex + 1].i;
@@ -303,10 +307,12 @@ public class Pet : MonoBehaviour, IInteractable
         {
             if(!isJumping) 
             {
+
                 JumpTrajectory trajectory = NavManager.Instance.GetJumpTrajectory(curI, curJ, linkType); 
+                Jump(trajectory.hJumpSpeed, trajectory.vJumpSpeed);
                 // set preset jump parameters
-                rb.velocity = new Vector2(trajectory.hJumpSpeed, trajectory.vJumpSpeed);
-                isJumping = true;
+                // rb.velocity = new Vector2(trajectory.hJumpSpeed, trajectory.vJumpSpeed);
+                // isJumping = true;
 
                 // Debug.Log(rb.velocity);
             }
