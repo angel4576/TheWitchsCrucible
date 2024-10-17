@@ -47,7 +47,7 @@ public class Pet : MonoBehaviour, IInteractable
     private bool isMiss;
     
 
-    private PhysicsCheck physicsCheck;
+    //private PhysicsCheck physicsCheck;
     private Rigidbody2D rb;
     private Animator ani;
     private CapsuleCollider2D coll;
@@ -325,6 +325,13 @@ public class Pet : MonoBehaviour, IInteractable
 
     void UpdatePath()
     {
+        if(NavManager.Instance == null)
+        {
+            Debug.Log("No NavManager in current scene");
+            return;
+        }
+
+
         float xDistToPlayer = Vector2.Distance(new Vector2(player.position.x, 0), new Vector2(transform.position.x, 0));
         // start path finding when pet is away from player
         if(xDistToPlayer < distanceToPlayer)
