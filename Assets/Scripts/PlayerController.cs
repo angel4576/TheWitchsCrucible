@@ -42,6 +42,13 @@ public class PlayerController : MonoBehaviour
     private Spine.Slot[] cloakSlots;
     private Dictionary<Spine.Slot, Spine.Attachment> originalCloakAttachments = new Dictionary<Spine.Slot, Spine.Attachment>();
 
+    [Header("Attacks")]
+    [SerializeField]
+    private float meleeDamage;
+    [SerializeField]
+    private float meleeLightHeal, meleeAttackSpeedPerSec, meleeAttackRange, rangeAttackCost, rangeAttackDamage, rangeAttackSpeedPerSec, rangeAttackRange;
+    private bool canAttack = true;
+
 
     private void Awake()
     {
@@ -50,6 +57,8 @@ public class PlayerController : MonoBehaviour
         // +=: register actions to action binding
         inputActions.Gameplay.Jump.started += Jump; // call jump when the moment corresponding button is pressed
         inputActions.Gameplay.Pause.started += Pause;
+        inputActions.Gameplay.Fire.started += MeleeAttack;
+        inputActions.Gameplay.RangeAttack.started += RangeAttack;
     }
 
     private void OnEnable()
@@ -254,6 +263,82 @@ public class PlayerController : MonoBehaviour
     private void Pause(InputAction.CallbackContext context)
     {
         PauseScreen.GetComponent<PauseManager>().TogglePause();
+    }
+
+    private void MeleeAttack(InputAction.CallbackContext context)
+    {
+        if (canAttack)
+        {
+            canAttack = false;
+            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("monster");
+            bool hitEnemy = false;
+            foreach (GameObject currEnemy in allEnemies)
+            {
+                if ((transform.position.y) >= currEnemy.transform.position.y - 4.0 && (transform.position.y) <= currEnemy.transform.position.y + 4.0)
+                {
+                    if (faceDir == 1)
+                    {
+                        if ((transform.position.x + meleeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x + meleeAttackRange) <= (currEnemy.transform.position.x + 3.0))
+                        {
+                            currEnemy.GetComponent<Monster>().TakeDamage(meleeDamage);
+                            hitEnemy = true;
+                        }
+                    }
+                    else
+                    {
+                        if ((transform.position.x - meleeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x - meleeAttackRange) <= (currEnemy.transform.position.x + 3.0))
+                        {
+                            currEnemy.GetComponent<Monster>().TakeDamage(meleeDamage);
+                            hitEnemy = true;
+                        }
+                    }
+                }
+            }
+            if (hitEnemy)
+            {
+                DataManager.Instance.playerData.light += meleeLightHeal;
+                UIManager.Instance.BroadcastMessage("UpdateLight");
+            }
+            StartCoroutine(attackCooldown(meleeAttackSpeedPerSec));
+        }
+    }
+    
+    private IEnumerator attackCooldown(float cooldownTime)
+    {
+        yield return new WaitForSecpnds(cooldownTime);
+        canAttack = true;
+    }
+
+    private void RangeAttack(InputAction.CallbackContext context)
+    {
+        if(canAttack && DataManager.Instance.playerData.light >= rangeAttackCost)
+        {
+            DataManager.Instance.playerData.light -= rangeAttackCost;
+            UIManager.Instance.BroadcastMessage("UpdateLight");
+            canAttack = false;
+            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("monster");
+            foreach (GameObject currEnemy in allEnemies)
+            {
+                if ((transform.position.y) >= currEnemy.transform.position.y - 4.0 && (transform.position.y) <= currEnemy.transform.position.y + 4.0)
+                {
+                    if (faceDir == 1)
+                    {
+                        if ((transform.position.x + rangeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x + rangeAttackRange) <= (currEnemy.transform.position.x + 3.0))
+                        {
+                            currEnemy.GetComponent<Monster>().TakeDamage(rangeAttackDamage);
+                        }
+                    }
+                    else
+                    {
+                        if ((transform.position.x - rangeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x - rangeAttackRange) <= (currEnemy.transform.position.x + 3.0))
+                        {
+                            currEnemy.GetComponent<Monster>().TakeDamage(rangeAttackDamage);
+                        }
+                    }
+                }
+            }
+            StartCoroutine(attackCooldown(rangeAttackSpeedPerSec));
+        }
     }
 
     // Respond to OnLanternFirstPickedUp event in GameManager

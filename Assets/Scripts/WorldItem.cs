@@ -49,8 +49,8 @@ public class WorldItem : MonoBehaviour, IInteractable
             DataManager.Instance.playerData.hasPickedUpLantern = true;
             GameManager.Instance.OnLanternFirstPickedUp?.Invoke();
         }
-
-        DataManager.Instance.playerData.light += lightAmount;
+        UIManager.Instance.BroadcastMessage("SetMaxLight");
+        //DataManager.Instance.playerData.light += lightAmount;
         Debug.Log("Light picked up! Current light count: " + DataManager.Instance.playerData.light);
 
         //Destroy(gameObject);

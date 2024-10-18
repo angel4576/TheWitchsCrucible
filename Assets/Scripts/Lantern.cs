@@ -79,6 +79,7 @@ public class Lantern : MonoBehaviour
             {
                 ToggleLanternOff();
             }
+            UIManager.Instance.BroadcastMessage("UpdateLight");
         }
     }
 
