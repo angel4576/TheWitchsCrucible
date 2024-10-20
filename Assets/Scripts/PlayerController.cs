@@ -270,7 +270,7 @@ public class PlayerController : MonoBehaviour
         if (canAttack)
         {
             canAttack = false;
-            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("monster");
+            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Monster");
             bool hitEnemy = false;
             foreach (GameObject currEnemy in allEnemies)
             {
@@ -305,7 +305,7 @@ public class PlayerController : MonoBehaviour
     
     private IEnumerator attackCooldown(float cooldownTime)
     {
-        yield return new WaitForSecpnds(cooldownTime);
+        yield return new WaitForSeconds(cooldownTime);
         canAttack = true;
     }
 
