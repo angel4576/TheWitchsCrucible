@@ -107,12 +107,15 @@ public class Lantern : MonoBehaviour
     {
         if (!PauseMenu.GetComponent<PauseManager>().isPaused)
         {
+            Debug.Log("checking lantern status");
             if (isLanternOn)
             {
+                Debug.Log("turning lantern off");
                 ToggleLanternOff();
             }
             else
             {
+                Debug.Log("turning lantern on");
                 ToggleLanternOn();
             }
         }
@@ -121,6 +124,7 @@ public class Lantern : MonoBehaviour
 
     private void ToggleLanternOn()
     {
+        Debug.Log(DataManager.Instance.playerData.light > 0);
         if (DataManager.Instance.playerData.light > 0)
         {
             isLanternOn = true;

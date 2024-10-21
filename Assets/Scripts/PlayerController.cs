@@ -267,7 +267,7 @@ public class PlayerController : MonoBehaviour
 
     private void MeleeAttack(InputAction.CallbackContext context)
     {
-        if (canAttack)
+        if (canAttack && DataManager.Instance.playerData.hasPickedUpLantern)
         {
             canAttack = false;
             GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Monster");
@@ -311,7 +311,7 @@ public class PlayerController : MonoBehaviour
 
     private void RangeAttack(InputAction.CallbackContext context)
     {
-        if(canAttack && DataManager.Instance.playerData.light >= rangeAttackCost)
+        if(canAttack && DataManager.Instance.playerData.light >= rangeAttackCost && DataManager.Instance.playerData.hasPickedUpLantern)
         {
             DataManager.Instance.playerData.light -= rangeAttackCost;
             UIManager.Instance.BroadcastMessage("UpdateLight");

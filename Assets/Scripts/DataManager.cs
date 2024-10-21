@@ -65,6 +65,7 @@ public class DataManager : MonoBehaviour
 
         // init path
         playerDataPath = Path.Combine(Application.persistentDataPath, "PlayerData.json");
+        Debug.Log(playerDataPath);
         settingsDataPath = Path.Combine(Application.persistentDataPath, "SettingsData.json");
         worldDataPath = Path.Combine(Application.persistentDataPath, "WorldData.json");
         configPath = Path.Combine(Application.streamingAssetsPath, "ConfigData.json");
@@ -273,7 +274,8 @@ public class PlayerData
     public int level = 1;
     public float maxHealth = 100f;
     public float currentHealth = 100f;
-    public float light = 3f;
+    public float light = 0f;
+    public float maxLight = 3f;
     public Vec3 position = new Vec3(0, 0, 0);
     //public Vec3 checkPoint = null;
     public bool hasPickedUpLantern = false;
