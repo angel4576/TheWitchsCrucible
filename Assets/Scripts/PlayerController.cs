@@ -316,7 +316,7 @@ public class PlayerController : MonoBehaviour
             DataManager.Instance.playerData.light -= rangeAttackCost;
             UIManager.Instance.BroadcastMessage("UpdateLight");
             canAttack = false;
-            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("monster");
+            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Monster");
             foreach (GameObject currEnemy in allEnemies)
             {
                 if ((transform.position.y) >= currEnemy.transform.position.y - 4.0 && (transform.position.y) <= currEnemy.transform.position.y + 4.0)
