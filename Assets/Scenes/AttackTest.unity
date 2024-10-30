@@ -3812,6 +3812,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &533640510 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 841458585156516424, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
+  m_PrefabInstance: {fileID: 843247094}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &570855950
 GameObject:
   m_ObjectHideFlags: 0
@@ -3978,6 +3983,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 756591374548690132, guid: ee0b501c62d84f143b90cffaf04b8174, type: 3}
+      propertyPath: LanternGO
+      value: 
+      objectReference: {fileID: 533640510}
     - target: {fileID: 3145466972097069366, guid: ee0b501c62d84f143b90cffaf04b8174, type: 3}
       propertyPath: m_Name
       value: UI
@@ -6205,7 +6214,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6829084733883315531, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
   m_PrefabInstance: {fileID: 843247094}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 533640510}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe098e391d0dbc24da89b20a8a4d59c0, type: 3}
