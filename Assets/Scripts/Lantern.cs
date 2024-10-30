@@ -107,7 +107,7 @@ public class Lantern : MonoBehaviour
     {
         if (!PauseMenu.GetComponent<PauseManager>().isPaused)
         {
-            Debug.Log("checking lantern status");
+            // Debug.Log("checking lantern status");
             if (isLanternOn)
             {
                 Debug.Log("turning lantern off");
