@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
     private bool canAttack = true;
 
 
+    #region Lifecycle 
     private void Awake()
     {
         inputActions = new PlayerInputControl();
@@ -125,7 +126,9 @@ public class PlayerController : MonoBehaviour
             ani.SetBool("IsLanded", true);
         }
     }
+    #endregion
 
+    #region Character Movement
     private void Move()
     {
         if (inputDirection.y != 0)
@@ -189,6 +192,7 @@ public class PlayerController : MonoBehaviour
 
         transform.localScale = new Vector3(faceDir * Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
     }
+    #endregion
 
     public void TakeDamage(float damage)
     {
@@ -207,6 +211,7 @@ public class PlayerController : MonoBehaviour
         //SceneManager.Instance.ReloadScene();
     }
 
+    #region Animation Control
     // Set animation state
     private void SetAnimation()
     {
@@ -214,7 +219,9 @@ public class PlayerController : MonoBehaviour
         ani.SetFloat("Y_velocity", rb.velocity.y);
         // ani.SetBool("IsGrounded", physicsCheck.isOnGround);
     }
+    #endregion
 
+    #region Event
     public void OnPlayerSwitchWorld()
     {
         // Play animation
@@ -231,7 +238,9 @@ public class PlayerController : MonoBehaviour
             ani.SetBool("IsLanternOn", true);
         }
     }
+    #endregion
 
+    #region Skeleton
     private void GetAllCloakSlots()
     {
         // 获取 Skeleton
@@ -257,7 +266,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
 
     private void DisableCloak()
     {
@@ -297,7 +305,6 @@ public class PlayerController : MonoBehaviour
                 originalCloakAttachments[slot] = slot.Attachment;
             }
         }
-
 
     }
 
@@ -340,7 +347,7 @@ public class PlayerController : MonoBehaviour
             ani.SetBool("IsLanternOn", true);
         }
     }
-
+    #endregion
 
 
     private void Pause(InputAction.CallbackContext context)
@@ -348,6 +355,7 @@ public class PlayerController : MonoBehaviour
         PauseScreen.GetComponent<PauseManager>().TogglePause();
     }
 
+    #region Character Attack
     private void MeleeAttack(InputAction.CallbackContext context)
     {
         if (canAttack && DataManager.Instance.playerData.hasPickedUpLantern)
@@ -423,6 +431,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(attackCooldown(rangeAttackSpeedPerSec));
         }
     }
+    #endregion
 
     // Respond to OnLanternFirstPickedUp event in GameManager
     public void SetLanternStatus()
