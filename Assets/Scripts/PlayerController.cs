@@ -107,6 +107,7 @@ public class PlayerController : MonoBehaviour
         if (!physicsCheck.isOnGround)
         {
             rb.velocity += Vector2.down * Physics2D.gravity.y * Time.fixedDeltaTime;
+
             // Debug.Log("applying velocity" + rb.velocity);
             ani.SetBool("IsLanded", false);
         }
@@ -180,11 +181,21 @@ public class PlayerController : MonoBehaviour
         transform.localScale = new Vector3(faceDir * Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
     }
 
+    public void TakeDamage(float damage)
+    {
+        DataManager.Instance.playerData.currentHealth -= damage;
+        if (DataManager.Instance.playerData.currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
     // Player dies, for testing purposes
     public void Die()
     {
         Debug.Log("Player died");
-        SceneManager.Instance.ReloadScene();
+        SceneManager.Instance.RestartFromCheckPoint();
+        //SceneManager.Instance.ReloadScene();
     }
 
     // Set animation state
@@ -333,5 +344,9 @@ public class PlayerController : MonoBehaviour
     {
         // hasLantern = true;
         lantern.gameObject.SetActive(true);
+
+        // reset the lantern to off
+        // this is not working because the lantern's Start() is queued to be called in next frame
+        //lantern.ResetLantern();
     }
 }
