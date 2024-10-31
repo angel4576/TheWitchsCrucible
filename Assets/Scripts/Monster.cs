@@ -77,6 +77,16 @@ public class Monster : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        // reset status
+        isChasing = false;
+        isAttacking = false;
+        canMove = false;
+        canChase = false;
+        canAttack = false;
+    }
+
     // Update is called once per frame
     private void Update()
     {
