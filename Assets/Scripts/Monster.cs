@@ -211,6 +211,7 @@ public class Monster : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        Debug.Log("took damage");
         if(isKillable)
         {
             currentHealth -= damage;
