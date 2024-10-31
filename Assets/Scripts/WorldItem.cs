@@ -41,6 +41,7 @@ public class WorldItem : MonoBehaviour, IInteractable
 
     private void PickUpLight()
     {
+        Debug.Log("setting light");
         int curScene = DataManager.Instance.worldData.curSceneIndex;
         bool hasPlayerPickUpLantern = DataManager.Instance.playerData.hasPickedUpLantern;
 
@@ -49,9 +50,10 @@ public class WorldItem : MonoBehaviour, IInteractable
             DataManager.Instance.playerData.hasPickedUpLantern = true;
             GameManager.Instance.OnLanternFirstPickedUp?.Invoke();
         }
-
-        DataManager.Instance.playerData.light += lightAmount;
+        DataManager.Instance.playerData.light = DataManager.Instance.playerData.maxLight;
         Debug.Log("Light picked up! Current light count: " + DataManager.Instance.playerData.light);
+        UIManager.Instance.BroadcastMessage("SetMaxLight");
+        //DataManager.Instance.playerData.light += lightAmount;
 
         //Destroy(gameObject);
         gameObject.SetActive(false);
