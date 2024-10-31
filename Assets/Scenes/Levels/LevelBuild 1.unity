@@ -2159,6 +2159,10 @@ PrefabInstance:
       value: -702108803
       objectReference: {fileID: 0}
     - target: {fileID: 5600270349753885312, guid: 4caacf25a91e07e40ac9cf27de50059d, type: 3}
+      propertyPath: type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600270349753885312, guid: 4caacf25a91e07e40ac9cf27de50059d, type: 3}
       propertyPath: lantern
       value: 
       objectReference: {fileID: 0}
@@ -2178,6 +2182,10 @@ PrefabInstance:
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5600270349753885312, guid: 4caacf25a91e07e40ac9cf27de50059d, type: 3}
+      propertyPath: rangeAttackProjectile
+      value: 
+      objectReference: {fileID: 6428373708108075328, guid: 7623ac14d6212cd49988cf8ab194b768, type: 3}
     - target: {fileID: 7292266922196488762, guid: 4caacf25a91e07e40ac9cf27de50059d, type: 3}
       propertyPath: m_Name
       value: Monster
@@ -6398,7 +6406,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 24c68a99b4d0e3548a9caed26c1495a5, type: 2}
   - {fileID: 2100000, guid: 24c68a99b4d0e3548a9caed26c1495a5, type: 2}
   - {fileID: 2100000, guid: 24c68a99b4d0e3548a9caed26c1495a5, type: 2}
   - {fileID: 2100000, guid: 24c68a99b4d0e3548a9caed26c1495a5, type: 2}
@@ -7693,7 +7701,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerData:
     level: 1
-    health: 100
+    maxHealth: 100
+    currentHealth: 100
     light: 3
     position:
       x: 0
@@ -7717,7 +7726,8 @@ MonoBehaviour:
       z: 0
     playerData:
       level: 1
-      health: 100
+      maxHealth: 100
+      currentHealth: 100
       light: 3
       position:
         x: 0
@@ -7735,7 +7745,8 @@ MonoBehaviour:
       z: 0
     playerData:
       level: 1
-      health: 100
+      maxHealth: 100
+      currentHealth: 100
       light: 3
       position:
         x: 0
@@ -8733,7 +8744,7 @@ MonoBehaviour:
     m_Bits: 0
   rayLength: 0
   rayOffset: {x: 0, y: 0}
-  idleYDistance: 5
+  distanceToPlayer: 0
   canMove: 0
   canJump: 0
 --- !u!4 &1313239725
