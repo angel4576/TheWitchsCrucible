@@ -6386,12 +6386,12 @@ MonoBehaviour:
   petJumpDelayTime: 0.2
   lantern: {fileID: 910825043}
   skeletonMecanim: {fileID: 0}
-  meleeDamage: 0
+  meleeDamage: 1
   meleeLightHeal: 0
   meleeAttackSpeedPerSec: 0
-  meleeAttackRange: 0
-  rangeAttackCost: 0
-  rangeAttackDamage: 0
+  meleeAttackRange: 5
+  rangeAttackCost: 1
+  rangeAttackDamage: 5
   rangeAttackSpeedPerSec: 0
   rangeAttackRange: 0
 --- !u!50 &917230999
@@ -6476,7 +6476,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 24c68a99b4d0e3548a9caed26c1495a5, type: 2}
   - {fileID: 2100000, guid: 24c68a99b4d0e3548a9caed26c1495a5, type: 2}
   - {fileID: 2100000, guid: 24c68a99b4d0e3548a9caed26c1495a5, type: 2}
   - {fileID: 2100000, guid: 24c68a99b4d0e3548a9caed26c1495a5, type: 2}
@@ -8817,7 +8817,7 @@ MonoBehaviour:
     m_Bits: 0
   rayLength: 0
   rayOffset: {x: 0, y: 0}
-  idleYDistance: 5
+  distanceToPlayer: 0
   canMove: 0
   canJump: 0
 --- !u!4 &1313239725

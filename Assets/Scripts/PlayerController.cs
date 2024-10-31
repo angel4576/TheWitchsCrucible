@@ -360,6 +360,9 @@ public class PlayerController : MonoBehaviour
     {
         if (canAttack && DataManager.Instance.playerData.hasPickedUpLantern)
         {
+            // Set melee animation
+            ani.SetTrigger("MeleeTrigger");
+
             canAttack = false;
             GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Monster");
             bool hitEnemy = false;
@@ -404,6 +407,9 @@ public class PlayerController : MonoBehaviour
     {
         if(canAttack && DataManager.Instance.playerData.light >= rangeAttackCost && DataManager.Instance.playerData.hasPickedUpLantern)
         {
+            // Set attack animation
+            ani.SetTrigger("RangedTrigger");
+
             DataManager.Instance.playerData.light -= rangeAttackCost;
             UIManager.Instance.BroadcastMessage("UpdateLight");
             canAttack = false;
