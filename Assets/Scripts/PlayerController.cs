@@ -47,7 +47,9 @@ public class PlayerController : MonoBehaviour
     private float meleeDamage;
     [SerializeField]
     private float meleeLightHeal, meleeAttackSpeedPerSec, meleeAttackRange, rangeAttackCost, rangeAttackDamage, rangeAttackSpeedPerSec, rangeAttackRange;
+    [SerializeField]
     private bool canAttack = true;
+    public GameObject test;
 
 
     private void Awake()
@@ -270,28 +272,25 @@ public class PlayerController : MonoBehaviour
         if (canAttack && DataManager.Instance.playerData.hasPickedUpLantern)
         {
             canAttack = false;
-            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Monster");
             bool hitEnemy = false;
-            foreach (GameObject currEnemy in allEnemies)
+            Collider2D[] enemiesInsideArea;
+            if (faceDir == 1)
             {
-                if ((transform.position.y) >= currEnemy.transform.position.y - 4.0 && (transform.position.y) <= currEnemy.transform.position.y + 4.0)
+                enemiesInsideArea = Physics2D.OverlapAreaAll(new Vector2(transform.position.x + meleeAttackRange - 0.1f, transform.position.y - 0.1f), new Vector2(transform.position.x + meleeAttackRange + 0.1f, transform.position.y + 0.1f));
+                Instantiate(test, new Vector3(transform.position.x + meleeAttackRange, transform.position.y), Quaternion.identity);
+            }
+            else
+            {
+                enemiesInsideArea = Physics2D.OverlapAreaAll(new Vector2(transform.position.x - meleeAttackRange - 0.1f, transform.position.y - 0.1f), new Vector2(transform.position.x - meleeAttackRange + 0.1f, transform.position.y + 0.1f));
+                Instantiate(test, new Vector3(transform.position.x - meleeAttackRange, transform.position.y), Quaternion.identity);
+            }
+            foreach (Collider2D currEnemy in enemiesInsideArea)
+            {
+                Debug.Log(currEnemy);
+                if (currEnemy.gameObject.CompareTag("Monster"))
                 {
-                    if (faceDir == 1)
-                    {
-                        if ((transform.position.x + meleeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x + meleeAttackRange) <= (currEnemy.transform.position.x + 3.0))
-                        {
-                            currEnemy.GetComponent<Monster>().TakeDamage(meleeDamage);
-                            hitEnemy = true;
-                        }
-                    }
-                    else
-                    {
-                        if ((transform.position.x - meleeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x - meleeAttackRange) <= (currEnemy.transform.position.x + 3.0))
-                        {
-                            currEnemy.GetComponent<Monster>().TakeDamage(meleeDamage);
-                            hitEnemy = true;
-                        }
-                    }
+                    currEnemy.gameObject.GetComponent<Monster>().TakeDamage(meleeDamage);
+                    hitEnemy = true;
                 }
             }
             if (hitEnemy)
@@ -316,25 +315,23 @@ public class PlayerController : MonoBehaviour
             DataManager.Instance.playerData.light -= rangeAttackCost;
             UIManager.Instance.BroadcastMessage("UpdateLight");
             canAttack = false;
-            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Monster");
-            foreach (GameObject currEnemy in allEnemies)
+            Collider2D[] enemiesInsideArea;
+            if (faceDir == 1)
             {
-                if ((transform.position.y) >= currEnemy.transform.position.y - 4.0 && (transform.position.y) <= currEnemy.transform.position.y + 4.0)
+                enemiesInsideArea = Physics2D.OverlapAreaAll(new Vector2(transform.position.x + rangeAttackRange - 0.1f, transform.position.y - 0.1f), new Vector2(transform.position.x + rangeAttackRange + 0.1f, transform.position.y + 0.1f));
+                Instantiate(test, new Vector3(transform.position.x + rangeAttackRange, transform.position.y), Quaternion.identity);
+            }
+            else
+            {
+                enemiesInsideArea = Physics2D.OverlapAreaAll(new Vector2(transform.position.x - rangeAttackRange - 0.1f, transform.position.y - 0.1f), new Vector2(transform.position.x - rangeAttackRange + 0.1f, transform.position.y + 0.1f));
+                Instantiate(test, new Vector3(transform.position.x - rangeAttackRange, transform.position.y), Quaternion.identity);
+            }
+            foreach (Collider2D currEnemy in enemiesInsideArea)
+            {
+                Debug.Log(currEnemy);
+                if (currEnemy.gameObject.CompareTag("Monster"))
                 {
-                    if (faceDir == 1)
-                    {
-                        if ((transform.position.x + rangeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x + rangeAttackRange) <= (currEnemy.transform.position.x + 3.0))
-                        {
-                            currEnemy.GetComponent<Monster>().TakeDamage(rangeAttackDamage);
-                        }
-                    }
-                    else
-                    {
-                        if ((transform.position.x - rangeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x - rangeAttackRange) <= (currEnemy.transform.position.x + 3.0))
-                        {
-                            currEnemy.GetComponent<Monster>().TakeDamage(rangeAttackDamage);
-                        }
-                    }
+                    currEnemy.gameObject.GetComponent<Monster>().TakeDamage(rangeAttackDamage);
                 }
             }
             StartCoroutine(attackCooldown(rangeAttackSpeedPerSec));
