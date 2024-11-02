@@ -5,6 +5,13 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
+public class SceneConfiguration
+{
+    public bool enableAttack = true;
+    public bool enableEnemyInstantKill = false;
+
+}
+
 public class SceneManager : MonoBehaviour
 {
     public static SceneManager Instance { get; private set; }
@@ -29,6 +36,9 @@ public class SceneManager : MonoBehaviour
 
     private bool isFading = false;
 
+    [Header("Scene Configuration")]
+    private SceneConfiguration sceneConfig; 
+    public bool enableSceneConfig;
 
     private void Awake()
     {
@@ -45,7 +55,9 @@ public class SceneManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded; // subscribe to the scene loaded event
+        sceneConfig = new SceneConfiguration();
     }
 
     private void Start()
@@ -63,6 +75,7 @@ public class SceneManager : MonoBehaviour
         
     }
 
+    #region Scene Management
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log("Scene loaded: " + scene.name);
@@ -73,7 +86,8 @@ public class SceneManager : MonoBehaviour
         }
         isReloading = false;
 
-        
+        if(enableSceneConfig)
+            LoadSceneConfiguration(currentSceneIndex);
         
 
         // check if the fade canvas is assigned, if not create one
@@ -88,6 +102,25 @@ public class SceneManager : MonoBehaviour
         StartCoroutine(FadeInRoutine());
     }
 
+    private void LoadSceneConfiguration(int sceneIndex)
+    {
+        // Debug.Log("Load Scene Configuration" + sceneIndex);
+        if(sceneIndex == 0) // level 1
+        {
+            sceneConfig.enableAttack = false;
+            sceneConfig.enableEnemyInstantKill = true;
+        }
+        else
+        {
+            sceneConfig.enableAttack = true;
+            sceneConfig.enableEnemyInstantKill = false;
+        }
+    }
+
+    public SceneConfiguration GetSceneConfiguration()
+    {
+        return sceneConfig;
+    }
 
     public void LoadScene(int sceneIndex)
     {
@@ -119,6 +152,7 @@ public class SceneManager : MonoBehaviour
     {
         currentSceneIndex = System.Array.IndexOf(scenes, sceneName);
         LoadScene(currentSceneIndex);
+        LoadSceneConfiguration(currentSceneIndex);
     }
 
     public void LoadNextScene()
@@ -139,6 +173,7 @@ public class SceneManager : MonoBehaviour
         isReloading = true;
         LoadScene(currentSceneIndex);
     }
+    #endregion
 
     public void RestartFromCheckPoint()
     {
@@ -190,6 +225,7 @@ public class SceneManager : MonoBehaviour
         ResumeGame();
     }
 
+    #region Pause and Resume
     // Pause and Resume Game
     public void PauseGame()
     {
@@ -204,7 +240,8 @@ public class SceneManager : MonoBehaviour
         inputActionAsset.Enable();
         Debug.Log("Game Resumed");
     }
-    
+    #endregion
+
     private void CreateFadeCanvas()
     {
         // Create FadeCanvas

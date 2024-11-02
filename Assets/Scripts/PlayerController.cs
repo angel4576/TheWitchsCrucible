@@ -358,7 +358,9 @@ public class PlayerController : MonoBehaviour
     #region Character Attack
     private void MeleeAttack(InputAction.CallbackContext context)
     {
-        if (canAttack && DataManager.Instance.playerData.hasPickedUpLantern)
+        if (canAttack 
+            && DataManager.Instance.playerData.hasPickedUpLantern 
+            && SceneManager.Instance.GetSceneConfiguration().enableAttack)
         {
             // Set melee animation
             ani.SetTrigger("MeleeTrigger");
@@ -405,7 +407,10 @@ public class PlayerController : MonoBehaviour
 
     private void RangeAttack(InputAction.CallbackContext context)
     {
-        if(canAttack && DataManager.Instance.playerData.light >= rangeAttackCost && DataManager.Instance.playerData.hasPickedUpLantern)
+        if(canAttack 
+            && DataManager.Instance.playerData.light >= rangeAttackCost 
+            && DataManager.Instance.playerData.hasPickedUpLantern
+            && SceneManager.Instance.GetSceneConfiguration().enableAttack)
         {
             // Set attack animation
             ani.SetTrigger("RangedTrigger");

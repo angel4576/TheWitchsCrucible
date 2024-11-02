@@ -184,8 +184,11 @@ public class Monster : MonoBehaviour
         // perform the attack
         if(CheckPlayerInMeleeAttackRange())
         {
-            Debug.Log("melee attack");
-            DamagePlayer(meleeAttackDamage);
+            Debug.Log("Monster melee attack");
+            if(SceneManager.Instance.GetSceneConfiguration().enableEnemyInstantKill)
+                KillPlayer();
+            else           
+                DamagePlayer(meleeAttackDamage);
         }
 
         // wait for the cooldown

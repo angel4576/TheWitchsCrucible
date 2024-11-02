@@ -244,11 +244,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scenes:
-  - LevelBuild 1
+  - PlayTest-Level1
   inputActionAsset: {fileID: -944628639613478452, guid: 92ec01dc18c0f1840968097b07449f23, type: 3}
   fadeDuration: 1
   fadeCanvas: {fileID: 0}
   fadeImage: {fileID: 0}
+  enableSceneConfig: 1
 --- !u!4 &74128486
 Transform:
   m_ObjectHideFlags: 0
@@ -2157,6 +2158,10 @@ PrefabInstance:
     - target: {fileID: 3164790951579370591, guid: 4caacf25a91e07e40ac9cf27de50059d, type: 3}
       propertyPath: m_SortingLayerID
       value: -702108803
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600270349753885312, guid: 4caacf25a91e07e40ac9cf27de50059d, type: 3}
+      propertyPath: type
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5600270349753885312, guid: 4caacf25a91e07e40ac9cf27de50059d, type: 3}
       propertyPath: lantern
