@@ -10,7 +10,7 @@ public class InteractionArea : MonoBehaviour
     public PlayerInputControl inputActions;
     public Pet pet;
     private IInteractable interactableItem;
-    private bool canInteract;
+    public bool canInteract;
 
     private void Awake() 
     {

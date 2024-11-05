@@ -110,6 +110,22 @@ public class WorldControl : MonoBehaviour
  
     }
 
+    // used for restart game
+    public void SwitchWorldNoInvoke()
+    {
+        if (SpiritWorldObjects != null)
+        {
+            ToggleActive(SpiritWorldObjects);
+        }
+
+        if (RealWorldObjects != null)
+        {
+            ToggleActive(RealWorldObjects);
+            
+        }
+        isRealWorld ^= true;
+    }
+
     // Respond to OnLanternFirstPickedUp event in GameManager
     public void SetCanSwitch()
     {

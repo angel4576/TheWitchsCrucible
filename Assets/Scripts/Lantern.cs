@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;  // For 2D lights
 public class Lantern : MonoBehaviour
 {
     // 2D Light component attached to the object
-    private Light2D lanternLight;
+    public Light2D lanternLight;
 
     // Boolean to track if the lantern is on or off
     private bool isLanternOn = false;
@@ -93,6 +93,7 @@ public class Lantern : MonoBehaviour
             {
                 ToggleLanternOff();
             }
+            UIManager.Instance.BroadcastMessage("UpdateLight");
         }
     }
 
@@ -120,12 +121,15 @@ public class Lantern : MonoBehaviour
     {
         if (!PauseMenu.GetComponent<PauseManager>().isPaused)
         {
+            // Debug.Log("checking lantern status");
             if (isLanternOn)
             {
+                Debug.Log("turning lantern off");
                 ToggleLanternOff();
             }
             else
             {
+                Debug.Log("turning lantern on");
                 ToggleLanternOn();
             }
         }
@@ -134,6 +138,7 @@ public class Lantern : MonoBehaviour
 
     private void ToggleLanternOn()
     {
+        Debug.Log(DataManager.Instance.playerData.light > 0);
         if (DataManager.Instance.playerData.light > 0)
         {
             isLanternOn = true;
@@ -147,5 +152,15 @@ public class Lantern : MonoBehaviour
         isLanternOn = false;
         lanternLight.enabled = false;  // Turn off the 2D light
         // playerController.DelayDisableLamp(0.2f);
+    }
+
+    // used for restarting the level
+    public void ResetLantern()
+    {
+        isLanternOn = false;
+        if (lanternLight != null)
+        {
+            lanternLight.enabled = false;
+        }
     }
 }

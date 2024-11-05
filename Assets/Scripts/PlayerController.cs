@@ -50,9 +50,22 @@ public class PlayerController : MonoBehaviour
     private Spine.Slot[] cloakSlots;
     private Spine.Slot[] lampSlots;
     private Dictionary<Spine.Slot, Spine.Attachment> originalCloakAttachments = new Dictionary<Spine.Slot, Spine.Attachment>();
+
     private Material material;
     
 
+    [Header("Attacks")]
+    [SerializeField]
+    private float meleeDamage;
+    [SerializeField]
+    private float meleeLightHeal, meleeAttackSpeedPerSec, meleeAttackRange, rangeAttackCost, rangeAttackDamage, rangeAttackSpeedPerSec, rangeAttackRange;
+    private bool canAttack = true;
+    
+    [Header("Invulnerability")]
+    public float invulnerabilityTime;
+    public bool isInvulnerable;
+
+    #region Lifecycle 
     private void Awake()
     {
         inputActions = new PlayerInputControl();
@@ -60,6 +73,8 @@ public class PlayerController : MonoBehaviour
         // +=: register actions to action binding
         inputActions.Gameplay.Jump.started += Jump; // call jump when the moment corresponding button is pressed
         inputActions.Gameplay.Pause.started += Pause;
+        inputActions.Gameplay.Fire.started += MeleeAttack;
+        inputActions.Gameplay.RangeAttack.started += RangeAttack;
     }
 
     private void OnEnable()
@@ -131,6 +146,7 @@ public class PlayerController : MonoBehaviour
         if (!physicsCheck.isOnGround)
         {
             rb.velocity += Vector2.down * Physics2D.gravity.y * Time.fixedDeltaTime;
+
             // Debug.Log("applying velocity" + rb.velocity);
             ani.SetBool("IsLanded", false);
         }
@@ -139,7 +155,9 @@ public class PlayerController : MonoBehaviour
             ani.SetBool("IsLanded", true);
         }
     }
+    #endregion
 
+    #region Character Movement
     private void Move()
     {
         if (inputDirection.y != 0)
@@ -203,14 +221,45 @@ public class PlayerController : MonoBehaviour
 
         transform.localScale = new Vector3(faceDir * Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
     }
+    #endregion
+
+    public void TakeDamage(float damage)
+    {
+        if (!isInvulnerable)
+        {
+            DataManager.Instance.playerData.currentHealth -= damage;
+        }
+        
+        if (DataManager.Instance.playerData.currentHealth <= 0)
+        {
+            Die();
+        }
+        
+        TriggerInvulnerability();
+    }
+
+    private void TriggerInvulnerability()
+    {
+        isInvulnerable = true;
+        StartCoroutine(InvulnerabilityDuration(invulnerabilityTime));
+    }
+
+    IEnumerator InvulnerabilityDuration(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        
+        isInvulnerable = false;
+    }
 
     // Player dies, for testing purposes
     public void Die()
     {
         Debug.Log("Player died");
-        SceneManager.Instance.ReloadScene();
+        SceneManager.Instance.RestartFromCheckPoint();
+        //SceneManager.Instance.ReloadScene();
     }
 
+    #region Animation Control
     // Set animation state
     private void SetAnimation()
     {
@@ -218,6 +267,7 @@ public class PlayerController : MonoBehaviour
         ani.SetFloat("Y_velocity", rb.velocity.y);
         // ani.SetBool("IsGrounded", physicsCheck.isOnGround);
     }
+    #endregion
 
     private void PlayDissolve()
     {
@@ -230,6 +280,8 @@ public class PlayerController : MonoBehaviour
         }
         
     }
+
+    #region Event
 
     public void OnPlayerSwitchWorld()
     {
@@ -247,7 +299,9 @@ public class PlayerController : MonoBehaviour
             ani.SetBool("IsLanternOn", true);
         }
     }
+    #endregion
 
+    #region Skeleton
     private void GetAllCloakSlots()
     {
         // 获取 Skeleton
@@ -273,7 +327,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
 
     private void DisableCloak()
     {
@@ -313,7 +366,6 @@ public class PlayerController : MonoBehaviour
                 originalCloakAttachments[slot] = slot.Attachment;
             }
         }
-
 
     }
 
@@ -356,7 +408,7 @@ public class PlayerController : MonoBehaviour
             ani.SetBool("IsLanternOn", true);
         }
     }
-
+    #endregion
 
 
     private void Pause(InputAction.CallbackContext context)
@@ -364,10 +416,103 @@ public class PlayerController : MonoBehaviour
         PauseScreen.GetComponent<PauseManager>().TogglePause();
     }
 
+    #region Character Attack
+    private void MeleeAttack(InputAction.CallbackContext context)
+    {
+        if (canAttack 
+            && DataManager.Instance.playerData.hasPickedUpLantern 
+            && SceneManager.Instance.GetSceneConfiguration().enableAttack)
+        {
+            // Set melee animation
+            ani.SetTrigger("MeleeTrigger");
+
+            canAttack = false;
+            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Monster");
+            bool hitEnemy = false;
+            foreach (GameObject currEnemy in allEnemies)
+            {
+                if ((transform.position.y) >= currEnemy.transform.position.y - 4.0 && (transform.position.y) <= currEnemy.transform.position.y + 4.0)
+                {
+                    if (faceDir == 1)
+                    {
+                        if ((transform.position.x + meleeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x + meleeAttackRange) <= (currEnemy.transform.position.x + 3.0))
+                        {
+                            currEnemy.GetComponent<Monster>().TakeDamage(meleeDamage);
+                            hitEnemy = true;
+                        }
+                    }
+                    else
+                    {
+                        if ((transform.position.x - meleeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x - meleeAttackRange) <= (currEnemy.transform.position.x + 3.0))
+                        {
+                            currEnemy.GetComponent<Monster>().TakeDamage(meleeDamage);
+                            hitEnemy = true;
+                        }
+                    }
+                }
+            }
+            if (hitEnemy)
+            {
+                DataManager.Instance.playerData.light += meleeLightHeal;
+                UIManager.Instance.BroadcastMessage("UpdateLight");
+            }
+            StartCoroutine(attackCooldown(meleeAttackSpeedPerSec));
+        }
+    }
+    
+    private IEnumerator attackCooldown(float cooldownTime)
+    {
+        yield return new WaitForSeconds(cooldownTime);
+        canAttack = true;
+    }
+
+    private void RangeAttack(InputAction.CallbackContext context)
+    {
+        if(canAttack 
+            && DataManager.Instance.playerData.light >= rangeAttackCost 
+            && DataManager.Instance.playerData.hasPickedUpLantern
+            && SceneManager.Instance.GetSceneConfiguration().enableAttack)
+        {
+            // Set attack animation
+            ani.SetTrigger("RangedTrigger");
+
+            DataManager.Instance.playerData.light -= rangeAttackCost;
+            UIManager.Instance.BroadcastMessage("UpdateLight");
+            canAttack = false;
+            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Monster");
+            foreach (GameObject currEnemy in allEnemies)
+            {
+                if ((transform.position.y) >= currEnemy.transform.position.y - 4.0 && (transform.position.y) <= currEnemy.transform.position.y + 4.0)
+                {
+                    if (faceDir == 1)
+                    {
+                        if ((transform.position.x + rangeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x + rangeAttackRange) <= (currEnemy.transform.position.x + 3.0))
+                        {
+                            currEnemy.GetComponent<Monster>().TakeDamage(rangeAttackDamage);
+                        }
+                    }
+                    else
+                    {
+                        if ((transform.position.x - rangeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x - rangeAttackRange) <= (currEnemy.transform.position.x + 3.0))
+                        {
+                            currEnemy.GetComponent<Monster>().TakeDamage(rangeAttackDamage);
+                        }
+                    }
+                }
+            }
+            StartCoroutine(attackCooldown(rangeAttackSpeedPerSec));
+        }
+    }
+    #endregion
+
     // Respond to OnLanternFirstPickedUp event in GameManager
     public void SetLanternStatus()
     {
         // hasLantern = true;
         lantern.gameObject.SetActive(true);
+
+        // reset the lantern to off
+        // this is not working because the lantern's Start() is queued to be called in next frame
+        //lantern.ResetLantern();
     }
 }

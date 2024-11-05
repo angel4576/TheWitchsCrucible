@@ -10,7 +10,8 @@ public class CheckPoint : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("Player reached checkpoint");
-            DataManager.Instance.playerData.checkPoint = transform.position;
+            //DataManager.Instance.playerData.checkPoint = transform.position;
+            DataManager.Instance.WriteCheckpointData(transform.position);
         }
     }
 }

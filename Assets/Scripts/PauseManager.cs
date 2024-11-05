@@ -9,6 +9,7 @@ public class PauseManager : MonoBehaviour
     public static PauseManager Instance { get; private set; }
     public bool isPaused = false;
     public GameObject PauseScreen;
+ 
 
     private void Awake()
     {
@@ -68,12 +69,29 @@ public class PauseManager : MonoBehaviour
     public void RestartLevel()
     {
         Resume();
-        string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneName);
+        if(DataManager.Instance != null){
+            DataManager.Instance.ResetDataToLevelStart();
+        }
+        else{
+            // not suppose to be enter here
+            string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneName);
+        }
+        
     }
 
     public void StartFromCheckPoint()
     {
         //loadfromcheckpoint
+        Resume();
+        if(DataManager.Instance != null){
+            //DataManager.Instance.ResetDataToLastCheckpoint();
+            SceneManager.Instance.RestartFromCheckPoint();
+        }
+        else{
+            // not suppose to be enter here
+            string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneName);
+        }
     }
 }
