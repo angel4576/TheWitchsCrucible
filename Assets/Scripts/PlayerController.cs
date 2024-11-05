@@ -50,7 +50,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float meleeLightHeal, meleeAttackSpeedPerSec, meleeAttackRange, rangeAttackCost, rangeAttackDamage, rangeAttackSpeedPerSec, rangeAttackRange;
     private bool canAttack = true;
-
+    
+    [Header("Invulnerability")]
+    public float invulnerabilityTime;
+    public bool isInvulnerable;
 
     #region Lifecycle 
     private void Awake()
@@ -196,11 +199,30 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        DataManager.Instance.playerData.currentHealth -= damage;
+        if (!isInvulnerable)
+        {
+            DataManager.Instance.playerData.currentHealth -= damage;
+        }
+        
         if (DataManager.Instance.playerData.currentHealth <= 0)
         {
             Die();
         }
+        
+        TriggerInvulnerability();
+    }
+
+    private void TriggerInvulnerability()
+    {
+        isInvulnerable = true;
+        StartCoroutine(InvulnerabilityDuration(invulnerabilityTime));
+    }
+
+    IEnumerator InvulnerabilityDuration(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        
+        isInvulnerable = false;
     }
 
     // Player dies, for testing purposes
