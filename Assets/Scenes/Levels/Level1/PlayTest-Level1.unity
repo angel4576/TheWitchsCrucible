@@ -249,7 +249,7 @@ MonoBehaviour:
   fadeDuration: 1
   fadeCanvas: {fileID: 0}
   fadeImage: {fileID: 0}
-  enableSceneConfig: 1
+  enableSceneConfig: 0
 --- !u!4 &74128486
 Transform:
   m_ObjectHideFlags: 0
@@ -6390,6 +6390,7 @@ MonoBehaviour:
   petMoveDelayTime: 0.2
   petJumpDelayTime: 0.2
   lantern: {fileID: 910825043}
+  dissolveSpeed: 1
   skeletonMecanim: {fileID: 0}
   meleeDamage: 1
   meleeLightHeal: 0
@@ -6399,6 +6400,9 @@ MonoBehaviour:
   rangeAttackDamage: 5
   rangeAttackSpeedPerSec: 0
   rangeAttackRange: 0
+  invulnerabilityTime: 2
+  isInvulnerable: 0
+  invulnerabilityColor: {r: 0.30405825, g: 0.6857805, b: 0.82641506, a: 0.47058824}
 --- !u!50 &917230999
 Rigidbody2D:
   serializedVersion: 4

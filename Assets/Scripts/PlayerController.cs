@@ -51,9 +51,7 @@ public class PlayerController : MonoBehaviour
     private Spine.Slot[] lampSlots;
     private Dictionary<Spine.Slot, Spine.Attachment> originalCloakAttachments = new Dictionary<Spine.Slot, Spine.Attachment>();
 
-    private Material material;
     
-
     [Header("Attacks")]
     [SerializeField]
     private float meleeDamage;
@@ -64,7 +62,11 @@ public class PlayerController : MonoBehaviour
     [Header("Invulnerability")]
     public float invulnerabilityTime;
     public bool isInvulnerable;
+    public Color invulnerabilityColor;
 
+    // Material
+    private Material material;
+    
     #region Lifecycle 
     private void Awake()
     {
@@ -99,7 +101,11 @@ public class PlayerController : MonoBehaviour
 
         // Get first material
         material = skeletonMecanim.skeletonDataAsset.atlasAssets[0].Materials.FirstOrDefault();
-        material.SetFloat("_DissolveThreshold", dissolveThreshold);
+        if (material != null)
+        {
+            material.SetFloat("_DissolveThreshold", dissolveThreshold);
+            material.SetColor("_InvulnerabilityColor", Color.white); 
+        }
 
         // Get script reference
         physicsCheck = GetComponent<PhysicsCheck>();
@@ -227,17 +233,20 @@ public class PlayerController : MonoBehaviour
     {
         if (!isInvulnerable)
         {
+            // Debug.Log("TRIGGER INVULNERABILITY");
             DataManager.Instance.playerData.currentHealth -= damage;
+            TriggerInvulnerability();
         }
+        
         
         if (DataManager.Instance.playerData.currentHealth <= 0)
         {
             Die();
         }
         
-        TriggerInvulnerability();
     }
 
+    #region Invulnerability
     private void TriggerInvulnerability()
     {
         isInvulnerable = true;
@@ -246,10 +255,14 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator InvulnerabilityDuration(float duration)
     {
-        yield return new WaitForSeconds(duration);
+        material.SetColor("_InvulnerabilityColor", invulnerabilityColor); 
         
+        yield return new WaitForSeconds(duration);
+
+        material.SetColor("_InvulnerabilityColor", Color.white); 
         isInvulnerable = false;
     }
+    #endregion
 
     // Player dies, for testing purposes
     public void Die()
