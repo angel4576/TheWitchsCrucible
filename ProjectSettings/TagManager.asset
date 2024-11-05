@@ -12,6 +12,7 @@ TagManager:
   - SpiritWorld
   - RealWorld
   - UI
+  - F_Interactable
   layers:
   - Default
   - TransparentFX
