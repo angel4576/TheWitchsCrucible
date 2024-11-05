@@ -10,6 +10,7 @@ public class InteractionArea : MonoBehaviour
     public PlayerInputControl inputActions;
     public Pet pet;
     private IInteractable interactableItem;
+    private IInteractable f_interactableItem;
     public bool canInteract;
 
     private void Awake() 
@@ -19,7 +20,7 @@ public class InteractionArea : MonoBehaviour
         inputActions.Enable();
 
         inputActions.Gameplay.SwitchWorld.started += InteractWithPet; // E key
-        // inputActions.Gameplay.Interact.started += Interact; // F key
+        inputActions.Gameplay.Interact.started += F_Interact; // F key
     }
 
 
@@ -44,14 +45,13 @@ public class InteractionArea : MonoBehaviour
     }
 
     // Item interaction
-    private void Interact(InputAction.CallbackContext context)
+    private void F_Interact(InputAction.CallbackContext context)
     {
-        if (canInteract && interactableItem != null) 
+        if (canInteract && f_interactableItem != null) 
         {
-            interactableItem.Interact();
+            f_interactableItem.Interact();
         }
     }
-
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -69,6 +69,12 @@ public class InteractionArea : MonoBehaviour
                 interactableItem.Interact();
             }
         }
+
+        // F_Interact
+        if (other.CompareTag("F_Interactable"))
+        {
+            f_interactableItem = other.GetComponent<IInteractable>();
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other) 
@@ -80,6 +86,9 @@ public class InteractionArea : MonoBehaviour
         //     // Leave pet
         //     WorldControl.Instance.canSwitch = false;
         // }
-        
+        if(other.CompareTag("F_Interactable"))
+        {
+            f_interactableItem = null;
+        }
     }
 }
