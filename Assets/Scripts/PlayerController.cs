@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.TextCore.Text;
 using Spine.Unity;
+using System.Linq;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public GameObject PauseScreen;
 
     private PhysicsCheck physicsCheck;
+    
 
     public Pet pet;
 
@@ -37,12 +39,20 @@ public class PlayerController : MonoBehaviour
     public Lantern lantern;
     private bool hasLantern;
 
+    [Header("Death Effect")]
+    public float dissolveSpeed;
+    private float dissolveThreshold = 2;
+    private bool isDead;
+
     [Header("Animation")]
     private Animator ani;
     public SkeletonMecanim skeletonMecanim;  // Use SkeletonMecanim instead of SkeletonAnimation
     private Spine.Slot[] cloakSlots;
     private Spine.Slot[] lampSlots;
     private Dictionary<Spine.Slot, Spine.Attachment> originalCloakAttachments = new Dictionary<Spine.Slot, Spine.Attachment>();
+
+    private Material material;
+    
 
     [Header("Attacks")]
     [SerializeField]
@@ -87,6 +97,10 @@ public class PlayerController : MonoBehaviour
         ani = GetComponent<Animator>();
         skeletonMecanim = GetComponent<SkeletonMecanim>();  // Use SkeletonMecanim
 
+        // Get first material
+        material = skeletonMecanim.skeletonDataAsset.atlasAssets[0].Materials.FirstOrDefault();
+        material.SetFloat("_DissolveThreshold", dissolveThreshold);
+
         // Get script reference
         physicsCheck = GetComponent<PhysicsCheck>();
 
@@ -111,6 +125,18 @@ public class PlayerController : MonoBehaviour
 
         // Set animation state
         SetAnimation();
+
+        // Test Player Death 
+        if(Keyboard.current.f1Key.wasPressedThisFrame)
+        {
+            // Debug.Log("Player Die!");
+            isDead = true;
+            ani.SetTrigger("DieTrigger");
+        }
+
+        if(isDead)
+            PlayDissolve();
+
     }
 
     private void FixedUpdate()
@@ -243,7 +269,20 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    private void PlayDissolve()
+    {
+        material.SetFloat("_DissolveThreshold", dissolveThreshold);
+
+        dissolveThreshold -= dissolveSpeed * Time.deltaTime;
+        if(dissolveThreshold <= 0.001f)
+        {
+            dissolveThreshold = 0;
+        }
+        
+    }
+
     #region Event
+
     public void OnPlayerSwitchWorld()
     {
         // Play animation
