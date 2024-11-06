@@ -36,7 +36,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Cutoff: 0.1
-    - _DissolveThreshold: 0
+    - _DissolveThreshold: 2
     - _EdgeWidth: 0.11
     - _NoiseScale: 0
     - _OutlineMipLevel: 0
@@ -54,5 +54,6 @@ Material:
     - _UseScreenSpaceOutlineWidth: 0
     m_Colors:
     - _EdgeColor: {r: 0.6014524, g: 0.8597516, b: 1.8641509, a: 1}
+    - _InvulnerabilityColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 1, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
