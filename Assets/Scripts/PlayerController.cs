@@ -184,7 +184,7 @@ public class PlayerController : MonoBehaviour
         {
             jumpTriggered = true;
             // delay jump
-            StartCoroutine(DelayJump(0.233f));
+            StartCoroutine(DelayJump(0.00000001f));
 
             // Pet jump
             Invoke(nameof(ControlPetJump), petJumpDelayTime);
