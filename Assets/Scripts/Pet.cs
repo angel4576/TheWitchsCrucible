@@ -35,8 +35,8 @@ public class Pet : MonoBehaviour, IInteractable
     // Path Finding
     [Header("Path Finding")]
     public float distanceToPlayer;
-    private float pathFindTimer;
-    private float pathFindTimeInterval; // time between path updates
+    public float pathFindTimer;
+    public float pathFindTimeInterval; // time between path updates
 
     private List<Link> path;
     private int curPointIndex;
