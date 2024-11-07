@@ -359,7 +359,8 @@ public class Pet : MonoBehaviour, IInteractable
         NavPoint endP = NavManager.Instance.FindNearestNavPoint(player.position);
         
         if(path != null && curPointIndex < path.Count-1 // safe check
-        && (startP.i != path[curPointIndex].i || startP.j != path[curPointIndex].j)) // find path only if pet reaches a path point
+        // && (startP.i != path[curPointIndex].i || startP.j != path[curPointIndex].j) // find path only if pet reaches a path point
+        && !physicsCheck.isOnGround)
             return;
 
         // if(path != null && curPointIndex < path.Count-2) 
