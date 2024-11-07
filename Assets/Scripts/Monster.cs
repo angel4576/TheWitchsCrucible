@@ -48,6 +48,14 @@ public class Monster : MonoBehaviour
     // flags
     [HideInInspector]private bool isPlayerDead = false; // ensure that player is killed only once
 
+    // temp: melee attack visualization
+    public Transform arm;
+    private Transform pivot;
+    private Vector3 originalPosition;
+    private Vector3 originalRotation;
+    
+    
+    #region Life Cycle
     private void Awake()
     {
         // retrieve references
@@ -75,6 +83,15 @@ public class Monster : MonoBehaviour
         if(!isKillable){
             healthBar.gameObject.SetActive(false);
         }
+
+        if (arm != null)
+        {
+            pivot = arm.transform.GetChild(0); 
+            // originalPosition = arm.position;
+            originalRotation = arm.rotation.eulerAngles;
+            // Debug.Log(originalPosition);
+        }
+        
     }
 
     private void OnEnable()
@@ -85,6 +102,8 @@ public class Monster : MonoBehaviour
         canMove = false;
         canChase = false;
         canAttack = false;
+        
+        ResetArm();
     }
 
     // Update is called once per frame
@@ -137,7 +156,9 @@ public class Monster : MonoBehaviour
         if(isAttacking)
         {
             canMove = false; // stop moving while attacking
+            MeleeAttackVisualization();
         }
+        
     }
 
     private void FixedUpdate() 
@@ -166,7 +187,9 @@ public class Monster : MonoBehaviour
             Idle();
         }
     }
-
+    #endregion
+    
+    #region Attack
     // behaviors
     // attack
     public void MeleeAttack()
@@ -177,6 +200,7 @@ public class Monster : MonoBehaviour
     private IEnumerator MeleeAttackCoroutine()
     {
         isAttacking = true;
+        MeleeAttackVisualization();
         
         // wait for the delay
         yield return new WaitForSeconds(meleeAttackDelay);
@@ -195,6 +219,29 @@ public class Monster : MonoBehaviour
         yield return new WaitForSeconds(meleeAttackCooldown);
 
         isAttacking = false;
+        // temp
+        ResetArm();
+    }
+
+    // for temp testing 
+    private void MeleeAttackVisualization()
+    {
+        if (transform.position.x < playerTransform.position.x) 
+        {
+            arm.transform.Translate(Vector3.right * 7.0f * Time.deltaTime);
+        }
+        else
+        {
+            arm.transform.Translate(Vector3.left * 7.0f * Time.deltaTime);
+        }
+        // arm.transform.RotateAround(pivot.transform.position, new Vector3(0, 0, 1), -1);
+    }
+
+    private void ResetArm()
+    {
+        originalPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        arm.transform.position = originalPosition; 
+        arm.transform.eulerAngles = originalRotation;
     }
 
     public void RangeAttack()
@@ -221,7 +268,8 @@ public class Monster : MonoBehaviour
 
         isAttacking = false;
     }
-
+    #endregion
+    
     public void TakeDamage(float damage)
     {
         Debug.Log("took damage");
@@ -237,7 +285,7 @@ public class Monster : MonoBehaviour
         }
     }
 
- 
+    #region Movement
     // movement
     private void ChasePlayer()
     {
@@ -267,7 +315,8 @@ public class Monster : MonoBehaviour
         // playerScript.Die();
         DamagePlayer(99999);
     }
-
+    #endregion
+    
     // helper functions
     private bool CheckPlayerInChaseRange()
     {
