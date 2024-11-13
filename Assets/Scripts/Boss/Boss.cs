@@ -15,10 +15,15 @@ public class Boss : MonoBehaviour
     public int faceDirection; // 1 right
     
     [Header("Melee Attack")]
-    public float meleeDamage;
+    public Vector2 attackCenterOffset;
+    // public float meleeDamage;
     public float swingRange;
     public float smashRange;
-    public Vector2 attackCenterOffset;
+    public float swingAttackDuration;
+    public float smashAttackDuration;
+    public float attackCoolDown;
+    public float lastAttackTime;
+    
     
     [Header("Perception")]
     public float detectRange;
