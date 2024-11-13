@@ -62,7 +62,7 @@ public class SceneManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("SceneManager started");
+        // Debug.Log("SceneManager started");
         if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Start Scene"){
             LoadScene(0); // load the first scene if starts from the start scene
         }
@@ -231,14 +231,14 @@ public class SceneManager : MonoBehaviour
     {
         Time.timeScale = 0;
         inputActionAsset.Disable();
-        Debug.Log("Game Paused");
+        // Debug.Log("Game Paused");
     }
 
     public void ResumeGame()
     {
         Time.timeScale = 1;
         inputActionAsset.Enable();
-        Debug.Log("Game Resumed");
+        // Debug.Log("Game Resumed");
     }
     #endregion
 
@@ -268,6 +268,6 @@ public class SceneManager : MonoBehaviour
 
         // Optionally, set FadeImage to inactive initially
         fadeImageObject.SetActive(false);
-        Debug.Log("FadeCanvas created");
+        // Debug.Log("FadeCanvas created");
     }
 }

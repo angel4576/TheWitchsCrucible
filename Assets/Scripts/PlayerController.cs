@@ -375,7 +375,7 @@ public class PlayerController : MonoBehaviour
         {
             if (slot != null && slot.Attachment != null)
             {
-                Debug.Log("lamp slot: " + slot);
+                // Debug.Log("lamp slot: " + slot);
                 originalCloakAttachments[slot] = slot.Attachment;
             }
         }
