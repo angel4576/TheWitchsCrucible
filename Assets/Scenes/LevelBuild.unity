@@ -8954,7 +8954,7 @@ GameObject:
   - component: {fileID: 1510284886}
   m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9119,7 +9119,9 @@ MonoBehaviour:
   rangeAttackDamage: 20
   rangeAttackSpeedPerSec: 0.5
   rangeAttackRange: 5
-  test: {fileID: 0}
+  canAttack: 1
+  meleeProj: {fileID: 0}
+  rangedProj: {fileID: 0}
 --- !u!114 &1510284886
 MonoBehaviour:
   m_ObjectHideFlags: 0

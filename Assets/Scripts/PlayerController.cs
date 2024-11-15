@@ -43,13 +43,15 @@ public class PlayerController : MonoBehaviour
     private Dictionary<Spine.Slot, Spine.Attachment> originalCloakAttachments = new Dictionary<Spine.Slot, Spine.Attachment>();
 
     [Header("Attacks")]
+    public float meleeDamage;
+    public float meleeLightHeal;
     [SerializeField]
-    private float meleeDamage;
-    [SerializeField]
-    private float meleeLightHeal, meleeAttackSpeedPerSec, meleeAttackRange, rangeAttackCost, rangeAttackDamage, rangeAttackSpeedPerSec, rangeAttackRange;
+    private float meleeAttackSpeedPerSec, meleeAttackRange, rangeAttackCost, rangeAttackSpeedPerSec;
+    public float rangeAttackDamage, rangeAttackRange;
     [SerializeField]
     private bool canAttack = true;
-    public GameObject test;
+    public GameObject meleeProj;
+    public GameObject rangedProj;
 
 
     private void Awake()
@@ -277,12 +279,12 @@ public class PlayerController : MonoBehaviour
             if (faceDir == 1)
             {
                 enemiesInsideArea = Physics2D.OverlapAreaAll(new Vector2(transform.position.x + meleeAttackRange - 0.1f, transform.position.y - 0.1f), new Vector2(transform.position.x + meleeAttackRange + 0.1f, transform.position.y + 0.1f));
-                Instantiate(test, new Vector3(transform.position.x + meleeAttackRange, transform.position.y), Quaternion.identity);
+                Instantiate(meleeProj, new Vector3(transform.position.x + meleeAttackRange, transform.position.y), Quaternion.identity);
             }
             else
             {
                 enemiesInsideArea = Physics2D.OverlapAreaAll(new Vector2(transform.position.x - meleeAttackRange - 0.1f, transform.position.y - 0.1f), new Vector2(transform.position.x - meleeAttackRange + 0.1f, transform.position.y + 0.1f));
-                Instantiate(test, new Vector3(transform.position.x - meleeAttackRange, transform.position.y), Quaternion.identity);
+                Instantiate(meleeProj, new Vector3(transform.position.x - meleeAttackRange, transform.position.y), Quaternion.identity);
             }
             foreach (Collider2D currEnemy in enemiesInsideArea)
             {
@@ -315,27 +317,16 @@ public class PlayerController : MonoBehaviour
             DataManager.Instance.playerData.light -= rangeAttackCost;
             UIManager.Instance.BroadcastMessage("UpdateLight");
             canAttack = false;
-            Collider2D[] enemiesInsideArea;
-            if (faceDir == 1)
-            {
-                enemiesInsideArea = Physics2D.OverlapAreaAll(new Vector2(transform.position.x + rangeAttackRange - 0.1f, transform.position.y - 0.1f), new Vector2(transform.position.x + rangeAttackRange + 0.1f, transform.position.y + 0.1f));
-                Instantiate(test, new Vector3(transform.position.x + rangeAttackRange, transform.position.y), Quaternion.identity);
-            }
-            else
-            {
-                enemiesInsideArea = Physics2D.OverlapAreaAll(new Vector2(transform.position.x - rangeAttackRange - 0.1f, transform.position.y - 0.1f), new Vector2(transform.position.x - rangeAttackRange + 0.1f, transform.position.y + 0.1f));
-                Instantiate(test, new Vector3(transform.position.x - rangeAttackRange, transform.position.y), Quaternion.identity);
-            }
-            foreach (Collider2D currEnemy in enemiesInsideArea)
-            {
-                Debug.Log(currEnemy);
-                if (currEnemy.gameObject.CompareTag("Monster"))
-                {
-                    currEnemy.gameObject.GetComponent<Monster>().TakeDamage(rangeAttackDamage);
-                }
-            }
+            Debug.Log("creating ranged");
+            Instantiate(rangedProj, new Vector3(transform.position.x, transform.position.y), Quaternion.identity);
+            Debug.Log("created ranged");
             StartCoroutine(attackCooldown(rangeAttackSpeedPerSec));
         }
+    }
+
+    public bool isFacingRight()
+    {
+        return faceDir == 1;
     }
 
     // Respond to OnLanternFirstPickedUp event in GameManager

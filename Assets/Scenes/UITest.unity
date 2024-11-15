@@ -581,7 +581,7 @@ GameObject:
   - component: {fileID: 667938469}
   m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -632,10 +632,12 @@ MonoBehaviour:
   meleeAttackSpeedPerSec: 1
   meleeAttackRange: 1
   rangeAttackCost: 0.3
-  rangeAttackDamage: 20
   rangeAttackSpeedPerSec: 0.5
+  rangeAttackDamage: 20
   rangeAttackRange: 5
-  test: {fileID: 2840301126136391505, guid: dcd731097feb97044934f55ce6bccc59, type: 3}
+  canAttack: 1
+  meleeProj: {fileID: 1272124353256304504, guid: 8190f95c3bff3b2449dd9c45167a7e38, type: 3}
+  rangedProj: {fileID: 8128267858619025443, guid: 6578665e0b3b69c458d17f5b6654b30d, type: 3}
 --- !u!50 &667938471
 Rigidbody2D:
   serializedVersion: 4
