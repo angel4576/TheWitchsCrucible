@@ -15,8 +15,11 @@ public class SunRotation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sun3 = transform.Find("Sun_3");
-        sun4 = transform.Find("Sun_4");
+        // sun3 = transform.Find("Sun_3");
+        // sun4 = transform.Find("Sun_4");
+        
+        sun3 = transform.GetChild(2);
+        sun4 = transform.GetChild(3);
     }
 
     // Update is called once per frame
