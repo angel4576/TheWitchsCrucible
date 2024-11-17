@@ -8,9 +8,11 @@ public class EyeTracing : MonoBehaviour
     public float traceSpeed;
     public float traceRadius;
     public float deadZone;
-    public float moveDelay;
+    // public float moveDelay;
+    
+    // private CircleCollider2D coll;
 
-    // private Transform eye;
+    private float moveRange; // range where center of pupil can move 
     
     private Transform eyeBall;
     private Transform decoration;
@@ -21,40 +23,40 @@ public class EyeTracing : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        eyeBall = transform.GetChild(1); 
+        // coll = GetComponent<CircleCollider2D>();
+        // moveRange = traceRadius - coll.radius;
+        
         decoration = transform.GetChild(2);
         pupil = transform.GetChild(3);
-
-        // traceRadius -= 1.5f;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 moveDirection = player.position - eyeBall.position;
-        moveDirection.Normalize();
+        Vector2 moveDirection = player.position - pupil.position;
         float distanceToPlayer = moveDirection.magnitude;
+        moveDirection.Normalize();
 
         if (distanceToPlayer < deadZone)
         {
             return;
         }
-        float currentDistance = ((Vector2)eyeBall.position - (Vector2)transform.position).magnitude;
-        // float currentDistance = Vector3.Distance(eyeBall.position, transform.position);
+        // Distance from eye center to pupil
+        float currentDistance = ((Vector2)pupil.position - (Vector2)transform.position).magnitude;
         
         if (currentDistance > traceRadius)
         {
-            Vector2 directionToEyeCenter = eyeBall.position - transform.position;
-            directionToEyeCenter.Normalize();
+            Vector2 directionToPupil = pupil.position - transform.position;
+            directionToPupil.Normalize();
+            
             // reset position to edge
-            eyeBall.position = (Vector2)transform.position + directionToEyeCenter * traceRadius;
-            decoration.position = (Vector2)transform.position + directionToEyeCenter * traceRadius;
-            pupil.position = (Vector2)transform.position + directionToEyeCenter * traceRadius;
+            Vector2 newPos = (Vector2)transform.position + directionToPupil * traceRadius;
+            decoration.position = new Vector3(newPos.x, newPos.y, decoration.position.z);
+            pupil.position = new Vector3(newPos.x, newPos.y, pupil.position.z);
         }
 
-        StartCoroutine(MoveEye(moveDelay, moveDirection));
-        
-        
+        StartCoroutine(MoveEye(0, moveDirection));
         
     }
 
@@ -62,7 +64,7 @@ public class EyeTracing : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         
-        eyeBall.Translate(Time.deltaTime * traceSpeed * moveDirection);
+        // eyeBall.Translate(Time.deltaTime * traceSpeed * moveDirection);
         decoration.Translate(Time.deltaTime * traceSpeed * moveDirection);
         pupil.Translate(Time.deltaTime * traceSpeed * moveDirection);
     }
