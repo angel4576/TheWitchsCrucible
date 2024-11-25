@@ -249,6 +249,7 @@ MonoBehaviour:
   fadeDuration: 1
   fadeCanvas: {fileID: 0}
   fadeImage: {fileID: 0}
+  enableSceneConfig: 0
 --- !u!4 &74128486
 Transform:
   m_ObjectHideFlags: 0
@@ -6323,6 +6324,7 @@ MonoBehaviour:
   petMoveDelayTime: 0.2
   petJumpDelayTime: 0.2
   lantern: {fileID: 910825043}
+  dissolveSpeed: 0
   skeletonMecanim: {fileID: 0}
   meleeDamage: 0
   meleeLightHeal: 0
@@ -6332,6 +6334,9 @@ MonoBehaviour:
   rangeAttackDamage: 0
   rangeAttackSpeedPerSec: 0
   rangeAttackRange: 0
+  invulnerabilityTime: 0
+  isInvulnerable: 0
+  invulnerabilityColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!50 &917230999
 Rigidbody2D:
   serializedVersion: 4
@@ -7712,6 +7717,7 @@ MonoBehaviour:
     maxHealth: 100
     currentHealth: 100
     light: 3
+    maxLight: 3
     position:
       x: 0
       y: 0
@@ -7737,6 +7743,7 @@ MonoBehaviour:
       maxHealth: 100
       currentHealth: 100
       light: 3
+      maxLight: 3
       position:
         x: 0
         y: 0
@@ -7756,6 +7763,7 @@ MonoBehaviour:
       maxHealth: 100
       currentHealth: 100
       light: 3
+      maxLight: 3
       position:
         x: 0
         y: 0
@@ -8753,6 +8761,8 @@ MonoBehaviour:
   rayLength: 0
   rayOffset: {x: 0, y: 0}
   distanceToPlayer: 0
+  pathFindTimer: 0
+  pathFindTimeInterval: 0
   canMove: 0
   canJump: 0
 --- !u!4 &1313239725
@@ -12834,6 +12844,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  monsters: []
+  items: []
 --- !u!4 &1821267885
 Transform:
   m_ObjectHideFlags: 0

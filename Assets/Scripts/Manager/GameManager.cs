@@ -15,8 +15,16 @@ public class GameManager : MonoBehaviour
     public WorldControl world;
 
     public UnityEvent OnLanternFirstPickedUp;
+
+    // hold references to monsters and items
+    // registered in their own scripts
+    public List<Monster> monsters = new List<Monster>();
+    public List<WorldItem> items = new List<WorldItem>();
+
     private void Awake() 
     {
+        // to ensure game manager is instantiated before monsters and items try to register
+        // a -50 script execution order is set in the script execution order settings
         if(Instance == null)
         {
             Instance = this;
@@ -39,6 +47,8 @@ public class GameManager : MonoBehaviour
         
     }
 
+    // register events for level 1
+    // this is a temporary solution
     public void RegisterEventLevel1(){
         OnLanternFirstPickedUp.RemoveAllListeners();
 
