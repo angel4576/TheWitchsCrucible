@@ -333,7 +333,7 @@ public class Pet : MonoBehaviour, IInteractable
     {
         if(NavManager.Instance == null)
         {
-            Debug.Log("No NavManager in current scene");
+//            Debug.Log("No NavManager in current scene");
             return;
         }
 

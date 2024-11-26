@@ -66,6 +66,21 @@ public class Monster : MonoBehaviour
         
         // for now, switching world enables/disables the monsters, if change, a reference to the real/mental world must be retrieved
         // and this script must be updated
+
+        // register to game manager
+        if(GameManager.Instance != null && !GameManager.Instance.monsters.Contains(this))
+        {
+            GameManager.Instance.monsters.Add(this);
+        }
+    }
+
+    private void OnDestroy() 
+    {
+        // unregister from game manager
+        if(GameManager.Instance != null && GameManager.Instance.monsters.Contains(this))
+        {
+            GameManager.Instance.monsters.Remove(this);
+        }
     }
 
     // Start is called before the first frame update

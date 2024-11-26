@@ -161,31 +161,51 @@ public class DataManager : MonoBehaviour
     // WriteEnemies and WriteItems can be optimized by acquiring the reference once and storing it
     public void WriteEnemies(CheckpointData data){
         data.enemies = new List<EnemyData>();
-        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
-        foreach (GameObject monster in monsters)
+        //GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+        List<Monster> monsters = GameManager.Instance.monsters;
+        foreach (Monster monster in monsters)
         {
             EnemyData enemyData = new EnemyData();
             enemyData.position = new Vec3(monster.transform.position);
             enemyData.rotation = new Vec3(monster.transform.eulerAngles);
             enemyData.scale = new Vec3(monster.transform.localScale);
+
+            enemyData.monsterReference = monster;
+
             data.enemies.Add(enemyData);
         }
     }
 
     public void WriteItems(CheckpointData data){
         data.items = new List<ItemData>();
-        GameObject[] items = GameObject.FindGameObjectsWithTag("Interactable");
-        foreach (GameObject item in items)
+        // GameObject[] items = GameObject.FindGameObjectsWithTag("Interactable");
+        // foreach (GameObject item in items)
+        // {
+        //     ItemData itemData = new ItemData();
+        //     itemData.gameObject = item;
+        //     itemData.itemType = ItemData.ItemType.Light; // only lights for now
+        //     itemData.isInteracted = !item.activeSelf;
+        //     data.items.Add(itemData);
+        // }
+        List<WorldItem> items = GameManager.Instance.items;
+        foreach (WorldItem item in items)
         {
             ItemData itemData = new ItemData();
-            itemData.gameObject = item;
+            itemData.gameObject = item.gameObject;
             itemData.itemType = ItemData.ItemType.Light; // only lights for now
-            itemData.isInteracted = !item.activeSelf;
+            itemData.isInteracted = !item.gameObject.activeSelf;
             data.items.Add(itemData);
         }
     }
 
     public void ResetDataToLastCheckpoint(Transform player = null){
+        // reset world
+        // to ensure the active status of monster is correct, switch world first
+        if(checkpointData.isInRealWorld != WorldControl.Instance.isRealWorld){
+            WorldControl.Instance.SwitchWorldNoInvoke();
+        }
+
+        // load player
         if (player == null)
         {
             try{
@@ -207,21 +227,45 @@ public class DataManager : MonoBehaviour
         playerData = checkpointData.playerData;
 
         // load enemies
-        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
-        for (int i = 0; i < monsters.Length; i++)
+        foreach (EnemyData enemy in checkpointData.enemies)
         {
-            monsters[i].transform.position = checkpointData.enemies[i].position;
-            monsters[i].transform.eulerAngles = checkpointData.enemies[i].rotation;
-            monsters[i].transform.localScale = checkpointData.enemies[i].scale;
+            // enable monster
+            bool isMonsterActive = enemy.monsterReference.gameObject.activeSelf;
+            enemy.monsterReference.gameObject.SetActive(true);
+
+            enemy.monsterReference.transform.position = enemy.position;
+            enemy.monsterReference.transform.eulerAngles = enemy.rotation;
+            enemy.monsterReference.transform.localScale = enemy.scale;
 
             // check lantern
             if(!checkpointData.playerData.hasPickedUpLantern){
-                monsters[i].GetComponent<Monster>().lantern = null;
+                enemy.monsterReference.lantern = null;
             }
             else{
-                monsters[i].GetComponent<Monster>().lantern = player.GetComponentInChildren<Lantern>();
+                enemy.monsterReference.lantern = player.GetComponentInChildren<Lantern>();
             }
+
+            // reset monster status
+            if(!isMonsterActive){
+                enemy.monsterReference.gameObject.SetActive(false);
+            }
+
         }
+        // GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+        // for (int i = 0; i < monsters.Length; i++)
+        // {
+        //     monsters[i].transform.position = checkpointData.enemies[i].position;
+        //     monsters[i].transform.eulerAngles = checkpointData.enemies[i].rotation;
+        //     monsters[i].transform.localScale = checkpointData.enemies[i].scale;
+
+        //     // check lantern
+        //     if(!checkpointData.playerData.hasPickedUpLantern){
+        //         monsters[i].GetComponent<Monster>().lantern = null;
+        //     }
+        //     else{
+        //         monsters[i].GetComponent<Monster>().lantern = player.GetComponentInChildren<Lantern>();
+        //     }
+        // }
 
         // load items
         foreach (ItemData item in checkpointData.items)
@@ -234,10 +278,7 @@ public class DataManager : MonoBehaviour
             }
         }
 
-        // reset world
-        if(checkpointData.isInRealWorld != WorldControl.Instance.isRealWorld){
-            WorldControl.Instance.SwitchWorldNoInvoke();
-        }
+        
 
         // reset lantern status to off
         player.GetComponent<PlayerController>().lantern.ResetLantern();
@@ -333,6 +374,8 @@ public class EnemyData
     public Vec3 position;
     public Vec3 rotation;
     public Vec3 scale;
+
+    public Monster monsterReference;
 }
 
 [System.Serializable]
