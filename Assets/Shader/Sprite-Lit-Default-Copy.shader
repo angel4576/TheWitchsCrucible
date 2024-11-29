@@ -5,6 +5,12 @@ Shader "Universal Render Pipeline/2D/Custom/Sprite-Lit-Default"
         _MainTex("Diffuse", 2D) = "white" {}
         _MaskTex("Mask", 2D) = "white" {}
         _NormalMap("Normal Map", 2D) = "bump" {}
+        
+        _SphereRadius("Radius", Range(0, 12)) = 0.5
+        _CenterPosition("Center", Vector) =  (0, 0, 0)
+        
+        _NoiseFrequency("Noise Frequency", Float) = 1
+        _NoiseOffset("Noise Offset", Float) = 0
 
         // Legacy properties. They're here so that materials using this shader can gracefully fallback to the legacy sprite shader.
         [HideInInspector] _Color("Tint", Color) = (1,1,1,1)
@@ -52,6 +58,7 @@ Shader "Universal Render Pipeline/2D/Custom/Sprite-Lit-Default"
                 half4   color       : COLOR;
                 float2  uv          : TEXCOORD0;
                 half2   lightingUV  : TEXCOORD1;
+                float3  positionWS  : TEXCOORD2;
                 #if defined(DEBUG_DISPLAY)
                 float3  positionWS  : TEXCOORD2;
                 #endif
@@ -67,6 +74,9 @@ Shader "Universal Render Pipeline/2D/Custom/Sprite-Lit-Default"
             half4 _MainTex_ST;
             float4 _Color;
             half4 _RendererColor;
+
+            float _SphereRadius;
+            float3 _CenterPosition;
 
             #if USE_SHAPE_LIGHT_TYPE_0
             SHAPE_LIGHT(0)
@@ -91,6 +101,10 @@ Shader "Universal Render Pipeline/2D/Custom/Sprite-Lit-Default"
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
                 o.positionCS = TransformObjectToHClip(v.positionOS);
+
+                // Position in world space
+                o.positionWS = TransformObjectToWorld(v.positionOS);
+                
                 #if defined(DEBUG_DISPLAY)
                 o.positionWS = TransformObjectToWorld(v.positionOS);
                 #endif
@@ -102,7 +116,8 @@ Shader "Universal Render Pipeline/2D/Custom/Sprite-Lit-Default"
             }
 
             #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/CombinedShapeLightShared.hlsl"
-
+            #include "Assets/Shader/ShaderLibrary/noiseSimplex.cginc"
+            
             half4 CombinedShapeLightFragment(Varyings i) : SV_Target
             {
                 const half4 main = i.color * SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
@@ -113,6 +128,14 @@ Shader "Universal Render Pipeline/2D/Custom/Sprite-Lit-Default"
                 InitializeSurfaceData(main.rgb, main.a, mask, surfaceData);
                 InitializeInputData(i.uv, i.lightingUV, inputData);
 
+                float simplexNoise = snoise(i.positionWS);
+                // Sphere mask
+                float d = distance(i.positionWS, _CenterPosition) + simplexNoise;
+                float sum = saturate(d - _SphereRadius);
+
+                clip(sum - 0.01);
+
+                // return half4(1, 0, 0, 1);
                 return CombinedShapeLightShared(surfaceData, inputData);
             }
             ENDHLSL
@@ -250,7 +273,9 @@ Shader "Universal Render Pipeline/2D/Custom/Sprite-Lit-Default"
                 }
                 #endif
 
-                return mainTex;
+                // mainTex.a = 0.0;
+                
+                return float4(1, 0, 0, 1);
             }
             ENDHLSL
         }
