@@ -1,4 +1,4 @@
-Shader "Universal Render Pipeline/2D/Custom/Sprite-Lit-Default"
+Shader "Universal Render Pipeline/2D/Custom/Sprite-Lit-Sphere-Mask"
 {
     Properties
     {
@@ -6,11 +6,13 @@ Shader "Universal Render Pipeline/2D/Custom/Sprite-Lit-Default"
         _MaskTex("Mask", 2D) = "white" {}
         _NormalMap("Normal Map", 2D) = "bump" {}
         
-        _SphereRadius("Radius", Range(0, 12)) = 0.5
+        _SphereRadius("Radius", Range(0, 100)) = 0.5
         _CenterPosition("Center", Vector) =  (0, 0, 0)
         
         _NoiseFrequency("Noise Frequency", Float) = 1
         _NoiseOffset("Noise Offset", Float) = 0
+        
+        [Toggle(IS_REAL_WORLD)]_IsRealWorld ("Real World", Float) = 0
 
         // Legacy properties. They're here so that materials using this shader can gracefully fallback to the legacy sprite shader.
         [HideInInspector] _Color("Tint", Color) = (1,1,1,1)

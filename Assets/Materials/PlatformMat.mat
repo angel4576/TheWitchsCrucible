@@ -42,9 +42,11 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
-    - _SphereRadius: 0.5
+    - _NoiseFrequency: 0
+    - _NoiseOffset: 0
+    - _SphereRadius: 44.260815
     m_Colors:
-    - _CenterPosition: {r: -5.9, g: -54.9, b: 0, a: 1}
+    - _CenterPosition: {r: -0.1354405, g: -56.105007, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
