@@ -40,6 +40,8 @@ Shader "Universal Render Pipeline/2D/Custom/Sprite-Lit-Sphere-Mask"
             #pragma vertex CombinedShapeLightVertex
             #pragma fragment CombinedShapeLightFragment
 
+            #pragma shader_feature_local_fragment IS_REAL_WORLD
+
             #pragma multi_compile USE_SHAPE_LIGHT_TYPE_0 __
             #pragma multi_compile USE_SHAPE_LIGHT_TYPE_1 __
             #pragma multi_compile USE_SHAPE_LIGHT_TYPE_2 __
@@ -133,8 +135,12 @@ Shader "Universal Render Pipeline/2D/Custom/Sprite-Lit-Sphere-Mask"
                 float simplexNoise = snoise(i.positionWS);
                 // Sphere mask
                 float d = distance(i.positionWS, _CenterPosition) + simplexNoise;
+                #if IS_REAL_WORLD
                 float sum = saturate(d - _SphereRadius);
-
+                #else
+                float sum = 1.0 - saturate(d - _SphereRadius);
+                #endif
+                
                 clip(sum - 0.01);
 
                 // return half4(1, 0, 0, 1);

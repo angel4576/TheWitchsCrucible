@@ -61,6 +61,7 @@ public class PhysicsCheck : MonoBehaviour
     private void Check()
     {
         isOnGround = Physics2D.OverlapCircle((Vector2)transform.position + bottomOffset, checkRadius, groundLayer);
+        
     }
 
     void SwitchPhysicsMaterial()

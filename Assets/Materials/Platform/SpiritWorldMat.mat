@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlatformMat
+  m_Name: SpiritWorldMat
   m_Shader: {fileID: 4800000, guid: 060c203bdbc691444a32872e1a2cbadc, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -42,11 +42,12 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
+    - _IsRealWorld: 0
     - _NoiseFrequency: 0
     - _NoiseOffset: 0
-    - _SphereRadius: 44.260815
+    - _SphereRadius: 0
     m_Colors:
-    - _CenterPosition: {r: -0.1354405, g: -56.105007, b: 0, a: 0}
+    - _CenterPosition: {r: 90.8, g: 48.20499, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}

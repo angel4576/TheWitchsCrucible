@@ -11,14 +11,15 @@ public class WorldControl : MonoBehaviour
     public static WorldControl Instance {get; private set;}
 
     [Header("Switch World Effect Settings")]
-    public Transform PlayerTransform;
-    public Material PlatformMaterial;
+    public Transform playerTransform;
+    public Material spiritWorldMat;
+    public Material realWorldMat;
     public float sphereRadius;
     public float maxRadius;
     public float noiseFrequency;
     public float noiseOffset;
     public float changeSpeed;
-    private bool canPlayEffect = false; 
+    public bool canPlayEffect = false; 
     
     public GameObject SpiritWorldObjects;
     public GameObject RealWorldObjects;
@@ -61,28 +62,22 @@ public class WorldControl : MonoBehaviour
         RealWorldObjects = GameObject.FindGameObjectsWithTag("RealWorld")[0];
         pet = GameObject.FindGameObjectWithTag("Pet").GetComponent<Pet>();
         
-        SpiritWorldObjects.SetActive(false);
+        // SpiritWorldObjects.SetActive(false);
+        SpiritWorldObjects.SetActive(true);
         RealWorldObjects.SetActive(true);
         
         isRealWorld = true;
-        
-        // Set up shader params
-        PlatformMaterial.SetFloat("_SphereRadius", 0);
-        PlatformMaterial.SetFloat("_NoiseFrequency", noiseFrequency);
-        PlatformMaterial.SetFloat("_NoiseOffset", noiseOffset);
+
+        SetUpShaderParams();
+
     }
 
     void Update()
     {
-        SetShaderParams();
+        UpdateShaderParams();
 
-        if (canPlayEffect)
-            sphereRadius += changeSpeed * Time.deltaTime;
+        PlaySwitchWorld();
 
-        if (sphereRadius >= maxRadius) // effect ends 
-        {
-            sphereRadius = 0;
-        }
     }
     
     #endregion
@@ -102,7 +97,7 @@ public class WorldControl : MonoBehaviour
         yield return new WaitForSeconds(delay);
         foreach (GameObject obj in gameObject)
         {
-            ToggleActive(obj);
+            // ToggleActive(obj);
         }
 
         // set world status
@@ -111,16 +106,61 @@ public class WorldControl : MonoBehaviour
         onSwitchWorld?.Invoke();
         isToggling = false;
     }
-
-    private void SetShaderParams()
+    
+    #region Shader Params
+    private void SetUpShaderParams()
     {
-        PlatformMaterial.SetVector("_CenterPosition", PlayerTransform.position);
-        PlatformMaterial.SetFloat("_SphereRadius", sphereRadius);
+        // Set up shader params
+        realWorldMat.SetFloat("_SphereRadius", 0);
+        realWorldMat.SetFloat("_NoiseFrequency", noiseFrequency);
+        realWorldMat.SetFloat("_NoiseOffset", noiseOffset);
+        
+        spiritWorldMat.SetFloat("_SphereRadius", 0);
+        spiritWorldMat.SetFloat("_NoiseFrequency", noiseFrequency);
+        spiritWorldMat.SetFloat("_NoiseOffset", noiseOffset);
     }
+    
+    private void UpdateShaderParams()
+    {
+        realWorldMat.SetVector("_CenterPosition", playerTransform.position);
+        realWorldMat.SetFloat("_SphereRadius", sphereRadius);
+        
+        spiritWorldMat.SetVector("_CenterPosition", playerTransform.position);
+        spiritWorldMat.SetFloat("_SphereRadius", sphereRadius);
+    }
+    #endregion
+    
     private void PlaySwitchWorld()
     {   
-        canPlayEffect = true;
+        if(!canPlayEffect)
+            return;
+        
+        sphereRadius += changeSpeed * Time.deltaTime;
+        if (sphereRadius >= maxRadius) // effect ends 
+        {
+            
+            changeSpeed = -changeSpeed;
+            sphereRadius = maxRadius;
+            canPlayEffect = false;
+        }
 
+        if (sphereRadius <= 0)
+        {
+            changeSpeed = -changeSpeed;
+            sphereRadius = 0; 
+            canPlayEffect = false;
+        }
+        
+        /*else
+        {
+            sphereRadius -= changeSpeed * Time.deltaTime;
+            if (sphereRadius <= 0) // effect ends 
+            {
+                sphereRadius = 0;
+                canPlayEffect = false;
+            }
+        }*/
+        
     }
     
     public void SwitchWorld()
@@ -129,18 +169,18 @@ public class WorldControl : MonoBehaviour
         // {
         //     return;
         // }
-
+        
         if (!PauseScreen.GetComponent<PauseManager>().isPaused 
             && DataManager.Instance.playerData.canSwitchWorld)
         {
-
+            // Debug.Log("SWITCH!!!!!!");
             float delay = 0.000000001f;
             if (!SpiritWorldObjects.activeSelf && RealWorldObjects.activeSelf)
             {
                 // if real world -> spirit world, set delay for animation
                 // Debug.Log("Switching to Spirit World");
                 delay = 0.2f;
-                delay = 3;
+                delay = 1;
             }
 
             if(SpiritWorldObjects != null && RealWorldObjects != null && !isToggling)
@@ -150,7 +190,7 @@ public class WorldControl : MonoBehaviour
                 temp[0] = SpiritWorldObjects;
                 temp[1] = RealWorldObjects;
                 
-                PlaySwitchWorld();
+                canPlayEffect = true;
                 
                 StartCoroutine(DelayToggleActive(temp, delay));
                 
