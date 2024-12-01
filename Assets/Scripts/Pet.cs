@@ -125,7 +125,7 @@ public class Pet : MonoBehaviour, IInteractable
 
     public void SetAnimationState<T>(int flag, string param, T value)
     {
-        Debug.Log($"SetAnimationState {flag} {param} {value}");
+        // Debug.Log($"SetAnimationState {flag} {param} {value}");
         ani.SetTrigger("HugTrigger");
         switch (flag)
         {
@@ -394,7 +394,7 @@ public class Pet : MonoBehaviour, IInteractable
     // bind to OnSwitchWorld in World Control (inspector)
     public async void OnPetSwitchWorld()
     {
-        Debug.Log("On pet switch");
+        // Debug.Log("On pet switch");
         // Play animation
         Func<Task> delayDeactivate = async () =>
         {
