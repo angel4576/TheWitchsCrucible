@@ -21,6 +21,10 @@ public class WorldControl : MonoBehaviour
     public float changeSpeed;
     public bool canPlayEffect = false; 
     
+    private int playerLayerID;
+    private int realWorldLayerID;
+    private int spiritWorldLayerID;
+    
     public GameObject SpiritWorldObjects;
     public GameObject RealWorldObjects;
 
@@ -69,6 +73,13 @@ public class WorldControl : MonoBehaviour
         isRealWorld = true;
 
         SetUpShaderParams();
+        
+        playerLayerID = LayerMask.NameToLayer("Player");
+        realWorldLayerID = LayerMask.NameToLayer("RealWorld");
+        spiritWorldLayerID = LayerMask.NameToLayer("SpiritWorld");
+        // In real world, ignore spirit world collision
+        Physics2D.IgnoreLayerCollision(playerLayerID, spiritWorldLayerID, true);
+        Physics2D.IgnoreLayerCollision(playerLayerID, realWorldLayerID, false);
 
     }
 
@@ -105,6 +116,9 @@ public class WorldControl : MonoBehaviour
         pet.SetAnimationState(1 ,"IsReality", isRealWorld);
         onSwitchWorld?.Invoke();
         isToggling = false;
+
+        UpdateLayerCollision();
+        
     }
     
     #region Shader Params
@@ -129,6 +143,21 @@ public class WorldControl : MonoBehaviour
         spiritWorldMat.SetFloat("_SphereRadius", sphereRadius);
     }
     #endregion
+
+    private void UpdateLayerCollision()
+    {
+        if (isRealWorld)
+        {
+            Physics2D.IgnoreLayerCollision(7, 8, true);
+            Physics2D.IgnoreLayerCollision(7, 9, false);
+        }
+        else // spirit world
+        {
+            // Debug.Log("Ignore real world collision");
+            Physics2D.IgnoreLayerCollision(7, 8, false);
+            Physics2D.IgnoreLayerCollision(7, 9, true);
+        }
+    }
     
     private void PlaySwitchWorld()
     {   
@@ -150,6 +179,7 @@ public class WorldControl : MonoBehaviour
             sphereRadius = 0; 
             canPlayEffect = false;
         }
+        
         
         /*else
         {
@@ -180,7 +210,7 @@ public class WorldControl : MonoBehaviour
                 // if real world -> spirit world, set delay for animation
                 // Debug.Log("Switching to Spirit World");
                 delay = 0.2f;
-                delay = 1;
+                // delay = 1;
             }
 
             if(SpiritWorldObjects != null && RealWorldObjects != null && !isToggling)
