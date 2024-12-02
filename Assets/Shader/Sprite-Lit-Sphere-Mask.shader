@@ -82,6 +82,9 @@ Shader "Universal Render Pipeline/2D/Custom/Sprite-Lit-Sphere-Mask"
             float _SphereRadius;
             float3 _CenterPosition;
 
+            float _NoiseFrequency;
+            float _NoiseOffset;
+
             #if USE_SHAPE_LIGHT_TYPE_0
             SHAPE_LIGHT(0)
             #endif
@@ -132,16 +135,16 @@ Shader "Universal Render Pipeline/2D/Custom/Sprite-Lit-Sphere-Mask"
                 InitializeSurfaceData(main.rgb, main.a, mask, surfaceData);
                 InitializeInputData(i.uv, i.lightingUV, inputData);
 
-                float simplexNoise = snoise(i.positionWS);
+                float simplexNoise = snoise(i.positionWS) * _NoiseFrequency + _NoiseOffset;
                 // Sphere mask
                 float d = distance(i.positionWS, _CenterPosition) + simplexNoise;
                 #if IS_REAL_WORLD
-                float sum = saturate(d - _SphereRadius);
+                float dToEdge = saturate(d - _SphereRadius);
                 #else
-                float sum = 1.0 - saturate(d - _SphereRadius);
+                float dToEdge = 1.0 - saturate(d - _SphereRadius);
                 #endif
                 
-                clip(sum - 0.01);
+                clip(dToEdge - 0.01);
 
                 // return half4(1, 0, 0, 1);
                 return CombinedShapeLightShared(surfaceData, inputData);
