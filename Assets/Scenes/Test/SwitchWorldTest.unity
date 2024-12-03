@@ -30614,7 +30614,7 @@ MonoBehaviour:
   sphereRadius: 0
   maxRadius: 32
   noiseFrequency: 1
-  noiseOffset: 0
+  noiseOffset: 0.6
   changeSpeed: 30
   canPlayEffect: 0
   SpiritWorldObjects: {fileID: 1336320241}

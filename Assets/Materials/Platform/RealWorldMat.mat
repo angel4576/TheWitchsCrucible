@@ -44,11 +44,11 @@ Material:
     m_Floats:
     - _EnableExternalAlpha: 0
     - _IsRealWorld: 1
-    - _NoiseFrequency: 0
-    - _NoiseOffset: 0.56
+    - _NoiseFrequency: 1
+    - _NoiseOffset: 0.5
     - _SphereRadius: 0
     m_Colors:
-    - _CenterPosition: {r: 62.24, g: 18.754992, b: 0, a: 0}
+    - _CenterPosition: {r: 80.705055, g: 18.754993, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
