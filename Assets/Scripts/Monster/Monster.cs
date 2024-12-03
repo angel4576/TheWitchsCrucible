@@ -16,12 +16,15 @@ public class Monster : MonoBehaviour
     public EnemyType type;
     public float moveSpeed;
     public float chaseRange;
-
+    public Vector2 centerOffset;
+    
+    [Header("Melee Attack")]
     public float meleeAttackRange;
     public float meleeAttackDamage;
     public float meleeAttackDelay; // the time before each attack
     public float meleeAttackCooldown; // the time after a attack before another attack can be made
 
+    [Header("Range Attack")]
     public float rangeAttackRange;
     public float rangeAttackDamage;
     public float rangeAttackDelay; // the time before each attack
@@ -47,6 +50,8 @@ public class Monster : MonoBehaviour
 
     // flags
     [HideInInspector]private bool isPlayerDead = false; // ensure that player is killed only once
+    
+    private Animator animator;
 
     // temp: melee attack visualization
     public Transform arm;
@@ -63,6 +68,8 @@ public class Monster : MonoBehaviour
         playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         // lantern ?= GameObject.Find("Lantern").GetComponent<Lantern>();   
         healthBar = GetComponentInChildren<Healthbar>();
+
+        animator = GetComponent<Animator>();
         
         // for now, switching world enables/disables the monsters, if change, a reference to the real/mental world must be retrieved
         // and this script must be updated
@@ -223,9 +230,11 @@ public class Monster : MonoBehaviour
         // perform the attack
         if(CheckPlayerInMeleeAttackRange())
         {
-            Debug.Log("Monster melee attack");
+            // Debug.Log("Monster melee attack");
+            animator.SetTrigger("Lv1Attack");
             if(SceneManager.Instance.GetSceneConfiguration().enableEnemyInstantKill)
-                KillPlayer();
+                //KillPlayer();
+                DamagePlayer(meleeAttackDamage);
             else           
                 DamagePlayer(meleeAttackDamage);
         }
@@ -335,17 +344,17 @@ public class Monster : MonoBehaviour
     // helper functions
     private bool CheckPlayerInChaseRange()
     {
-        return Vector2.Distance(transform.position, playerTransform.position) < chaseRange;
+        return Vector2.Distance((Vector2)transform.position + centerOffset, playerTransform.position) < chaseRange;
     }
 
     private bool CheckPlayerInMeleeAttackRange()
     {
-        return Vector2.Distance(transform.position, playerTransform.position) < meleeAttackRange;
+        return Vector2.Distance((Vector2)transform.position + centerOffset, playerTransform.position) < meleeAttackRange;
     }
 
     private bool CheckPlayerInRangeAttackRange()
     {
-        return Vector2.Distance(transform.position, playerTransform.position) < rangeAttackRange;
+        return Vector2.Distance((Vector2)transform.position + centerOffset, playerTransform.position) < rangeAttackRange;
     }
 
     // Respond to OnLanternFirstPickedUp event in Game Manager
@@ -359,15 +368,15 @@ public class Monster : MonoBehaviour
     {
         // chase range
         Gizmos.color = Color.gray;
-        Gizmos.DrawWireSphere(transform.position, chaseRange);
+        Gizmos.DrawWireSphere((Vector2)transform.position + centerOffset, chaseRange);
 
         // melee attack range
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, meleeAttackRange);
+        Gizmos.DrawWireSphere((Vector2)transform.position + centerOffset, meleeAttackRange);
 
         // range attack range
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, rangeAttackRange);
+        Gizmos.DrawWireSphere((Vector2)transform.position + centerOffset, rangeAttackRange);
     }
 
     public void OnValidate(){

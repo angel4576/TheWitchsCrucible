@@ -124,12 +124,12 @@ public class Lantern : MonoBehaviour
             // Debug.Log("checking lantern status");
             if (isLanternOn)
             {
-                Debug.Log("turning lantern off");
+                // Debug.Log("turning lantern off");
                 ToggleLanternOff();
             }
             else
             {
-                Debug.Log("turning lantern on");
+                // Debug.Log("turning lantern on");
                 ToggleLanternOn();
             }
         }
