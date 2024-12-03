@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;  // For 2D lights
 
@@ -33,6 +34,8 @@ public class Lantern : MonoBehaviour
     private GameObject player;
     private PlayerController playerController;
 
+    // Event
+    public UnityEvent OnLanternActivated;
 
     private void Awake()
     {
@@ -125,11 +128,13 @@ public class Lantern : MonoBehaviour
             if (isLanternOn)
             {
                 // Debug.Log("turning lantern off");
+                OnLanternActivated?.Invoke();
                 ToggleLanternOff();
             }
             else
             {
                 // Debug.Log("turning lantern on");
+                OnLanternActivated?.Invoke();
                 ToggleLanternOn();
             }
         }

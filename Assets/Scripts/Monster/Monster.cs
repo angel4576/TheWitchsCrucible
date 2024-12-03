@@ -388,6 +388,18 @@ public class Monster : MonoBehaviour
         }
     }
 
+    public void ReactOnLantern()
+    {
+        if (lantern.IsLanternOn)
+        {
+            animator.SetTrigger("FlashOff");
+        }
+        else
+        {
+            animator.SetTrigger("FlashOn");
+        }
+    }
+
     public enum EnemyType
     {
         Melee,
