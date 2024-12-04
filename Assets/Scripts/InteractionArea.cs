@@ -10,6 +10,7 @@ public class InteractionArea : MonoBehaviour
     public PlayerInputControl inputActions;
     public Pet pet;
     private IInteractable interactableItem;
+    private IInteractable f_interactableItem;
     public bool canInteract;
 
     private void Awake() 
@@ -19,7 +20,7 @@ public class InteractionArea : MonoBehaviour
         inputActions.Enable();
 
         inputActions.Gameplay.SwitchWorld.started += InteractWithPet; // E key
-        inputActions.Gameplay.Interact.started += Interact; // F key
+        inputActions.Gameplay.Interact.started += F_Interact; // F key
     }
 
 
@@ -44,16 +45,15 @@ public class InteractionArea : MonoBehaviour
     }
 
     // Item interaction
-    private void Interact(InputAction.CallbackContext context)
+    private void F_Interact(InputAction.CallbackContext context)
     {
-        if (canInteract && interactableItem != null) 
+        if (canInteract && f_interactableItem != null) 
         {
-            interactableItem.Interact();
+            f_interactableItem.Interact();
         }
     }
 
-
-    private void OnTriggerStay2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         canInteract = true;
         // if(other.CompareTag("Pet"))
@@ -61,12 +61,20 @@ public class InteractionArea : MonoBehaviour
         //     WorldControl.Instance.canSwitch = true;
         //     pet = other.GetComponent<IInteractable>();
         // }
-
-        if(other.CompareTag("Interactable"))
+        if (other.CompareTag("Interactable"))
         {
             interactableItem = other.GetComponent<IInteractable>();
+            if (interactableItem != null)
+            {
+                interactableItem.Interact();
+            }
         }
-        
+
+        // F_Interact
+        if (other.CompareTag("F_Interactable"))
+        {
+            f_interactableItem = other.GetComponent<IInteractable>();
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other) 
@@ -78,6 +86,9 @@ public class InteractionArea : MonoBehaviour
         //     // Leave pet
         //     WorldControl.Instance.canSwitch = false;
         // }
-        
+        if(other.CompareTag("F_Interactable"))
+        {
+            f_interactableItem = null;
+        }
     }
 }

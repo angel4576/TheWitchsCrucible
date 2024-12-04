@@ -16,6 +16,8 @@ Shader "Spine/Skeleton" {
 		[HideInInspector][MaterialToggle(_USE8NEIGHBOURHOOD_ON)] _Use8Neighbourhood("Sample 8 Neighbours", Float) = 1
 		[HideInInspector] _OutlineOpaqueAlpha("Opaque Alpha", Range(0,1)) = 1.0
 		[HideInInspector] _OutlineMipLevel("Outline Mip Level", Range(0,3)) = 0
+		
+		[HideInInspector] _InvulnerabilityColor("Invulnerable Color", Color) = (1.0, 1.0, 1.0, 1.0)
 	}
 
 	SubShader {
@@ -44,6 +46,8 @@ Shader "Spine/Skeleton" {
 			#include "CGIncludes/Spine-Common.cginc"
 			sampler2D _MainTex;
 
+			fixed4 _InvulnerabilityColor;
+
 			struct VertexInput {
 				float4 vertex : POSITION;
 				float2 uv : TEXCOORD0;
@@ -66,11 +70,12 @@ Shader "Spine/Skeleton" {
 
 			float4 frag (VertexOutput i) : SV_Target {
 				float4 texColor = tex2D(_MainTex, i.uv);
-
+				
 				#if defined(_STRAIGHT_ALPHA_INPUT)
 				texColor.rgb *= texColor.a;
 				#endif
 
+				texColor.rgb *= _InvulnerabilityColor.rgb;
 				return (texColor * i.vertexColor);
 			}
 			ENDCG

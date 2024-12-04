@@ -1,0 +1,22 @@
+skeleton.png
+	size: 1976, 1453
+	filter: Linear, Linear
+	pma: true
+Body
+	bounds: 2, 779, 1501, 672
+	offsets: 717, 1195, 2732, 2048
+Head
+	bounds: 1505, 906, 469, 545
+	offsets: 2010, 1154, 2732, 2048
+Left front leg
+	bounds: 2, 2, 775, 1455
+	offsets: 1167, 228, 2732, 2048
+	rotate: 90
+
+skeleton_2.png
+	size: 771, 1456
+	filter: Linear, Linear
+	pma: true
+Right front leg
+	bounds: 2, 2, 767, 1452
+	offsets: 1166, 227, 2732, 2048

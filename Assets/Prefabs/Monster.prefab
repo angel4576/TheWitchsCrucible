@@ -371,7 +371,7 @@ MonoBehaviour:
   playerScript: {fileID: 0}
   lantern: {fileID: 0}
   healthBar: {fileID: 8460500435642675113}
-  type: 0
+  type: 1
   moveSpeed: 13
   chaseRange: 250
   meleeAttackRange: 3
@@ -379,11 +379,11 @@ MonoBehaviour:
   meleeAttackDelay: 0.2
   meleeAttackCooldown: 0.8
   rangeAttackRange: 15
-  rangeAttackDamage: 0
-  rangeAttackDelay: 0
-  rangeAttackCooldown: 0
-  rangeAttackProjectileSpeed: 0
-  rangeAttackProjectile: {fileID: 0}
+  rangeAttackDamage: 3
+  rangeAttackDelay: 0.1
+  rangeAttackCooldown: 0.9
+  rangeAttackProjectileSpeed: 16
+  rangeAttackProjectile: {fileID: 6428373708108075328, guid: 7623ac14d6212cd49988cf8ab194b768, type: 3}
   isKillable: 1
   maxHealth: 100
   currentHealth: 0

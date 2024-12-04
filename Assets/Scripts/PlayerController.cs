@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.TextCore.Text;
 using Spine.Unity;
+using System.Linq;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public GameObject PauseScreen;
 
     private PhysicsCheck physicsCheck;
+    
 
     public Pet pet;
 
@@ -27,6 +29,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Jump")]
     public float jumpForce;
+    private bool jumpTriggered;
 
     [Header("Pet Control")]
     public float petMoveDelayTime;
@@ -36,12 +39,19 @@ public class PlayerController : MonoBehaviour
     public Lantern lantern;
     private bool hasLantern;
 
+    [Header("Death Effect")]
+    public float dissolveSpeed;
+    private float dissolveThreshold = 2;
+    private bool isDead;
+
     [Header("Animation")]
     private Animator ani;
     public SkeletonMecanim skeletonMecanim;  // Use SkeletonMecanim instead of SkeletonAnimation
     private Spine.Slot[] cloakSlots;
+    private Spine.Slot[] lampSlots;
     private Dictionary<Spine.Slot, Spine.Attachment> originalCloakAttachments = new Dictionary<Spine.Slot, Spine.Attachment>();
 
+    
     [Header("Attacks")]
     public float meleeDamage;
     public float meleeLightHeal;
@@ -50,10 +60,20 @@ public class PlayerController : MonoBehaviour
     public float rangeAttackDamage, rangeAttackRange;
     [SerializeField]
     private bool canAttack = true;
+
     public GameObject meleeProj;
     public GameObject rangedProj;
+    
+    [Header("Invulnerability")]
+    public float invulnerabilityTime;
+    public bool isInvulnerable;
+    public Color invulnerabilityColor;
 
 
+    // Material
+    private Material material;
+    
+    #region Lifecycle 
     private void Awake()
     {
         inputActions = new PlayerInputControl();
@@ -85,11 +105,20 @@ public class PlayerController : MonoBehaviour
         ani = GetComponent<Animator>();
         skeletonMecanim = GetComponent<SkeletonMecanim>();  // Use SkeletonMecanim
 
+        // Get first material
+        material = skeletonMecanim.skeletonDataAsset.atlasAssets[0].Materials.FirstOrDefault();
+        if (material != null)
+        {
+            material.SetFloat("_DissolveThreshold", dissolveThreshold);
+            material.SetColor("_InvulnerabilityColor", Color.white); 
+        }
+
         // Get script reference
         physicsCheck = GetComponent<PhysicsCheck>();
 
         // Get all slots related to cape
         GetAllCloakSlots();
+        GetLampSlot();
         if (WorldControl.Instance.isRealWorld)
         {
             DisableCloak();
@@ -105,6 +134,21 @@ public class PlayerController : MonoBehaviour
         {
             FlipDirection();
         }
+
+        // Set animation state
+        SetAnimation();
+
+        // Test Player Death 
+        if(Keyboard.current.f1Key.wasPressedThisFrame)
+        {
+            // Debug.Log("Player Die!");
+            isDead = true;
+            ani.SetTrigger("DieTrigger");
+        }
+
+        if(isDead)
+            PlayDissolve();
+
     }
 
     private void FixedUpdate()
@@ -114,10 +158,18 @@ public class PlayerController : MonoBehaviour
         if (!physicsCheck.isOnGround)
         {
             rb.velocity += Vector2.down * Physics2D.gravity.y * Time.fixedDeltaTime;
-//            Debug.Log("applying velocity" + rb.velocity);
+
+            // Debug.Log("applying velocity" + rb.velocity);
+            ani.SetBool("IsLanded", false);
+        }
+        else
+        {
+            ani.SetBool("IsLanded", true);
         }
     }
+    #endregion
 
+    #region Character Movement
     private void Move()
     {
         if (inputDirection.y != 0)
@@ -125,15 +177,6 @@ public class PlayerController : MonoBehaviour
             inputDirection.x *= math.sqrt(2);
         }
         rb.velocity = new Vector2(inputDirection.x * speed, rb.velocity.y);
-        // set animation state
-        if (inputDirection.x != 0)
-        {
-            ani.SetBool("IsRunning", true);
-        }
-        else
-        {
-            ani.SetBool("IsRunning", false);
-        }
 
         if (inputDirection.x != 0 && !pet.canMove)
         {
@@ -143,14 +186,25 @@ public class PlayerController : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext context)
     {
-        if (physicsCheck.isOnGround && !PauseScreen.GetComponent<PauseManager>().isPaused)
+        if (physicsCheck.isOnGround && !PauseScreen.GetComponent<PauseManager>().isPaused && !jumpTriggered)
         {
-            rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+            jumpTriggered = true;
+            // delay jump
+            StartCoroutine(DelayJump(0.00000001f));
 
             // Pet jump
             Invoke(nameof(ControlPetJump), petJumpDelayTime);
         }
     }
+
+    private IEnumerator DelayJump(float delay)
+{
+    ani.SetTrigger("JumpTrigger");
+    yield return new WaitForSeconds(delay);
+    rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+    yield return new WaitForSeconds(0.05f);
+    jumpTriggered = false;
+}
 
     private void ControlPetMovement()
     {
@@ -179,15 +233,42 @@ public class PlayerController : MonoBehaviour
 
         transform.localScale = new Vector3(faceDir * Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
     }
+    #endregion
 
     public void TakeDamage(float damage)
     {
-        DataManager.Instance.playerData.currentHealth -= damage;
+        if (!isInvulnerable)
+        {
+            // Debug.Log("TRIGGER INVULNERABILITY");
+            DataManager.Instance.playerData.currentHealth -= damage;
+            TriggerInvulnerability();
+        }
+        
+        
         if (DataManager.Instance.playerData.currentHealth <= 0)
         {
             Die();
         }
+        
     }
+
+    #region Invulnerability
+    private void TriggerInvulnerability()
+    {
+        isInvulnerable = true;
+        StartCoroutine(InvulnerabilityDuration(invulnerabilityTime));
+    }
+
+    IEnumerator InvulnerabilityDuration(float duration)
+    {
+        material.SetColor("_InvulnerabilityColor", invulnerabilityColor); 
+        
+        yield return new WaitForSeconds(duration);
+
+        material.SetColor("_InvulnerabilityColor", Color.white); 
+        isInvulnerable = false;
+    }
+    #endregion
 
     // Player dies, for testing purposes
     public void Die()
@@ -197,23 +278,49 @@ public class PlayerController : MonoBehaviour
         //SceneManager.Instance.ReloadScene();
     }
 
+    #region Animation Control
+    // Set animation state
+    private void SetAnimation()
+    {
+        ani.SetFloat("X_velocity", math.abs(rb.velocity.x));
+        ani.SetFloat("Y_velocity", rb.velocity.y);
+        // ani.SetBool("IsGrounded", physicsCheck.isOnGround);
+    }
+    #endregion
+
+    private void PlayDissolve()
+    {
+        material.SetFloat("_DissolveThreshold", dissolveThreshold);
+
+        dissolveThreshold -= dissolveSpeed * Time.deltaTime;
+        if(dissolveThreshold <= 0.001f)
+        {
+            dissolveThreshold = 0;
+        }
+        
+    }
+
+    #region Event
+
     public void OnPlayerSwitchWorld()
     {
         // Play animation
         if (WorldControl.Instance.isRealWorld)
         {
-            // rend.color = Color.white;
             // disable cape's spine slot
             DisableCloak();
+            ani.SetBool("IsLanternOn", false);
         }
         else
         {
-            // rend.color = Color.black;
             // enable cape's spine slot
-            EnableCloak();
+            Invoke(nameof(EnableCloak), 0.2f);
+            ani.SetBool("IsLanternOn", true);
         }
     }
+    #endregion
 
+    #region Skeleton
     private void GetAllCloakSlots()
     {
         // 获取 Skeleton
@@ -264,15 +371,80 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void GetLampSlot(){
+        var skeleton = skeletonMecanim.skeleton;
+        lampSlots = new Spine.Slot[2];
+        lampSlots[0] = skeleton.FindSlot("Lamp");
+        lampSlots[1] = skeleton.FindSlot("Handle");
+
+        foreach (var slot in lampSlots)
+        {
+            if (slot != null && slot.Attachment != null)
+            {
+                Debug.Log("lamp slot: " + slot);
+                originalCloakAttachments[slot] = slot.Attachment;
+            }
+        }
+
+    }
+
+    public void DelayDisableLamp(float delay)
+    {
+        // current this method is not used as told by XIAODAN, the lantern will be carried most of the time by the player even when player is idle
+        // later on this method might be used when player havent got the lantern yet at the early stage of the game
+
+        // Invoke(nameof(DisableLamp), delay);
+    }
+    
+    public void DisableLamp()
+    {
+        Debug.Log("Disable lamp");
+        if (lampSlots != null)
+        {
+            foreach (var slot in lampSlots)
+            {
+                if (slot != null)
+                {
+                    slot.Attachment = null;
+                }
+            }
+            ani.SetBool("IsLanternOn", false);
+        }
+    }
+
+    public void EnableLamp()
+    {
+        Debug.Log("Enable lamp");
+        if (lampSlots != null)
+        {
+            foreach (var slot in lampSlots)
+            {
+                if (slot != null && originalCloakAttachments.ContainsKey(slot))
+                {
+                    slot.Attachment = originalCloakAttachments[slot];
+                }
+            }
+            ani.SetBool("IsLanternOn", true);
+        }
+    }
+    #endregion
+
+
     private void Pause(InputAction.CallbackContext context)
     {
         PauseScreen.GetComponent<PauseManager>().TogglePause();
     }
 
+    #region Character Attack
     private void MeleeAttack(InputAction.CallbackContext context)
     {
-        if (canAttack && DataManager.Instance.playerData.hasPickedUpLantern)
+        if (canAttack 
+            && DataManager.Instance.playerData.hasPickedUpLantern 
+            && SceneManager.Instance.GetSceneConfiguration().enableAttack)
         {
+            // Set melee animation
+            ani.SetTrigger("MeleeTrigger");
+
             canAttack = false;
             bool hitEnemy = false;
             Collider2D[] enemiesInsideArea;
@@ -312,8 +484,14 @@ public class PlayerController : MonoBehaviour
 
     private void RangeAttack(InputAction.CallbackContext context)
     {
-        if(canAttack && DataManager.Instance.playerData.light >= rangeAttackCost && DataManager.Instance.playerData.hasPickedUpLantern)
+        if(canAttack 
+            && DataManager.Instance.playerData.light >= rangeAttackCost 
+            && DataManager.Instance.playerData.hasPickedUpLantern
+            && SceneManager.Instance.GetSceneConfiguration().enableAttack)
         {
+            // Set attack animation
+            ani.SetTrigger("RangedTrigger");
+
             DataManager.Instance.playerData.light -= rangeAttackCost;
             UIManager.Instance.BroadcastMessage("UpdateLight");
             canAttack = false;
@@ -323,6 +501,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(attackCooldown(rangeAttackSpeedPerSec));
         }
     }
+    #endregion
 
     public bool isFacingRight()
     {

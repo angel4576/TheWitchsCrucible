@@ -388,13 +388,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerData:
     level: 1
-    health: 100
+    maxHealth: 100
+    currentHealth: 100
     light: 3
+    maxLight: 3
     position:
-      x: 0
-      y: 0
-      z: 0
-    checkPoint:
       x: 0
       y: 0
       z: 0
@@ -407,6 +405,46 @@ MonoBehaviour:
     curSceneIndex: 0
   configData:
     isInitialized: 0
+    enemies: []
+    items: []
+  checkpointData:
+    position:
+      x: 0
+      y: 0
+      z: 0
+    playerData:
+      level: 1
+      maxHealth: 100
+      currentHealth: 100
+      light: 0
+      maxLight: 3
+      position:
+        x: 0
+        y: 0
+        z: 0
+      hasPickedUpLantern: 0
+      canSwitchWorld: 0
+    isInRealWorld: 0
+    enemies: []
+    items: []
+  levelStartData:
+    position:
+      x: 0
+      y: 0
+      z: 0
+    playerData:
+      level: 1
+      maxHealth: 100
+      currentHealth: 100
+      light: 0
+      maxLight: 3
+      position:
+        x: 0
+        y: 0
+        z: 0
+      hasPickedUpLantern: 0
+      canSwitchWorld: 0
+    isInRealWorld: 0
     enemies: []
     items: []
 --- !u!1 &1752363926
@@ -514,11 +552,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scenes:
-  - LevelBuild 1
+  - PlayTest-Level1
   inputActionAsset: {fileID: -944628639613478452, guid: 92ec01dc18c0f1840968097b07449f23, type: 3}
   fadeDuration: 1
   fadeCanvas: {fileID: 1458320891}
   fadeImage: {fileID: 1752363928}
+  enableSceneConfig: 1
 --- !u!4 &2093849182
 Transform:
   m_ObjectHideFlags: 0

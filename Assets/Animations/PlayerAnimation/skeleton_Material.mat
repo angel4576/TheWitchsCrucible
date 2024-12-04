@@ -26,12 +26,19 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 2643355d53534da4b8be528de374b00b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 776a53a21317ff24cabde9fe9c4ce5fc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTex:
+        m_Texture: {fileID: 2800000, guid: 3d8f310ff350e7c45a38e325365329d0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _Cutoff: 0.1
+    - _DissolveThreshold: 2
+    - _EdgeWidth: 0.11
+    - _NoiseScale: 0
     - _OutlineMipLevel: 0
     - _OutlineOpaqueAlpha: 1
     - _OutlineReferenceTexWidth: 1024
@@ -41,8 +48,12 @@ Material:
     - _StencilRef: 1
     - _StraightAlphaInput: 1
     - _ThresholdEnd: 0.25
+    - _UVOffset: 0
+    - _UVScale: 1
     - _Use8Neighbourhood: 1
     - _UseScreenSpaceOutlineWidth: 0
     m_Colors:
+    - _EdgeColor: {r: 0.6014524, g: 0.8597516, b: 1.8641509, a: 1}
+    - _InvulnerabilityColor: {r: 0.30405825, g: 0.6857805, b: 0.82641506, a: 0.47058824}
     - _OutlineColor: {r: 1, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
