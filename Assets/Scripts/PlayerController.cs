@@ -53,16 +53,22 @@ public class PlayerController : MonoBehaviour
 
     
     [Header("Attacks")]
+    public float meleeDamage;
+    public float meleeLightHeal;
     [SerializeField]
-    private float meleeDamage;
+    private float meleeAttackSpeedPerSec, meleeAttackRange, rangeAttackCost, rangeAttackSpeedPerSec;
+    public float rangeAttackDamage, rangeAttackRange;
     [SerializeField]
-    private float meleeLightHeal, meleeAttackSpeedPerSec, meleeAttackRange, rangeAttackCost, rangeAttackDamage, rangeAttackSpeedPerSec, rangeAttackRange;
     private bool canAttack = true;
+
+    public GameObject meleeProj;
+    public GameObject rangedProj;
     
     [Header("Invulnerability")]
     public float invulnerabilityTime;
     public bool isInvulnerable;
     public Color invulnerabilityColor;
+
 
     // Material
     private Material material;
@@ -440,28 +446,25 @@ public class PlayerController : MonoBehaviour
             ani.SetTrigger("MeleeTrigger");
 
             canAttack = false;
-            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Monster");
             bool hitEnemy = false;
-            foreach (GameObject currEnemy in allEnemies)
+            Collider2D[] enemiesInsideArea;
+            if (faceDir == 1)
             {
-                if ((transform.position.y) >= currEnemy.transform.position.y - 4.0 && (transform.position.y) <= currEnemy.transform.position.y + 4.0)
+                enemiesInsideArea = Physics2D.OverlapAreaAll(new Vector2(transform.position.x + meleeAttackRange - 0.1f, transform.position.y - 0.1f), new Vector2(transform.position.x + meleeAttackRange + 0.1f, transform.position.y + 0.1f));
+                Instantiate(meleeProj, new Vector3(transform.position.x + meleeAttackRange, transform.position.y), Quaternion.identity);
+            }
+            else
+            {
+                enemiesInsideArea = Physics2D.OverlapAreaAll(new Vector2(transform.position.x - meleeAttackRange - 0.1f, transform.position.y - 0.1f), new Vector2(transform.position.x - meleeAttackRange + 0.1f, transform.position.y + 0.1f));
+                Instantiate(meleeProj, new Vector3(transform.position.x - meleeAttackRange, transform.position.y), Quaternion.identity);
+            }
+            foreach (Collider2D currEnemy in enemiesInsideArea)
+            {
+                Debug.Log(currEnemy);
+                if (currEnemy.gameObject.CompareTag("Monster"))
                 {
-                    if (faceDir == 1)
-                    {
-                        if ((transform.position.x + meleeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x + meleeAttackRange) <= (currEnemy.transform.position.x + 3.0))
-                        {
-                            currEnemy.GetComponent<Monster>().TakeDamage(meleeDamage);
-                            hitEnemy = true;
-                        }
-                    }
-                    else
-                    {
-                        if ((transform.position.x - meleeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x - meleeAttackRange) <= (currEnemy.transform.position.x + 3.0))
-                        {
-                            currEnemy.GetComponent<Monster>().TakeDamage(meleeDamage);
-                            hitEnemy = true;
-                        }
-                    }
+                    currEnemy.gameObject.GetComponent<Monster>().TakeDamage(meleeDamage);
+                    hitEnemy = true;
                 }
             }
             if (hitEnemy)
@@ -492,31 +495,18 @@ public class PlayerController : MonoBehaviour
             DataManager.Instance.playerData.light -= rangeAttackCost;
             UIManager.Instance.BroadcastMessage("UpdateLight");
             canAttack = false;
-            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Monster");
-            foreach (GameObject currEnemy in allEnemies)
-            {
-                if ((transform.position.y) >= currEnemy.transform.position.y - 4.0 && (transform.position.y) <= currEnemy.transform.position.y + 4.0)
-                {
-                    if (faceDir == 1)
-                    {
-                        if ((transform.position.x + rangeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x + rangeAttackRange) <= (currEnemy.transform.position.x + 3.0))
-                        {
-                            currEnemy.GetComponent<Monster>().TakeDamage(rangeAttackDamage);
-                        }
-                    }
-                    else
-                    {
-                        if ((transform.position.x - rangeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x - rangeAttackRange) <= (currEnemy.transform.position.x + 3.0))
-                        {
-                            currEnemy.GetComponent<Monster>().TakeDamage(rangeAttackDamage);
-                        }
-                    }
-                }
-            }
+            Debug.Log("creating ranged");
+            Instantiate(rangedProj, new Vector3(transform.position.x, transform.position.y), Quaternion.identity);
+            Debug.Log("created ranged");
             StartCoroutine(attackCooldown(rangeAttackSpeedPerSec));
         }
     }
     #endregion
+
+    public bool isFacingRight()
+    {
+        return faceDir == 1;
+    }
 
     // Respond to OnLanternFirstPickedUp event in GameManager
     public void SetLanternStatus()
