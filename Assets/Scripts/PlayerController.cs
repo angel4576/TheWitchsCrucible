@@ -16,20 +16,22 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private CapsuleCollider2D col;
     private SpriteRenderer rend;
-    private int faceDir;
+    [HideInInspector]public int faceDir;
     public GameObject PauseScreen;
 
     private PhysicsCheck physicsCheck;
     
-
     public Pet pet;
 
     [Header("Movement")]
     public float speed;
 
     [Header("Jump")]
-    public float jumpForce;
+    [HideInInspector]public float jumpForce;
+    public float jumpSpeed; // initial speed
+    public float gravity;
     private bool jumpTriggered;
+    private bool isJump;
 
     [Header("Pet Control")]
     public float petMoveDelayTime;
@@ -134,6 +136,8 @@ public class PlayerController : MonoBehaviour
         {
             FlipDirection();
         }
+        
+        
 
         // Set animation state
         SetAnimation();
@@ -141,7 +145,6 @@ public class PlayerController : MonoBehaviour
         // Test Player Death 
         if(Keyboard.current.f1Key.wasPressedThisFrame)
         {
-            // Debug.Log("Player Die!");
             isDead = true;
             ani.SetTrigger("DieTrigger");
         }
@@ -154,7 +157,11 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
-
+        
+        // Jump
+        if(isJump)
+            UpdateVelocityY();
+        
         if (!physicsCheck.isOnGround)
         {
             rb.velocity += Vector2.down * Physics2D.gravity.y * Time.fixedDeltaTime;
@@ -172,10 +179,15 @@ public class PlayerController : MonoBehaviour
     #region Character Movement
     private void Move()
     {
+        
         if (inputDirection.y != 0)
         {
             inputDirection.x *= math.sqrt(2);
         }
+        
+        // if(physicsCheck.isTouchForward && physicsCheck.isOnGround)
+        //     rb.velocity = new Vector2(0, rb.velocity.y);
+        // else
         rb.velocity = new Vector2(inputDirection.x * speed, rb.velocity.y);
 
         if (inputDirection.x != 0 && !pet.canMove)
@@ -193,18 +205,44 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(DelayJump(0.00000001f));
 
             // Pet jump
-            Invoke(nameof(ControlPetJump), petJumpDelayTime);
+            // Invoke(nameof(ControlPetJump), petJumpDelayTime);
         }
     }
 
     private IEnumerator DelayJump(float delay)
-{
-    ani.SetTrigger("JumpTrigger");
-    yield return new WaitForSeconds(delay);
-    rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-    yield return new WaitForSeconds(0.05f);
-    jumpTriggered = false;
-}
+    {
+        ani.SetTrigger("JumpTrigger");
+        yield return new WaitForSeconds(delay);
+        
+        isJump = true;
+        // Ignore x_velocity when touch wall
+        if(physicsCheck.isTouchForward)
+            rb.velocity = new Vector2(0, jumpSpeed);
+        else
+            rb.velocity = new Vector2(rb.velocity.x, jumpSpeed); // initial y speed
+
+        // rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+        
+        yield return new WaitForSeconds(0.05f);
+        jumpTriggered = false;
+    }
+
+    private void UpdateVelocityY()
+    {
+        // Ignore x_velocity when touch wall during update
+        if(physicsCheck.isTouchForward)
+            rb.velocity = new Vector2(0, rb.velocity.y);
+
+        // V = V0 - gt
+        float yVelocity = rb.velocity.y;
+        yVelocity -= gravity * Time.fixedDeltaTime; // update y speed
+        rb.velocity = new Vector2(rb.velocity.x, yVelocity);
+
+        // When fall and land on ground
+        if (physicsCheck.isOnGround && rb.velocity.y <= 0)
+            isJump = false;
+
+    }
 
     private void ControlPetMovement()
     {

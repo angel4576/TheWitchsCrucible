@@ -11,12 +11,18 @@ public class PhysicsCheck : MonoBehaviour
     public float checkRadius;
     public LayerMask groundLayer;
     
+    [Header("Forward Check")]
+    public Vector2 forwardOffset;
+    public float forwardCheckRadius;
+    public float forwardCheckLength;
+    
     [Header("Physics Material")]
     public PhysicsMaterial2D smooth;
     public PhysicsMaterial2D friction;
 
     [Header("Status")]
     public bool isOnGround;
+    public bool isTouchForward;
     private Rigidbody2D rb;
 
     // public Vector2 leftOffset;
@@ -27,13 +33,15 @@ public class PhysicsCheck : MonoBehaviour
     private CinemachineImpulseSource impulseSource;
     private bool hasStartedFalling = false;
     private float maxFallSpeed = 0f;
-
-  
+    
     private bool hasChangedFOV = false;
-
+    
+    private PlayerController player;
+    
     private void Awake() 
     {
         rb = GetComponent<Rigidbody2D>();
+        player = GetComponent<PlayerController>();
     }
 
     // Start is called before the first frame update
@@ -61,6 +69,32 @@ public class PhysicsCheck : MonoBehaviour
     private void Check()
     {
         isOnGround = Physics2D.OverlapCircle((Vector2)transform.position + bottomOffset, checkRadius, groundLayer);
+        if (player != null)
+        {
+            // isTouchForward = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(forwardOffset.x * player.faceDir, forwardOffset.y)
+            //     , forwardCheckRadius, groundLayer);
+            
+            var hitObj = Physics2D.Raycast((Vector2)transform.position + new Vector2(forwardOffset.x * player.faceDir, forwardOffset.y), 
+                new Vector2(player.faceDir, 0), forwardCheckLength, groundLayer);
+
+            if (hitObj) // Ray hits something
+            {
+                var platEffector = hitObj.collider.GetComponent<PlatformEffector2D>();
+                if (platEffector != null && platEffector.isActiveAndEnabled) // not touch forward if platformEffector is active
+                {
+                    isTouchForward = false;
+                }
+                else
+                {
+                    isTouchForward = true;
+                }
+                
+            }
+            
+            // isTouchForward = Physics2D.Raycast((Vector2)transform.position + new Vector2(forwardOffset.x * player.faceDir, forwardOffset.y), 
+            //     new Vector2(player.faceDir, 0), forwardCheckLength, groundLayer);
+            
+        }
     }
 
     void SwitchPhysicsMaterial()
@@ -77,7 +111,16 @@ public class PhysicsCheck : MonoBehaviour
 
     private void OnDrawGizmosSelected() 
     {
-        Gizmos.DrawWireSphere((Vector2)transform.position + bottomOffset, checkRadius);    
+        Gizmos.DrawWireSphere((Vector2)transform.position + bottomOffset, checkRadius);
+
+        if (player != null)
+        {
+            Gizmos.color = Color.green;
+            // Gizmos.DrawWireSphere((Vector2)transform.position + new Vector2(forwardOffset.x * player.faceDir, forwardOffset.y), forwardCheckRadius);
+            Gizmos.DrawRay((Vector2)transform.position + new Vector2(forwardOffset.x * player.faceDir, forwardOffset.y),
+                new Vector2(player.faceDir, 0) * forwardCheckLength);
+            
+        }
     }
 
     private void DetectFallAndShake()

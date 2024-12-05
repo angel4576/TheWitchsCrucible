@@ -15,18 +15,18 @@ public class Pet : MonoBehaviour, IInteractable
     
     [Header("Pet Movement")]
     public float speed;
-    public float jumpForce;
+    [HideInInspector]public float jumpForce;
     private int faceDir;
-    private float xMoveDir;
+    [HideInInspector]private float xMoveDir;
     
     [Header("Pet Respawn")]
     public float loseDistance;
     public float respawnTime;
     
-    [Header("Obstacle Check")]
-    public LayerMask groundLayer;
-    public float rayLength;
-    public Vector2 rayOffset;
+    // [Header("Obstacle Check")]
+    // public LayerMask groundLayer;
+    // public float rayLength;
+    // public Vector2 rayOffset;
 
     // [Header("Pet Status")]
     private float idleYDistance; // how far away from player to set to be idle
@@ -125,7 +125,7 @@ public class Pet : MonoBehaviour, IInteractable
 
     public void SetAnimationState<T>(int flag, string param, T value)
     {
-        Debug.Log($"SetAnimationState {flag} {param} {value}");
+        // Debug.Log($"SetAnimationState {flag} {param} {value}");
         ani.SetTrigger("HugTrigger");
         switch (flag)
         {
@@ -236,7 +236,7 @@ public class Pet : MonoBehaviour, IInteractable
         transform.localScale = new Vector3(faceDir * Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
     }
 
-    void CheckForwardObstacle()
+    /*void CheckForwardObstacle()
     {
         Vector2 rayDirection = new Vector2(faceDir, 0);
         Vector2 offset = new Vector2(rayOffset.x * faceDir, rayOffset.y);
@@ -250,7 +250,7 @@ public class Pet : MonoBehaviour, IInteractable
         Color rayColor = hit ? Color.red : Color.green;
 
         Debug.DrawRay((Vector2)transform.position + offset, rayDirection * rayLength, rayColor);
-    }
+    }*/
 
     #region Path Finding
 
@@ -344,8 +344,8 @@ public class Pet : MonoBehaviour, IInteractable
             return;
 
         // adjust time interval based on distance
-        pathFindTimeInterval = math.max(0, xDistToPlayer / math.abs(speed) - 0.4f);
-        pathFindTimeInterval = math.min(pathFindTimeInterval, 1.5f);
+        // pathFindTimeInterval = math.max(0, xDistToPlayer / math.abs(speed) - 0.4f);
+        // pathFindTimeInterval = math.min(pathFindTimeInterval, 1.5f);
         if(pathFindTimer <= 0.001f)
         {
             pathFindTimer = pathFindTimeInterval;

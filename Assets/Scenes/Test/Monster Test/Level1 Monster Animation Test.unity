@@ -1219,7 +1219,7 @@ MonoBehaviour:
   fadeDuration: 1
   fadeCanvas: {fileID: 0}
   fadeImage: {fileID: 0}
-  enableSceneConfig: 1
+  enableSceneConfig: 0
 --- !u!4 &74128486
 Transform:
   m_ObjectHideFlags: 0
@@ -10475,7 +10475,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 31.6, y: 21.312172, z: -10}
+  m_LocalPosition: {x: 216.76, y: 22.172173, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11954,11 +11954,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4563395173411839308, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 62.7
+      value: 219.83
       objectReference: {fileID: 0}
     - target: {fileID: 4563395173411839308, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 20.23
+      value: 11.52
       objectReference: {fileID: 0}
     - target: {fileID: 4563395173411839308, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -13149,7 +13149,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &634123718
 Transform:
   m_ObjectHideFlags: 0
@@ -19085,7 +19085,7 @@ Transform:
   m_GameObject: {fileID: 917230992}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 31.6, y: 12.4, z: 0}
+  m_LocalPosition: {x: 216.76, y: 13.26, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19193,9 +19193,13 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  forwardOffset: {x: 0.41, y: 1.09}
+  forwardCheckRadius: 0.17
+  forwardCheckLength: 0.1
   smooth: {fileID: 6200000, guid: 1c5cfb3f7ff48184397fd2455d14389a, type: 2}
   friction: {fileID: 6200000, guid: 16dff1d0e528d2e43a574b42aaeba972, type: 2}
   isOnGround: 0
+  isTouchForward: 0
   fallThreshold: -30
 --- !u!114 &917230998
 MonoBehaviour:
@@ -19209,10 +19213,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66abd557238ed454d996aa33eb976de1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  faceDir: 0
   PauseScreen: {fileID: 1964528920}
   pet: {fileID: 1313239724}
   speed: 10
   jumpForce: 20
+  jumpSpeed: 24
+  gravity: 9.8
   petMoveDelayTime: 0.2
   petJumpDelayTime: 0.2
   lantern: {fileID: 910825043}
@@ -19223,9 +19230,12 @@ MonoBehaviour:
   meleeAttackSpeedPerSec: 0
   meleeAttackRange: 5
   rangeAttackCost: 1
-  rangeAttackDamage: 5
   rangeAttackSpeedPerSec: 0
+  rangeAttackDamage: 5
   rangeAttackRange: 0
+  canAttack: 1
+  meleeProj: {fileID: 1272124353256304504, guid: 8190f95c3bff3b2449dd9c45167a7e38, type: 3}
+  rangedProj: {fileID: 8128267858619025443, guid: 6578665e0b3b69c458d17f5b6654b30d, type: 3}
   invulnerabilityTime: 2
   isInvulnerable: 0
   invulnerabilityColor: {r: 0.30405825, g: 0.6857805, b: 0.82641506, a: 0.47058824}
@@ -24963,7 +24973,6 @@ GameObject:
   - component: {fileID: 1232863066}
   - component: {fileID: 1232863065}
   - component: {fileID: 1232863064}
-  - component: {fileID: 1232863063}
   m_Layer: 6
   m_Name: Obstacle (20)
   m_TagString: Untagged
@@ -24971,25 +24980,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!251 &1232863063
-PlatformEffector2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1232863062}
-  m_Enabled: 0
-  m_UseColliderMask: 0
-  m_ColliderMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RotationalOffset: -90
-  m_UseOneWay: 1
-  m_UseOneWayGrouping: 0
-  m_SurfaceArc: 130
-  m_UseSideFriction: 0
-  m_UseSideBounce: 0
-  m_SideArc: 0
 --- !u!61 &1232863064
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -25955,9 +25945,13 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  forwardOffset: {x: 0, y: 0}
+  forwardCheckRadius: 0
+  forwardCheckLength: 0
   smooth: {fileID: 0}
   friction: {fileID: 0}
   isOnGround: 0
+  isTouchForward: 0
   fallThreshold: -100
 --- !u!114 &1313239724
 MonoBehaviour:
@@ -25977,14 +25971,9 @@ MonoBehaviour:
   jumpForce: 20
   loseDistance: 10
   respawnTime: 2
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  rayLength: 0
-  rayOffset: {x: 0, y: 0}
   distanceToPlayer: 5
   pathFindTimer: 0
-  pathFindTimeInterval: 0
+  pathFindTimeInterval: 2
   canMove: 0
   canJump: 0
 --- !u!4 &1313239725
@@ -34492,7 +34481,7 @@ Transform:
   m_GameObject: {fileID: 1735415756}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 31.6, y: 21.312172, z: -10}
+  m_LocalPosition: {x: 216.76, y: 22.172173, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
