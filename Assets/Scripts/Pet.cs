@@ -276,7 +276,7 @@ public class Pet : MonoBehaviour, IInteractable
 
         if(curPointIndex >= path.Count - 1) // arrive
         {
-            Debug.Log("Arrived Path Destination");
+            //Debug.Log("Arrived Path Destination");
             ani.SetBool("IsRunning", false);
             rb.velocity = Vector2.zero;
             // rb.velocity = new Vector2(1.0f, 0);
