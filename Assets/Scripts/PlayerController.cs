@@ -50,7 +50,11 @@ public class PlayerController : MonoBehaviour
     public float deathDelay; // seconds before player dies and start the process of restarting
     
 
-    [Header("Animation")]
+    [Header("Switch Effect")]
+    public GameObject switchEffect;
+    public Vector3 switchEffectOffset;
+
+    [Header("Spine Animation")]
     private Animator ani;
     public SkeletonMecanim skeletonMecanim;  // Use SkeletonMecanim instead of SkeletonAnimation
     private Spine.Slot[] cloakSlots;
@@ -354,6 +358,13 @@ public class PlayerController : MonoBehaviour
         
     }
 
+    IEnumerator PlaySwitchEffect()
+    {
+        GameObject obj = Instantiate(switchEffect, transform.position + switchEffectOffset, Quaternion.identity);
+        yield return new WaitForSeconds(0.5f);
+        Destroy(obj);
+    }
+
     #region Event
 
     public void OnPlayerSwitchWorld()
@@ -364,12 +375,22 @@ public class PlayerController : MonoBehaviour
             // disable cape's spine slot
             DisableCloak();
             ani.SetBool("IsLanternOn", false);
+
+            // switch effect
+            if(switchEffect != null){
+                StartCoroutine(PlaySwitchEffect());
+            }
         }
         else
         {
             // enable cape's spine slot
             Invoke(nameof(EnableCloak), 0.2f);
             ani.SetBool("IsLanternOn", true);
+
+            // switch effect
+            if(switchEffect != null){
+                StartCoroutine(PlaySwitchEffect());
+            }
         }
     }
     #endregion
