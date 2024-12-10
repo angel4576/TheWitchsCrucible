@@ -44,7 +44,11 @@ public class PlayerController : MonoBehaviour
     [Header("Death Effect")]
     public float dissolveSpeed;
     private float dissolveThreshold = 2;
+
     public bool isDead;
+    // private bool isDead;
+    public float deathDelay; // seconds before player dies and start the process of restarting
+    
 
     [Header("Animation")]
     private Animator ani;
@@ -217,7 +221,8 @@ public class PlayerController : MonoBehaviour
         isJump = true;
         // Ignore x_velocity when touch wall
         if(physicsCheck.isTouchForward)
-            rb.velocity = new Vector2(0, jumpSpeed);
+            // rb.velocity = new Vector2(0, jumpSpeed);
+            rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
         else
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed); // initial y speed
 
@@ -230,8 +235,8 @@ public class PlayerController : MonoBehaviour
     private void UpdateVelocityY()
     {
         // Ignore x_velocity when touch wall during update
-        if(physicsCheck.isTouchForward)
-            rb.velocity = new Vector2(0, rb.velocity.y);
+        /*if(physicsCheck.isTouchForward)
+            rb.velocity = new Vector2(0, rb.velocity.y);*/
 
         // V = V0 - gt
         float yVelocity = rb.velocity.y;
@@ -283,9 +288,10 @@ public class PlayerController : MonoBehaviour
         }
         
         
-        if (DataManager.Instance.playerData.currentHealth <= 0)
+        if (DataManager.Instance.playerData.currentHealth <= 0 && !isDead)
         {
-            Die();
+            isDead = true;
+            StartCoroutine(DieCoroutine());
         }
         
     }
@@ -314,6 +320,16 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Player died");
         SceneManager.Instance.RestartFromCheckPoint();
         //SceneManager.Instance.ReloadScene();
+    }
+
+    IEnumerator DieCoroutine(){
+        // wait for a few seconds before dying
+        // disable player control
+        Debug.Log("death coroutine started");
+        inputActions.Disable();
+        yield return new WaitForSeconds(deathDelay);
+        Debug.Log("death coroutine ended");
+        Die();
     }
 
     #region Animation Control
