@@ -41,8 +41,8 @@ public class Monster : MonoBehaviour
     public bool idleIfPlayerOutOfRange = false;
 
     // status
-    [HideInInspector]private bool isChasing;
-    [HideInInspector]private bool isAttacking;
+    [HideInInspector]public bool isChasing;
+    [HideInInspector]public bool isAttacking;
     [HideInInspector]private bool canMove;
     [HideInInspector]private bool canChase;
     [HideInInspector]private bool canAttack;

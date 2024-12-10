@@ -40,7 +40,7 @@ public class Pet : MonoBehaviour, IInteractable
 
     private List<Link> path;
     private int curPointIndex;
-    private bool isJumping;
+    public bool isJumping;
 
     [HideInInspector]public bool canMove;
     [HideInInspector]public bool canJump;

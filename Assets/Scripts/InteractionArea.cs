@@ -13,6 +13,7 @@ public class InteractionArea : MonoBehaviour
     private IInteractable f_interactableItem;
     public bool canInteract;
 
+    public bool isInteracting;
     private void Awake() 
     {
         // inputActions = GetComponentInParent<PlayerController>().inputActions;
@@ -33,7 +34,10 @@ public class InteractionArea : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (!canInteract)
+        {
+            isInteracting = false;
+        }
     }
     
     private void InteractWithPet(InputAction.CallbackContext context)
@@ -66,10 +70,10 @@ public class InteractionArea : MonoBehaviour
             interactableItem = other.GetComponent<IInteractable>();
             if (interactableItem != null)
             {
+                isInteracting = true;
                 interactableItem.Interact();
             }
         }
-
         // F_Interact
         if (other.CompareTag("F_Interactable"))
         {
@@ -80,7 +84,6 @@ public class InteractionArea : MonoBehaviour
     private void OnTriggerExit2D(Collider2D other) 
     {
         canInteract = false;
-
         // if(other.CompareTag("Pet"))
         // {
         //     // Leave pet

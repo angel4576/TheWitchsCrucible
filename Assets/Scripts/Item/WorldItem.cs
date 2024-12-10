@@ -1,6 +1,6 @@
+using TMPro;
 using UnityEngine;
 using static ItemData;
-
 public enum ItemType
 {
     Light,
@@ -21,7 +21,6 @@ public class WorldItem : MonoBehaviour, IInteractable
     [Header("Light Item Settings")]
     [SerializeField]
     private float lightAmount = 1f;
-
     private void Awake()
     {
         // register the item
@@ -80,6 +79,7 @@ public class WorldItem : MonoBehaviour, IInteractable
 
         //checkpoint
         DataManager.Instance.WriteCheckpointData(transform.position);
+
     }
 
     private void HandleDoorInteraction()

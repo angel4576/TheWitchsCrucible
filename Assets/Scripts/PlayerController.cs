@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]public float jumpForce;
     public float jumpSpeed; // initial speed
     public float gravity;
-    private bool jumpTriggered;
+    public bool jumpTriggered;
     private bool isJump;
 
     [Header("Pet Control")]
@@ -44,7 +44,9 @@ public class PlayerController : MonoBehaviour
     [Header("Death Effect")]
     public float dissolveSpeed;
     private float dissolveThreshold = 2;
-    private bool isDead;
+
+    public bool isDead;
+    // private bool isDead;
     public float deathDelay; // seconds before player dies and start the process of restarting
     
 
