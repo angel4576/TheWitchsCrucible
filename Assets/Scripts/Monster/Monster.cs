@@ -11,7 +11,11 @@ public class Monster : MonoBehaviour
     public PlayerController playerScript;
     public Lantern lantern;
     public Healthbar healthBar;
-
+    
+    [Header("Monster Appear")]
+    public GameObject monsterStartAnimation;
+    public float animationDuration;
+    
     [Header("Monster Attributes")]
     public EnemyType type;
     public float moveSpeed;
@@ -47,6 +51,7 @@ public class Monster : MonoBehaviour
     [HideInInspector]private bool canChase;
     [HideInInspector]private bool canAttack;
     [HideInInspector]private Vector2 initialPosition;
+    public bool isAppear;
 
     // flags
     [HideInInspector]private bool isPlayerDead = false; // ensure that player is killed only once
@@ -98,6 +103,7 @@ public class Monster : MonoBehaviour
         canChase = false;
         canMove = true;
         canAttack = false;
+        isAppear = false;
 
         currentHealth = maxHealth;
 
@@ -124,6 +130,7 @@ public class Monster : MonoBehaviour
         canMove = false;
         canChase = false;
         canAttack = false;
+        isAppear = true;
         
         ResetArm();
     }
@@ -137,6 +144,7 @@ public class Monster : MonoBehaviour
             TakeDamage(7);
         }
 
+        
         if(lantern == null) // if player does not have lantern
         {
             canMove = false;
@@ -153,9 +161,21 @@ public class Monster : MonoBehaviour
             }
             else
             {   
-                canMove = true;
-                canChase = CheckPlayerInChaseRange();
-                canAttack = true;
+                if (!isAppear) // monster first appears
+                {
+                    // isAppear = true;
+                    monsterStartAnimation.SetActive(true);
+                    StartCoroutine("StartAnimationCountdown"); // cannot move until animation finishes
+                    
+                }
+                else
+                {
+                    canMove = true;
+                    canChase = CheckPlayerInChaseRange();
+                    canAttack = true;
+                }
+                
+                
             }
         }
 
@@ -296,7 +316,7 @@ public class Monster : MonoBehaviour
     
     public void TakeDamage(float damage)
     {
-        Debug.Log("took damage");
+        // Debug.Log("took damage");
         if(isKillable)
         {
             currentHealth -= damage;
@@ -339,6 +359,21 @@ public class Monster : MonoBehaviour
         // playerScript.Die();
         DamagePlayer(99999);
     }
+
+    IEnumerator StartAnimationCountdown()
+    {
+        yield return new WaitForSeconds(animationDuration);
+        
+        /*canMove = true;
+        canChase = CheckPlayerInChaseRange();
+        canAttack = true;*/
+        isAppear = true;
+        
+        monsterStartAnimation.SetActive(false);
+        // show monster
+        // gameObject.SetActive(true);
+    }
+    
     #endregion
     
     // helper functions
