@@ -219,7 +219,8 @@ public class PlayerController : MonoBehaviour
         isJump = true;
         // Ignore x_velocity when touch wall
         if(physicsCheck.isTouchForward)
-            rb.velocity = new Vector2(0, jumpSpeed);
+            // rb.velocity = new Vector2(0, jumpSpeed);
+            rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
         else
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed); // initial y speed
 
@@ -232,8 +233,8 @@ public class PlayerController : MonoBehaviour
     private void UpdateVelocityY()
     {
         // Ignore x_velocity when touch wall during update
-        if(physicsCheck.isTouchForward)
-            rb.velocity = new Vector2(0, rb.velocity.y);
+        /*if(physicsCheck.isTouchForward)
+            rb.velocity = new Vector2(0, rb.velocity.y);*/
 
         // V = V0 - gt
         float yVelocity = rb.velocity.y;
