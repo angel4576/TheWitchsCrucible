@@ -53,11 +53,12 @@ public class GameManager : MonoBehaviour
         OnLanternFirstPickedUp.RemoveAllListeners();
 
         player = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<PlayerController>();
-        monster = GameObject.FindGameObjectsWithTag("Monster")[0].GetComponent<Monster>();
+        // monster = GameObject.FindGameObjectsWithTag("Monster")[0].GetComponent<Monster>();
+        monster = GameObject.Find("Monster")?.GetComponent<Monster>();
         world = GameObject.Find("WorldControl").GetComponent<WorldControl>();
 
-        OnLanternFirstPickedUp.AddListener(player.SetLanternStatus);
-        OnLanternFirstPickedUp.AddListener(monster.AcquireLantern);
-        OnLanternFirstPickedUp.AddListener(world.SetCanSwitch);    
+        // OnLanternFirstPickedUp.AddListener(player.SetLanternStatus);
+        // OnLanternFirstPickedUp.AddListener(monster.AcquireLantern);
+        // OnLanternFirstPickedUp.AddListener(world.SetCanSwitch);    
     }
 }

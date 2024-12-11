@@ -305,7 +305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &11179977
 Transform:
   m_ObjectHideFlags: 0
@@ -5122,9 +5122,9 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8c9462281f817a746b881b056d829b24, type: 2}
-  - {fileID: 2100000, guid: 8596ca86bcf98c742967cb45da78e4e6, type: 2}
-  - {fileID: 2100000, guid: 8c9462281f817a746b881b056d829b24, type: 2}
+  - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
+  - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
+  - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -34263,7 +34263,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1645575958
 Transform:
   m_ObjectHideFlags: 0
@@ -39115,7 +39115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 917230998}
-  monster: {fileID: 0}
+  monster: {fileID: 243817771}
   world: {fileID: 1553653608}
   OnLanternFirstPickedUp:
     m_PersistentCalls:
@@ -39132,7 +39132,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 243817771}
         m_TargetAssemblyTypeName: Monster, Assembly-CSharp
         m_MethodName: AcquireLantern
         m_Mode: 1
@@ -41291,6 +41291,7 @@ MonoBehaviour:
   pursuitMusic: {fileID: 8300000, guid: b0f4b29e538a07643918bba2a2ebdec6, type: 3}
   SpiritMusic: {fileID: 8300000, guid: ea184a38543b6e341874f05023a309ee, type: 3}
   RealMusic: {fileID: 8300000, guid: 8678e9781097bed49b142f8c5b7dd917, type: 3}
+  monster: {fileID: 243817771}
 --- !u!4 &1928272031
 Transform:
   m_ObjectHideFlags: 0

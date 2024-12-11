@@ -9,13 +9,13 @@ public class MusicManager : MonoBehaviour
     public AudioClip RealMusic;
     private AudioSource audioSource;
 
-    private Monster monster;
+    public Monster monster;
     private WorldControl worldControl;
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
         worldControl = FindObjectOfType<WorldControl>();
-        monster = FindObjectOfType<Monster>();
+        // monster = FindObjectOfType<Monster>();
         if (monster == null)
         {
             Debug.LogError("Monster script not found in the scene!");
@@ -31,7 +31,7 @@ public class MusicManager : MonoBehaviour
     {
         if (worldControl.isRealWorld)
         {
-            if (monster.isChasing)
+            if (monster != null && monster.isChasing)
             {
                 PlayMusic(pursuitMusic);
             }
