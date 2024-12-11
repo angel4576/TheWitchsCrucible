@@ -13,7 +13,8 @@ public class Monster : MonoBehaviour
     public Healthbar healthBar;
     
     [Header("Monster Appear")]
-    public GameObject monsterStartAnimation;
+    public GameObject monsterAnimation;
+    public MonsterAppearanceController monsterAppearController;
     public float animationDuration;
     
     [Header("Monster Attributes")]
@@ -47,11 +48,12 @@ public class Monster : MonoBehaviour
     // status
     [HideInInspector]public bool isChasing;
     [HideInInspector]public bool isAttacking;
-    [HideInInspector]private bool canMove;
-    [HideInInspector]private bool canChase;
-    [HideInInspector]private bool canAttack;
+    /*[HideInInspector]*/public bool canMove;
+    /*[HideInInspector]*/public bool canChase;
+    /*[HideInInspector]*/public bool canAttack;
     [HideInInspector]private Vector2 initialPosition;
-    public bool isAppear;
+    // public bool isAppear;
+    public bool foundLantern;
 
     // flags
     [HideInInspector]private bool isPlayerDead = false; // ensure that player is killed only once
@@ -71,7 +73,7 @@ public class Monster : MonoBehaviour
         // retrieve references
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        // lantern ?= GameObject.Find("Lantern").GetComponent<Lantern>();   
+        lantern = GameObject.Find("Lantern").GetComponent<Lantern>();   
         healthBar = GetComponentInChildren<Healthbar>();
 
         animator = GetComponent<Animator>();
@@ -103,7 +105,8 @@ public class Monster : MonoBehaviour
         canChase = false;
         canMove = true;
         canAttack = false;
-        isAppear = false;
+        // foundLantern = false;
+        // isAppear = false;
 
         currentHealth = maxHealth;
 
@@ -130,9 +133,9 @@ public class Monster : MonoBehaviour
         canMove = false;
         canChase = false;
         canAttack = false;
-        isAppear = true;
-        
-        ResetArm();
+        foundLantern = true;
+
+        // ResetArm();
     }
 
     // Update is called once per frame
@@ -145,13 +148,14 @@ public class Monster : MonoBehaviour
         }
 
         
-        if(lantern == null) // if player does not have lantern
+        //if(lantern == null) // if player does not have lantern
+        if(!foundLantern)
         {
             canMove = false;
             canChase = false;
             canAttack = false;
         }
-        else
+        else // if player has lantern
         {
             if(lantern.IsLanternOn){
                 // if lantern is off, monster can move and chase player in range
@@ -161,7 +165,7 @@ public class Monster : MonoBehaviour
             }
             else
             {   
-                if (!isAppear) // monster first appears
+                /*if (!isAppear) // monster first appears
                 {
                     // isAppear = true;
                     monsterStartAnimation.SetActive(true);
@@ -170,10 +174,10 @@ public class Monster : MonoBehaviour
                 }
                 else
                 {
-                    canMove = true;
-                    canChase = CheckPlayerInChaseRange();
-                    canAttack = true;
-                }
+                }*/
+                canMove = true;
+                canChase = CheckPlayerInChaseRange();
+                canAttack = true;
                 
                 
             }
@@ -360,19 +364,19 @@ public class Monster : MonoBehaviour
         DamagePlayer(99999);
     }
 
-    IEnumerator StartAnimationCountdown()
+    /*IEnumerator StartAnimationCountdown()
     {
         yield return new WaitForSeconds(animationDuration);
         
         /*canMove = true;
         canChase = CheckPlayerInChaseRange();
-        canAttack = true;*/
-        isAppear = true;
+        canAttack = true;#1#
+        // isAppear = true;
         
         monsterStartAnimation.SetActive(false);
         // show monster
         // gameObject.SetActive(true);
-    }
+    }*/
     
     #endregion
     
@@ -395,8 +399,15 @@ public class Monster : MonoBehaviour
     // Respond to OnLanternFirstPickedUp event in Game Manager
     public void AcquireLantern()
     {
-        lantern = playerScript.GetComponentInChildren<Lantern>();
+        // lantern = playerScript.GetComponentInChildren<Lantern>();
+        foundLantern = true;
+        
+        // set boss entrance animation active
+        // monsterAnimation?.SetActive(true);
+        // monsterAppearController?.TriggerBossAppearance();
     }
+    
+    
 
     // visualizing chase range
     private void OnDrawGizmosSelected() 

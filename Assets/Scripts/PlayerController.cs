@@ -40,6 +40,10 @@ public class PlayerController : MonoBehaviour
     [Header("Lantern")]
     public Lantern lantern;
     private bool hasLantern;
+    
+    [Header("Monster")]
+    public GameObject monsterAnimation;
+    public MonsterAppearanceController monsterAppearController;
 
     [Header("Death Effect")]
     public float dissolveSpeed;
@@ -588,6 +592,10 @@ public class PlayerController : MonoBehaviour
     {
         // hasLantern = true;
         lantern.gameObject.SetActive(true);
+        
+        // set boss entrance animation active
+        monsterAnimation?.SetActive(true);
+        monsterAppearController?.TriggerBossAppearance();
 
         // reset the lantern to off
         // this is not working because the lantern's Start() is queued to be called in next frame
