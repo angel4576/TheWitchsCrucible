@@ -394,7 +394,7 @@ public class Pet : MonoBehaviour, IInteractable
     // bind to OnSwitchWorld in World Control (inspector)
     public async void OnPetSwitchWorld()
     {
-        Debug.Log("On pet switch");
+        // Debug.Log("On pet switch");
         // Play animation
         Func<Task> delayDeactivate = async () =>
         {
