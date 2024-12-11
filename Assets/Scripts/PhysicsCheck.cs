@@ -69,6 +69,7 @@ public class PhysicsCheck : MonoBehaviour
     private void Check()
     {
         isOnGround = Physics2D.OverlapCircle((Vector2)transform.position + bottomOffset, checkRadius, groundLayer);
+
         if (player != null)
         {
             // isTouchForward = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(forwardOffset.x * player.faceDir, forwardOffset.y)
@@ -95,6 +96,7 @@ public class PhysicsCheck : MonoBehaviour
             //     new Vector2(player.faceDir, 0), forwardCheckLength, groundLayer);
             
         }
+
     }
 
     void SwitchPhysicsMaterial()

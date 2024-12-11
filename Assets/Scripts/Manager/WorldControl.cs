@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
@@ -9,6 +10,21 @@ public class WorldControl : MonoBehaviour
 {
     public static WorldControl Instance {get; private set;}
 
+    [Header("Switch World Effect Settings")]
+    public Transform playerTransform;
+    public Material spiritWorldMat;
+    public Material realWorldMat;
+    public float sphereRadius;
+    public float maxRadius;
+    public float noiseFrequency;
+    public float noiseOffset;
+    public float changeSpeed;
+    public bool canPlayEffect = false; 
+    
+    private int playerLayerID;
+    private int realWorldLayerID;
+    private int spiritWorldLayerID;
+    
     public GameObject SpiritWorldObjects;
     public GameObject RealWorldObjects;
 
@@ -24,6 +40,7 @@ public class WorldControl : MonoBehaviour
     public GameObject PauseScreen;
     public bool isToggling = false;
 
+    #region Unity Callbacks
     private void Awake()
     {
         if(Instance == null)
@@ -49,12 +66,34 @@ public class WorldControl : MonoBehaviour
         RealWorldObjects = GameObject.FindGameObjectsWithTag("RealWorld")[0];
         pet = GameObject.FindGameObjectWithTag("Pet").GetComponent<Pet>();
         
-        SpiritWorldObjects.SetActive(false);
+        // SpiritWorldObjects.SetActive(false);
+        SpiritWorldObjects.SetActive(true);
         RealWorldObjects.SetActive(true);
         
         isRealWorld = true;
+
+        SetUpShaderParams();
+        
+        playerLayerID = LayerMask.NameToLayer("Player");
+        realWorldLayerID = LayerMask.NameToLayer("RealWorld");
+        spiritWorldLayerID = LayerMask.NameToLayer("SpiritWorld");
+        // In real world, ignore spirit world collision
+        Physics2D.IgnoreLayerCollision(playerLayerID, spiritWorldLayerID, true);
+        Physics2D.IgnoreLayerCollision(playerLayerID, realWorldLayerID, false);
+
     }
 
+    void Update()
+    {
+        UpdateShaderParams();
+
+        PlaySwitchWorld();
+
+    }
+    
+    #endregion
+    
+    
     void ToggleActive(GameObject gameObject)
     {
         gameObject.SetActive(!gameObject.activeSelf);
@@ -69,7 +108,7 @@ public class WorldControl : MonoBehaviour
         yield return new WaitForSeconds(delay);
         foreach (GameObject obj in gameObject)
         {
-            ToggleActive(obj);
+            // ToggleActive(obj);
         }
 
         // set world status
@@ -77,25 +116,101 @@ public class WorldControl : MonoBehaviour
         pet.SetAnimationState(1 ,"IsReality", isRealWorld);
         onSwitchWorld?.Invoke();
         isToggling = false;
-    }
 
+        UpdateLayerCollision();
+        
+    }
+    
+    #region Shader Params
+    private void SetUpShaderParams()
+    {
+        // Set up shader params
+        realWorldMat.SetFloat("_SphereRadius", 0);
+        realWorldMat.SetFloat("_NoiseFrequency", noiseFrequency);
+        realWorldMat.SetFloat("_NoiseOffset", noiseOffset);
+        
+        spiritWorldMat.SetFloat("_SphereRadius", 0);
+        spiritWorldMat.SetFloat("_NoiseFrequency", noiseFrequency);
+        spiritWorldMat.SetFloat("_NoiseOffset", noiseOffset);
+    }
+    
+    private void UpdateShaderParams()
+    {
+        realWorldMat.SetVector("_CenterPosition", playerTransform.position);
+        realWorldMat.SetFloat("_SphereRadius", sphereRadius);
+        
+        spiritWorldMat.SetVector("_CenterPosition", playerTransform.position);
+        spiritWorldMat.SetFloat("_SphereRadius", sphereRadius);
+    }
+    #endregion
+
+    private void UpdateLayerCollision()
+    {
+        if (isRealWorld)
+        {
+            Physics2D.IgnoreLayerCollision(7, 8, true);
+            Physics2D.IgnoreLayerCollision(7, 9, false);
+        }
+        else // spirit world
+        {
+            // Debug.Log("Ignore real world collision");
+            Physics2D.IgnoreLayerCollision(7, 8, false);
+            Physics2D.IgnoreLayerCollision(7, 9, true);
+        }
+    }
+    
+    private void PlaySwitchWorld()
+    {   
+        if(!canPlayEffect)
+            return;
+        
+        sphereRadius += changeSpeed * Time.deltaTime;
+        if (sphereRadius >= maxRadius) // effect ends 
+        {
+            
+            changeSpeed = -changeSpeed;
+            sphereRadius = maxRadius;
+            canPlayEffect = false;
+        }
+
+        if (sphereRadius <= 0)
+        {
+            changeSpeed = -changeSpeed;
+            sphereRadius = 0; 
+            canPlayEffect = false;
+        }
+        
+        
+        /*else
+        {
+            sphereRadius -= changeSpeed * Time.deltaTime;
+            if (sphereRadius <= 0) // effect ends 
+            {
+                sphereRadius = 0;
+                canPlayEffect = false;
+            }
+        }*/
+        
+    }
+    
     public void SwitchWorld()
     {
         // if(!canSwitch)
         // {
         //     return;
         // }
-
+        
         if (!PauseScreen.GetComponent<PauseManager>().isPaused 
             && DataManager.Instance.playerData.canSwitchWorld)
         {
-
+            // Debug.Log("SWITCH!!!!!!");
             float delay = 0.000000001f;
             if (!SpiritWorldObjects.activeSelf && RealWorldObjects.activeSelf)
             {
                 // if real world -> spirit world, set delay for animation
-                Debug.Log("Switching to Spirit World");
+                // Debug.Log("Switching to Spirit World");
                 delay = 0.2f;
+                // delay = 1;
             }
 
             if(SpiritWorldObjects != null && RealWorldObjects != null && !isToggling)
@@ -104,10 +219,15 @@ public class WorldControl : MonoBehaviour
                 GameObject[] temp = new GameObject[2];
                 temp[0] = SpiritWorldObjects;
                 temp[1] = RealWorldObjects;
+                
+                canPlayEffect = true;
+                
                 StartCoroutine(DelayToggleActive(temp, delay));
+                
             }
+            
         }
- 
+        
     }
 
     // used for restart game
