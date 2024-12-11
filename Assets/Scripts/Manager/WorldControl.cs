@@ -9,7 +9,10 @@ using System.Collections.Generic;
 public class WorldControl : MonoBehaviour
 {
     public static WorldControl Instance {get; private set;}
-
+    
+    [Header("Monster")]
+    public GameObject monster;
+    
     [Header("Switch World Effect Settings")]
     public Transform playerTransform;
     public Material spiritWorldMat;
@@ -117,6 +120,9 @@ public class WorldControl : MonoBehaviour
         onSwitchWorld?.Invoke();
         isToggling = false;
 
+        // toggle monster 
+        monster.SetActive(!monster.activeSelf);
+        
         UpdateLayerCollision();
         
     }

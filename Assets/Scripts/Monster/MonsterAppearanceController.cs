@@ -36,8 +36,6 @@ public class MonsterAppearanceController : MonoBehaviour
     {
         yield return new WaitForSeconds(animationDuration);
         
-        // isAppear = true;
-        
         gameObject.SetActive(false);
         // show monster
         monster.SetActive(true);

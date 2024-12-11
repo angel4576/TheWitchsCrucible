@@ -73,12 +73,12 @@ public class Monster : MonoBehaviour
         // retrieve references
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        lantern = GameObject.Find("Lantern").GetComponent<Lantern>();   
+        // lantern = GameObject.Find("Lantern").GetComponent<Lantern>();   
         healthBar = GetComponentInChildren<Healthbar>();
 
         animator = GetComponent<Animator>();
         
-        // for now, switching world enables/disables the monsters, if change, a reference to the real/mental world must be retrieved
+        // for now, switching world enables/disables the monsters, if changed, a reference to the real/mental world must be retrieved
         // and this script must be updated
 
         // register to game manager
