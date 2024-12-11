@@ -38,7 +38,7 @@ public class WorldControl : MonoBehaviour
     public UnityEvent onSwitchWorld;
 
     public GameObject PauseScreen;
-    private bool isToggling = false;
+    public bool isToggling = false;
 
     #region Unity Callbacks
     private void Awake()

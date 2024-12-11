@@ -15,18 +15,18 @@ public class Pet : MonoBehaviour, IInteractable
     
     [Header("Pet Movement")]
     public float speed;
-    public float jumpForce;
+    [HideInInspector]public float jumpForce;
     private int faceDir;
-    private float xMoveDir;
+    [HideInInspector]private float xMoveDir;
     
     [Header("Pet Respawn")]
     public float loseDistance;
     public float respawnTime;
     
-    [Header("Obstacle Check")]
-    public LayerMask groundLayer;
-    public float rayLength;
-    public Vector2 rayOffset;
+    // [Header("Obstacle Check")]
+    // public LayerMask groundLayer;
+    // public float rayLength;
+    // public Vector2 rayOffset;
 
     // [Header("Pet Status")]
     private float idleYDistance; // how far away from player to set to be idle
@@ -40,7 +40,7 @@ public class Pet : MonoBehaviour, IInteractable
 
     private List<Link> path;
     private int curPointIndex;
-    private bool isJumping;
+    public bool isJumping;
 
     [HideInInspector]public bool canMove;
     [HideInInspector]public bool canJump;
@@ -236,7 +236,7 @@ public class Pet : MonoBehaviour, IInteractable
         transform.localScale = new Vector3(faceDir * Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
     }
 
-    void CheckForwardObstacle()
+    /*void CheckForwardObstacle()
     {
         Vector2 rayDirection = new Vector2(faceDir, 0);
         Vector2 offset = new Vector2(rayOffset.x * faceDir, rayOffset.y);
@@ -250,7 +250,7 @@ public class Pet : MonoBehaviour, IInteractable
         Color rayColor = hit ? Color.red : Color.green;
 
         Debug.DrawRay((Vector2)transform.position + offset, rayDirection * rayLength, rayColor);
-    }
+    }*/
 
     #region Path Finding
 
@@ -276,7 +276,7 @@ public class Pet : MonoBehaviour, IInteractable
 
         if(curPointIndex >= path.Count - 1) // arrive
         {
-            Debug.Log("Arrived Path Destination");
+            //Debug.Log("Arrived Path Destination");
             ani.SetBool("IsRunning", false);
             rb.velocity = Vector2.zero;
             // rb.velocity = new Vector2(1.0f, 0);
@@ -333,7 +333,7 @@ public class Pet : MonoBehaviour, IInteractable
     {
         if(NavManager.Instance == null)
         {
-            Debug.Log("No NavManager in current scene");
+//            Debug.Log("No NavManager in current scene");
             return;
         }
 
@@ -344,8 +344,8 @@ public class Pet : MonoBehaviour, IInteractable
             return;
 
         // adjust time interval based on distance
-        pathFindTimeInterval = math.max(0, xDistToPlayer / math.abs(speed) - 0.4f);
-        pathFindTimeInterval = math.min(pathFindTimeInterval, 1.5f);
+        // pathFindTimeInterval = math.max(0, xDistToPlayer / math.abs(speed) - 0.4f);
+        // pathFindTimeInterval = math.min(pathFindTimeInterval, 1.5f);
         if(pathFindTimer <= 0.001f)
         {
             pathFindTimer = pathFindTimeInterval;

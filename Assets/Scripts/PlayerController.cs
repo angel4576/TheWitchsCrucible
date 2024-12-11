@@ -16,20 +16,22 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private CapsuleCollider2D col;
     private SpriteRenderer rend;
-    private int faceDir;
+    [HideInInspector]public int faceDir;
     public GameObject PauseScreen;
 
     private PhysicsCheck physicsCheck;
     
-
     public Pet pet;
 
     [Header("Movement")]
     public float speed;
 
     [Header("Jump")]
-    public float jumpForce;
-    private bool jumpTriggered;
+    [HideInInspector]public float jumpForce;
+    public float jumpSpeed; // initial speed
+    public float gravity;
+    public bool jumpTriggered;
+    private bool isJump;
 
     [Header("Pet Control")]
     public float petMoveDelayTime;
@@ -38,13 +40,25 @@ public class PlayerController : MonoBehaviour
     [Header("Lantern")]
     public Lantern lantern;
     private bool hasLantern;
+    
+    [Header("Monster")]
+    public GameObject monsterAnimation;
+    public MonsterAppearanceController monsterAppearController;
 
     [Header("Death Effect")]
     public float dissolveSpeed;
     private float dissolveThreshold = 2;
-    private bool isDead;
 
-    [Header("Animation")]
+    public bool isDead;
+    // private bool isDead;
+    public float deathDelay; // seconds before player dies and start the process of restarting
+    
+
+    [Header("Switch Effect")]
+    public GameObject switchEffect;
+    public Vector3 switchEffectOffset;
+
+    [Header("Spine Animation")]
     private Animator ani;
     public SkeletonMecanim skeletonMecanim;  // Use SkeletonMecanim instead of SkeletonAnimation
     private Spine.Slot[] cloakSlots;
@@ -53,16 +67,22 @@ public class PlayerController : MonoBehaviour
 
     
     [Header("Attacks")]
+    public float meleeDamage;
+    public float meleeLightHeal;
     [SerializeField]
-    private float meleeDamage;
+    private float meleeAttackSpeedPerSec, meleeAttackRange, rangeAttackCost, rangeAttackSpeedPerSec;
+    public float rangeAttackDamage, rangeAttackRange;
     [SerializeField]
-    private float meleeLightHeal, meleeAttackSpeedPerSec, meleeAttackRange, rangeAttackCost, rangeAttackDamage, rangeAttackSpeedPerSec, rangeAttackRange;
     private bool canAttack = true;
+
+    public GameObject meleeProj;
+    public GameObject rangedProj;
     
     [Header("Invulnerability")]
     public float invulnerabilityTime;
     public bool isInvulnerable;
     public Color invulnerabilityColor;
+
 
     // Material
     private Material material;
@@ -128,6 +148,8 @@ public class PlayerController : MonoBehaviour
         {
             FlipDirection();
         }
+        
+        
 
         // Set animation state
         SetAnimation();
@@ -135,7 +157,6 @@ public class PlayerController : MonoBehaviour
         // Test Player Death 
         if(Keyboard.current.f1Key.wasPressedThisFrame)
         {
-            // Debug.Log("Player Die!");
             isDead = true;
             ani.SetTrigger("DieTrigger");
         }
@@ -148,7 +169,11 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
-
+        
+        // Jump
+        if(isJump)
+            UpdateVelocityY();
+        
         if (!physicsCheck.isOnGround)
         {
             rb.velocity += Vector2.down * Physics2D.gravity.y * Time.fixedDeltaTime;
@@ -166,10 +191,15 @@ public class PlayerController : MonoBehaviour
     #region Character Movement
     private void Move()
     {
+        
         if (inputDirection.y != 0)
         {
             inputDirection.x *= math.sqrt(2);
         }
+        
+        // if(physicsCheck.isTouchForward && physicsCheck.isOnGround)
+        //     rb.velocity = new Vector2(0, rb.velocity.y);
+        // else
         rb.velocity = new Vector2(inputDirection.x * speed, rb.velocity.y);
 
         if (inputDirection.x != 0 && !pet.canMove)
@@ -187,18 +217,45 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(DelayJump(0.00000001f));
 
             // Pet jump
-            Invoke(nameof(ControlPetJump), petJumpDelayTime);
+            // Invoke(nameof(ControlPetJump), petJumpDelayTime);
         }
     }
 
     private IEnumerator DelayJump(float delay)
-{
-    ani.SetTrigger("JumpTrigger");
-    yield return new WaitForSeconds(delay);
-    rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-    yield return new WaitForSeconds(0.05f);
-    jumpTriggered = false;
-}
+    {
+        ani.SetTrigger("JumpTrigger");
+        yield return new WaitForSeconds(delay);
+        
+        isJump = true;
+        // Ignore x_velocity when touch wall
+        if(physicsCheck.isTouchForward)
+            // rb.velocity = new Vector2(0, jumpSpeed);
+            rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
+        else
+            rb.velocity = new Vector2(rb.velocity.x, jumpSpeed); // initial y speed
+
+        // rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+        
+        yield return new WaitForSeconds(0.05f);
+        jumpTriggered = false;
+    }
+
+    private void UpdateVelocityY()
+    {
+        // Ignore x_velocity when touch wall during update
+        /*if(physicsCheck.isTouchForward)
+            rb.velocity = new Vector2(0, rb.velocity.y);*/
+
+        // V = V0 - gt
+        float yVelocity = rb.velocity.y;
+        yVelocity -= gravity * Time.fixedDeltaTime; // update y speed
+        rb.velocity = new Vector2(rb.velocity.x, yVelocity);
+
+        // When fall and land on ground
+        if (physicsCheck.isOnGround && rb.velocity.y <= 0)
+            isJump = false;
+
+    }
 
     private void ControlPetMovement()
     {
@@ -239,9 +296,10 @@ public class PlayerController : MonoBehaviour
         }
         
         
-        if (DataManager.Instance.playerData.currentHealth <= 0)
+        if (DataManager.Instance.playerData.currentHealth <= 0 && !isDead)
         {
-            Die();
+            isDead = true;
+            StartCoroutine(DieCoroutine());
         }
         
     }
@@ -272,6 +330,16 @@ public class PlayerController : MonoBehaviour
         //SceneManager.Instance.ReloadScene();
     }
 
+    IEnumerator DieCoroutine(){
+        // wait for a few seconds before dying
+        // disable player control
+        Debug.Log("death coroutine started");
+        inputActions.Disable();
+        yield return new WaitForSeconds(deathDelay);
+        Debug.Log("death coroutine ended");
+        Die();
+    }
+
     #region Animation Control
     // Set animation state
     private void SetAnimation()
@@ -294,6 +362,13 @@ public class PlayerController : MonoBehaviour
         
     }
 
+    IEnumerator PlaySwitchEffect()
+    {
+        GameObject obj = Instantiate(switchEffect, transform.position + switchEffectOffset, Quaternion.identity);
+        yield return new WaitForSeconds(0.5f);
+        Destroy(obj);
+    }
+
     #region Event
 
     public void OnPlayerSwitchWorld()
@@ -304,12 +379,22 @@ public class PlayerController : MonoBehaviour
             // disable cape's spine slot
             DisableCloak();
             ani.SetBool("IsLanternOn", false);
+
+            // switch effect
+            if(switchEffect != null){
+                StartCoroutine(PlaySwitchEffect());
+            }
         }
         else
         {
             // enable cape's spine slot
             Invoke(nameof(EnableCloak), 0.2f);
             ani.SetBool("IsLanternOn", true);
+
+            // switch effect
+            if(switchEffect != null){
+                StartCoroutine(PlaySwitchEffect());
+            }
         }
     }
     #endregion
@@ -440,28 +525,25 @@ public class PlayerController : MonoBehaviour
             ani.SetTrigger("MeleeTrigger");
 
             canAttack = false;
-            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Monster");
             bool hitEnemy = false;
-            foreach (GameObject currEnemy in allEnemies)
+            Collider2D[] enemiesInsideArea;
+            if (faceDir == 1)
             {
-                if ((transform.position.y) >= currEnemy.transform.position.y - 4.0 && (transform.position.y) <= currEnemy.transform.position.y + 4.0)
+                enemiesInsideArea = Physics2D.OverlapAreaAll(new Vector2(transform.position.x + meleeAttackRange - 0.1f, transform.position.y - 0.1f), new Vector2(transform.position.x + meleeAttackRange + 0.1f, transform.position.y + 0.1f));
+                Instantiate(meleeProj, new Vector3(transform.position.x + meleeAttackRange, transform.position.y), Quaternion.identity);
+            }
+            else
+            {
+                enemiesInsideArea = Physics2D.OverlapAreaAll(new Vector2(transform.position.x - meleeAttackRange - 0.1f, transform.position.y - 0.1f), new Vector2(transform.position.x - meleeAttackRange + 0.1f, transform.position.y + 0.1f));
+                Instantiate(meleeProj, new Vector3(transform.position.x - meleeAttackRange, transform.position.y), Quaternion.identity);
+            }
+            foreach (Collider2D currEnemy in enemiesInsideArea)
+            {
+                Debug.Log(currEnemy);
+                if (currEnemy.gameObject.CompareTag("Monster"))
                 {
-                    if (faceDir == 1)
-                    {
-                        if ((transform.position.x + meleeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x + meleeAttackRange) <= (currEnemy.transform.position.x + 3.0))
-                        {
-                            currEnemy.GetComponent<Monster>().TakeDamage(meleeDamage);
-                            hitEnemy = true;
-                        }
-                    }
-                    else
-                    {
-                        if ((transform.position.x - meleeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x - meleeAttackRange) <= (currEnemy.transform.position.x + 3.0))
-                        {
-                            currEnemy.GetComponent<Monster>().TakeDamage(meleeDamage);
-                            hitEnemy = true;
-                        }
-                    }
+                    currEnemy.gameObject.GetComponent<Monster>().TakeDamage(meleeDamage);
+                    hitEnemy = true;
                 }
             }
             if (hitEnemy)
@@ -492,37 +574,28 @@ public class PlayerController : MonoBehaviour
             DataManager.Instance.playerData.light -= rangeAttackCost;
             UIManager.Instance.BroadcastMessage("UpdateLight");
             canAttack = false;
-            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Monster");
-            foreach (GameObject currEnemy in allEnemies)
-            {
-                if ((transform.position.y) >= currEnemy.transform.position.y - 4.0 && (transform.position.y) <= currEnemy.transform.position.y + 4.0)
-                {
-                    if (faceDir == 1)
-                    {
-                        if ((transform.position.x + rangeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x + rangeAttackRange) <= (currEnemy.transform.position.x + 3.0))
-                        {
-                            currEnemy.GetComponent<Monster>().TakeDamage(rangeAttackDamage);
-                        }
-                    }
-                    else
-                    {
-                        if ((transform.position.x - rangeAttackRange) >= (currEnemy.transform.position.x - 3.0) && (transform.position.x - rangeAttackRange) <= (currEnemy.transform.position.x + 3.0))
-                        {
-                            currEnemy.GetComponent<Monster>().TakeDamage(rangeAttackDamage);
-                        }
-                    }
-                }
-            }
+            Debug.Log("creating ranged");
+            Instantiate(rangedProj, new Vector3(transform.position.x, transform.position.y), Quaternion.identity);
+            Debug.Log("created ranged");
             StartCoroutine(attackCooldown(rangeAttackSpeedPerSec));
         }
     }
     #endregion
+
+    public bool isFacingRight()
+    {
+        return faceDir == 1;
+    }
 
     // Respond to OnLanternFirstPickedUp event in GameManager
     public void SetLanternStatus()
     {
         // hasLantern = true;
         lantern.gameObject.SetActive(true);
+        
+        // set boss entrance animation active
+        monsterAnimation?.SetActive(true);
+        monsterAppearController?.TriggerBossAppearance();
 
         // reset the lantern to off
         // this is not working because the lantern's Start() is queued to be called in next frame

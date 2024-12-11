@@ -327,7 +327,7 @@ public class NavManager : MonoBehaviour
             // Debug.Log(u.i);
             if(u == dest) // found destination
             {
-                Debug.Log("Found path");
+                //Debug.Log("Found path");
                 List<Link> path = new List<Link>();
                 path.Add(new Link(dest.i, dest.j, -1)); 
                 

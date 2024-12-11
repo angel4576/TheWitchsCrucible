@@ -11,17 +11,25 @@ public class Monster : MonoBehaviour
     public PlayerController playerScript;
     public Lantern lantern;
     public Healthbar healthBar;
-
+    
+    [Header("Monster Appear")]
+    public GameObject monsterAnimation;
+    public MonsterAppearanceController monsterAppearController;
+    public float animationDuration;
+    
     [Header("Monster Attributes")]
     public EnemyType type;
     public float moveSpeed;
     public float chaseRange;
-
+    public Vector2 centerOffset;
+    
+    [Header("Melee Attack")]
     public float meleeAttackRange;
     public float meleeAttackDamage;
     public float meleeAttackDelay; // the time before each attack
     public float meleeAttackCooldown; // the time after a attack before another attack can be made
 
+    [Header("Range Attack")]
     public float rangeAttackRange;
     public float rangeAttackDamage;
     public float rangeAttackDelay; // the time before each attack
@@ -38,15 +46,19 @@ public class Monster : MonoBehaviour
     public bool idleIfPlayerOutOfRange = false;
 
     // status
-    [HideInInspector]private bool isChasing;
-    [HideInInspector]private bool isAttacking;
-    [HideInInspector]private bool canMove;
-    [HideInInspector]private bool canChase;
-    [HideInInspector]private bool canAttack;
+    [HideInInspector]public bool isChasing;
+    [HideInInspector]public bool isAttacking;
+    /*[HideInInspector]*/public bool canMove;
+    /*[HideInInspector]*/public bool canChase;
+    /*[HideInInspector]*/public bool canAttack;
     [HideInInspector]private Vector2 initialPosition;
+    // public bool isAppear;
+    public bool foundLantern;
 
     // flags
     [HideInInspector]private bool isPlayerDead = false; // ensure that player is killed only once
+    
+    private Animator animator;
 
     // temp: melee attack visualization
     public Transform arm;
@@ -61,11 +73,28 @@ public class Monster : MonoBehaviour
         // retrieve references
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        // lantern ?= GameObject.Find("Lantern").GetComponent<Lantern>();   
+        lantern = GameObject.Find("Lantern").GetComponent<Lantern>();   
         healthBar = GetComponentInChildren<Healthbar>();
+
+        animator = GetComponent<Animator>();
         
         // for now, switching world enables/disables the monsters, if change, a reference to the real/mental world must be retrieved
         // and this script must be updated
+
+        // register to game manager
+        if(GameManager.Instance != null && !GameManager.Instance.monsters.Contains(this))
+        {
+            GameManager.Instance.monsters.Add(this);
+        }
+    }
+
+    private void OnDestroy() 
+    {
+        // unregister from game manager
+        if(GameManager.Instance != null && GameManager.Instance.monsters.Contains(this))
+        {
+            GameManager.Instance.monsters.Remove(this);
+        }
     }
 
     // Start is called before the first frame update
@@ -76,6 +105,8 @@ public class Monster : MonoBehaviour
         canChase = false;
         canMove = true;
         canAttack = false;
+        // foundLantern = false;
+        // isAppear = false;
 
         currentHealth = maxHealth;
 
@@ -102,8 +133,9 @@ public class Monster : MonoBehaviour
         canMove = false;
         canChase = false;
         canAttack = false;
-        
-        ResetArm();
+        foundLantern = true;
+
+        // ResetArm();
     }
 
     // Update is called once per frame
@@ -115,13 +147,15 @@ public class Monster : MonoBehaviour
             TakeDamage(7);
         }
 
-        if(lantern == null) // if player does not have lantern
+        
+        //if(lantern == null) // if player does not have lantern
+        if(!foundLantern)
         {
             canMove = false;
             canChase = false;
             canAttack = false;
         }
-        else
+        else // if player has lantern
         {
             if(lantern.IsLanternOn){
                 // if lantern is off, monster can move and chase player in range
@@ -131,9 +165,21 @@ public class Monster : MonoBehaviour
             }
             else
             {   
+                /*if (!isAppear) // monster first appears
+                {
+                    // isAppear = true;
+                    monsterStartAnimation.SetActive(true);
+                    StartCoroutine("StartAnimationCountdown"); // cannot move until animation finishes
+                    
+                }
+                else
+                {
+                }*/
                 canMove = true;
                 canChase = CheckPlayerInChaseRange();
                 canAttack = true;
+                
+                
             }
         }
 
@@ -208,9 +254,11 @@ public class Monster : MonoBehaviour
         // perform the attack
         if(CheckPlayerInMeleeAttackRange())
         {
-            Debug.Log("Monster melee attack");
+            // Debug.Log("Monster melee attack");
+            animator.SetTrigger("Lv1Attack");
             if(SceneManager.Instance.GetSceneConfiguration().enableEnemyInstantKill)
                 KillPlayer();
+                // DamagePlayer(meleeAttackDamage);
             else           
                 DamagePlayer(meleeAttackDamage);
         }
@@ -272,7 +320,7 @@ public class Monster : MonoBehaviour
     
     public void TakeDamage(float damage)
     {
-        Debug.Log("took damage");
+        // Debug.Log("took damage");
         if(isKillable)
         {
             currentHealth -= damage;
@@ -315,44 +363,66 @@ public class Monster : MonoBehaviour
         // playerScript.Die();
         DamagePlayer(99999);
     }
+
+    /*IEnumerator StartAnimationCountdown()
+    {
+        yield return new WaitForSeconds(animationDuration);
+        
+        /*canMove = true;
+        canChase = CheckPlayerInChaseRange();
+        canAttack = true;#1#
+        // isAppear = true;
+        
+        monsterStartAnimation.SetActive(false);
+        // show monster
+        // gameObject.SetActive(true);
+    }*/
+    
     #endregion
     
     // helper functions
     private bool CheckPlayerInChaseRange()
     {
-        return Vector2.Distance(transform.position, playerTransform.position) < chaseRange;
+        return Vector2.Distance((Vector2)transform.position + centerOffset, playerTransform.position) < chaseRange;
     }
 
     private bool CheckPlayerInMeleeAttackRange()
     {
-        return Vector2.Distance(transform.position, playerTransform.position) < meleeAttackRange;
+        return Vector2.Distance((Vector2)transform.position + centerOffset, playerTransform.position) < meleeAttackRange;
     }
 
     private bool CheckPlayerInRangeAttackRange()
     {
-        return Vector2.Distance(transform.position, playerTransform.position) < rangeAttackRange;
+        return Vector2.Distance((Vector2)transform.position + centerOffset, playerTransform.position) < rangeAttackRange;
     }
 
     // Respond to OnLanternFirstPickedUp event in Game Manager
     public void AcquireLantern()
     {
-        lantern = playerScript.GetComponentInChildren<Lantern>();
+        // lantern = playerScript.GetComponentInChildren<Lantern>();
+        foundLantern = true;
+        
+        // set boss entrance animation active
+        // monsterAnimation?.SetActive(true);
+        // monsterAppearController?.TriggerBossAppearance();
     }
+    
+    
 
     // visualizing chase range
     private void OnDrawGizmosSelected() 
     {
         // chase range
         Gizmos.color = Color.gray;
-        Gizmos.DrawWireSphere(transform.position, chaseRange);
+        Gizmos.DrawWireSphere((Vector2)transform.position + centerOffset, chaseRange);
 
         // melee attack range
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, meleeAttackRange);
+        Gizmos.DrawWireSphere((Vector2)transform.position + centerOffset, meleeAttackRange);
 
         // range attack range
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, rangeAttackRange);
+        Gizmos.DrawWireSphere((Vector2)transform.position + centerOffset, rangeAttackRange);
     }
 
     public void OnValidate(){
@@ -361,6 +431,18 @@ public class Monster : MonoBehaviour
         }
         else{
             healthBar.gameObject.SetActive(false);
+        }
+    }
+
+    public void ReactOnLantern()
+    {
+        if (lantern.IsLanternOn)
+        {
+            animator.SetTrigger("FlashOff");
+        }
+        else
+        {
+            animator.SetTrigger("FlashOn");
         }
     }
 
