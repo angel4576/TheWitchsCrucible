@@ -5008,7 +5008,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &243817765
 Transform:
   m_ObjectHideFlags: 0
@@ -5122,7 +5122,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
@@ -5184,7 +5183,8 @@ MonoBehaviour:
   playerScript: {fileID: 0}
   lantern: {fileID: 0}
   healthBar: {fileID: 1004632335}
-  monsterStartAnimation: {fileID: 434301382}
+  monsterAnimation: {fileID: 434301382}
+  monsterAppearController: {fileID: 434301386}
   animationDuration: 5
   type: 0
   moveSpeed: 13
@@ -5206,7 +5206,10 @@ MonoBehaviour:
   idleIfPlayerOutOfRange: 1
   isChasing: 0
   isAttacking: 0
-  isAppear: 0
+  canMove: 0
+  canChase: 0
+  canAttack: 0
+  foundLantern: 0
   arm: {fileID: 1008811963}
 --- !u!82 &243817772
 AudioSource:
@@ -9080,6 +9083,7 @@ GameObject:
   - component: {fileID: 434301385}
   - component: {fileID: 434301384}
   - component: {fileID: 434301383}
+  - component: {fileID: 434301386}
   m_Layer: 0
   m_Name: BossAppearEffect
   m_TagString: Untagged
@@ -9167,6 +9171,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &434301386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434301382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4193d40d4886a2144864b24c7ba699f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monster: {fileID: 243817764}
+  animationDuration: 5
 --- !u!1 &434343209
 GameObject:
   m_ObjectHideFlags: 0
@@ -19957,6 +19975,8 @@ MonoBehaviour:
   petMoveDelayTime: 0.2
   petJumpDelayTime: 0.2
   lantern: {fileID: 910825043}
+  monsterAnimation: {fileID: 434301382}
+  monsterAppearController: {fileID: 434301386}
   dissolveSpeed: 1
   isDead: 0
   deathDelay: 2
