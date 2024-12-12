@@ -36,7 +36,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Cutoff: 0.1
-    - _DissolveThreshold: 2
+    - _DissolveThreshold: 0
     - _EdgeWidth: 0.11
     - _NoiseScale: 0
     - _OutlineMipLevel: 0
