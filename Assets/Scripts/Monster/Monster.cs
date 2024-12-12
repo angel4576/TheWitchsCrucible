@@ -410,8 +410,8 @@ public class Monster : MonoBehaviour
 
     public void ResetPosition()
     {
-        transform.position = (Vector2)playerTransform.position 
-                             + new Vector2(xDistanceToPlayer, transform.position.y);
+        Debug.Log("Reset monster position");
+        transform.position = new Vector2(playerTransform.position.x + xDistanceToPlayer, transform.position.y);
     }
 
     // visualizing chase range
