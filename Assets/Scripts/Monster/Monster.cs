@@ -11,6 +11,7 @@ public class Monster : MonoBehaviour
     public PlayerController playerScript;
     public Lantern lantern;
     public Healthbar healthBar;
+    public float xDistanceToPlayer; // distance to player when switch to real world
     
     [Header("Monster Appear")]
     public GameObject monsterAnimation;
@@ -406,8 +407,12 @@ public class Monster : MonoBehaviour
         // monsterAnimation?.SetActive(true);
         // monsterAppearController?.TriggerBossAppearance();
     }
-    
-    
+
+    public void ResetPosition()
+    {
+        transform.position = (Vector2)playerTransform.position 
+                             + new Vector2(xDistanceToPlayer, transform.position.y);
+    }
 
     // visualizing chase range
     private void OnDrawGizmosSelected() 

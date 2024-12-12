@@ -1441,7 +1441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scenes:
-  - PlayTest-Level1
+  - PlayTest-Level1-Update
   inputActionAsset: {fileID: -944628639613478452, guid: 92ec01dc18c0f1840968097b07449f23, type: 3}
   fadeDuration: 1
   fadeCanvas: {fileID: 0}
@@ -5365,9 +5365,9 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8c9462281f817a746b881b056d829b24, type: 2}
-  - {fileID: 2100000, guid: 8596ca86bcf98c742967cb45da78e4e6, type: 2}
-  - {fileID: 2100000, guid: 8c9462281f817a746b881b056d829b24, type: 2}
+  - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
+  - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
+  - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5426,14 +5426,15 @@ MonoBehaviour:
   playerScript: {fileID: 917230998}
   lantern: {fileID: 910825043}
   healthBar: {fileID: 1004632335}
+  xDistanceToPlayer: -40
   monsterAnimation: {fileID: 434301382}
   monsterAppearController: {fileID: 434301386}
   animationDuration: 5
   type: 0
   moveSpeed: 8
   chaseRange: 250
-  centerOffset: {x: 9.2, y: 1.14}
-  meleeAttackRange: 17.4
+  centerOffset: {x: 23.99, y: 1.14}
+  meleeAttackRange: 11
   meleeAttackDamage: 5
   meleeAttackDelay: 0.2
   meleeAttackCooldown: 0.8
@@ -9530,7 +9531,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2968afb5adbad549abe86b380a4a3ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPaused: 0
 --- !u!1 &434343209
 GameObject:
   m_ObjectHideFlags: 0
@@ -33713,6 +33713,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1313239724}
         m_TargetAssemblyTypeName: Pet, Assembly-CSharp
         m_MethodName: OnPetSwitchWorld
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 243817771}
+        m_TargetAssemblyTypeName: Monster, Assembly-CSharp
+        m_MethodName: ResetPosition
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
