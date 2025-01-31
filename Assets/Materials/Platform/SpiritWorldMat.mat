@@ -47,7 +47,7 @@ Material:
     - _NoiseOffset: 0.6
     - _SphereRadius: 0
     m_Colors:
-    - _CenterPosition: {r: 146.39, g: -1.2450027, b: 0, a: 0}
+    - _CenterPosition: {r: 138.27654, g: 21.504995, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
