@@ -10,8 +10,8 @@ public class JumpStartPoint : MonoBehaviour
     public float jumpSpeed;
 
     private float gravity; 
-    private NavPoint startP;
-    private NavPoint endP;
+    [SerializeField]private NavPoint startP;
+    [SerializeField]private NavPoint endP;
 
     // Start is called before the first frame update
     void Start()

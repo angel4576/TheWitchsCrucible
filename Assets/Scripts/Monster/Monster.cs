@@ -85,7 +85,7 @@ public class Monster : MonoBehaviour
         // register to game manager
         if(GameManager.Instance != null && !GameManager.Instance.monsters.Contains(this))
         {
-            GameManager.Instance.monsters.Add(this);
+            GameManager.Instance.RegisterMonster(this);
         }
     }
 

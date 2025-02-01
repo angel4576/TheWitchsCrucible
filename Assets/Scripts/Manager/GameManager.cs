@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+using UnityEngine.InputSystem;
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance {get; private set;}
@@ -44,7 +46,10 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            Debug.Log("✅ Space key input detected!");
+        }
     }
 
     // register events for level 1
@@ -61,4 +66,32 @@ public class GameManager : MonoBehaviour
         // OnLanternFirstPickedUp.AddListener(monster.AcquireLantern);
         // OnLanternFirstPickedUp.AddListener(world.SetCanSwitch);    
     }
+
+    // monster and item registration
+    public void RegisterMonster(Monster monster){
+        // check if the monster is already registered
+        if(!monsters.Contains(monster)){
+            monsters.Add(monster);
+        }
+    }
+
+    public void RegisterItem(WorldItem item){
+        // check if the item is already registered
+        if(!items.Contains(item)){
+            items.Add(item);
+        }
+    }
+
+    public void FindAndRegisterMonsters(){
+        // find all monsters in the scene and register them
+        // GameObject[] monsterObjects = GameObject.FindGameObjectsWithTag("Monster"); // only find active objects
+        Monster[] monsterObjects = GameObject.FindObjectsOfType<Monster>(true); // find all monster objects
+        foreach(Monster monster in monsterObjects){
+            //Monster monster = monsterObject.GetComponent<Monster>();
+            RegisterMonster(monster);
+        }
+        Debug.Log("Monsters registered: " + monsters.Count);
+    }
+
+
 }

@@ -39,6 +39,9 @@ public class MonsterAppearanceController : MonoBehaviour
         gameObject.SetActive(false);
         // show monster
         monster.SetActive(true);
+        // should only happen once when first pick up lattern
+        // save checkpoint data here to include the activated monster above
+        DataManager.Instance.WriteCheckpointData();
     }
     
 }

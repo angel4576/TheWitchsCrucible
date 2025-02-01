@@ -193,7 +193,7 @@ public class PlayerController : MonoBehaviour
     {
         
         if (inputDirection.y != 0)
-        {
+        {   
             inputDirection.x *= math.sqrt(2);
         }
         
@@ -210,6 +210,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext context)
     {
+        Debug.Log("Jump");
         if (physicsCheck.isOnGround && !PauseScreen.GetComponent<PauseManager>().isPaused && !jumpTriggered)
         {
             jumpTriggered = true;
