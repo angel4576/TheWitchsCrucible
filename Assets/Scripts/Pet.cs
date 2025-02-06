@@ -33,7 +33,8 @@ public class Pet : MonoBehaviour, IInteractable
     private bool isIdle;
 
     // Path Finding
-    [Header("Path Finding")]
+    [Header("Path Finding")] 
+    public float distanceToPoint; // distance to path point to decide if arrive the point
     public float distanceToPlayer;
     public float pathFindTimer;
     public float pathFindTimeInterval; // time between path updates
@@ -41,9 +42,9 @@ public class Pet : MonoBehaviour, IInteractable
     private List<Link> path;
     private int curPointIndex;
     public bool isJumping;
+    public bool canJump;
 
     [HideInInspector]public bool canMove;
-    [HideInInspector]public bool canJump;
     private bool isMiss;
     
 
@@ -65,9 +66,8 @@ public class Pet : MonoBehaviour, IInteractable
         physicsCheck = GetComponent<PhysicsCheck>(); 
 
         canMove = true;
-
+        canJump = true;
         
-
     }
 
     private void OnEnable() 
@@ -113,7 +113,6 @@ public class Pet : MonoBehaviour, IInteractable
         // }
         
         ani.SetBool("IsLanded", physicsCheck.isOnGround);
-        // CheckForwardObstacle();
     }
 
     private void SetAnimationState()
@@ -168,19 +167,17 @@ public class Pet : MonoBehaviour, IInteractable
     private void Jump(float hSpeed, float vSpeed) 
     {
         // canJump = false;
-        isJumping = true;
         StartCoroutine(DelayJump(0.267f, hSpeed, vSpeed));
-        // Debug.Log("Pet Jump");
     }
 
     IEnumerator DelayJump(float delay, float hSpeed, float vSpeed)
     {
-        rb.velocity = Vector2.zero;
+        // rb.velocity = Vector2.zero;
+        // isJumping = true;
         ani.SetTrigger("JumpTrigger");
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(0); // no delay for now
         // rb.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
         rb.velocity = new Vector2(hSpeed, vSpeed); // set preset jump parameters
-
     }
 
     private void CheckDistance()
@@ -276,7 +273,7 @@ public class Pet : MonoBehaviour, IInteractable
 
         if(curPointIndex >= path.Count - 1) // arrive
         {
-            //Debug.Log("Arrived Path Destination");
+            // Debug.Log("Arrived Path Destination");
             ani.SetBool("IsRunning", false);
             rb.velocity = Vector2.zero;
             // rb.velocity = new Vector2(1.0f, 0);
@@ -291,7 +288,12 @@ public class Pet : MonoBehaviour, IInteractable
         int nextJ = path[curPointIndex + 1].j;
 
         Vector2 nextPos = NavManager.Instance.GetWorldPosition(nextI, nextJ);
+        
+        // NavPoint curP =  NavManager.Instance.FindNearestNavPoint(transform.position); // pet current grid pos
 
+        // Debug.Log($"Current Pos: {(Vector2)transform.position}");
+        // Debug.Log($"Next P Pos: {nextPos}");
+        
         int linkType = path[curPointIndex].type; // link from cur to next 
         // Debug.Log(linkType);
         if(linkType == -1) // move
@@ -307,25 +309,43 @@ public class Pet : MonoBehaviour, IInteractable
         {
             if(!isJumping) 
             {
-
-                JumpTrajectory trajectory = NavManager.Instance.GetJumpTrajectory(curI, curJ, linkType); 
+                JumpTrajectory trajectory = NavManager.Instance.GetJumpTrajectory(curI, curJ, linkType);
+                Debug.Log("Pet Jump!");
                 Jump(trajectory.hJumpSpeed, trajectory.vJumpSpeed);
+                isJumping = true;
                 // set preset jump parameters
                 // rb.velocity = new Vector2(trajectory.hJumpSpeed, trajectory.vJumpSpeed);
                 // isJumping = true;
-
-                // Debug.Log(rb.velocity);
             }
+            else if(physicsCheck.isOnGround) // adjust pet pos when landed
+            {
+                if(rb.velocity.x > 0 && transform.position.x > nextPos.x)
+                    rb.velocity = new Vector2(-speed, rb.velocity.y);
+                else if(rb.velocity.x < 0 && transform.position.x < nextPos.x)
+                    rb.velocity = new Vector2(speed, rb.velocity.y);
+                    
+            }
+            
+            
         }
 
         NavPoint curP =  NavManager.Instance.FindNearestNavPoint(transform.position); // pet current grid pos
         // update waypoint index
-        if(curP.i == nextI && curP.j == nextJ) // reach next point
+        /*if(curP.i == nextI && curP.j == nextJ) // reach next point
         {
-            // Debug.Log(curPointIndex);
+            // Debug.Log($"Reach Next Point: {curP.i}, {curP.j}");
+            // Debug.Log($"Point World Pos: {(Vector2)transform.position}");
             curPointIndex++;
             isJumping = false;
-        } 
+        }*/
+        
+        float distToNextP = Vector2.Distance(transform.position, nextPos);
+        if (distToNextP < distanceToPoint) // reach next point
+        {
+            curPointIndex++;
+            isJumping = false;
+        }
+        
 
     }
 
@@ -333,7 +353,7 @@ public class Pet : MonoBehaviour, IInteractable
     {
         if(NavManager.Instance == null)
         {
-//            Debug.Log("No NavManager in current scene");
+            Debug.Log("No NavManager in current scene");
             return;
         }
 
