@@ -46,9 +46,9 @@ Material:
     - _IsRealWorld: 1
     - _NoiseFrequency: 1
     - _NoiseOffset: 0.6
-    - _SphereRadius: 0
+    - _SphereRadius: 25
     m_Colors:
-    - _CenterPosition: {r: 38.516808, g: 17.004995, b: 0, a: 0}
+    - _CenterPosition: {r: 489.2796, g: 14.255001, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
