@@ -27,8 +27,8 @@ public class NavManager : MonoBehaviour
     public LayerMask layer;
 
     [Header("Jump Setting")]
-    public int jumpHeightDivision = 3;
-    public int jumpSpeedDivision = 3;
+    private int jumpHeightDivision = 3;
+    private int jumpSpeedDivision = 3;
     public float AiJumpHeight; // max jump height
     public float AiJumpSpeed; // horizontal speed
 

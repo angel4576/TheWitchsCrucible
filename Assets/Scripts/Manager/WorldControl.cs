@@ -75,6 +75,8 @@ public class WorldControl : MonoBehaviour
         
         isRealWorld = true;
 
+        canSwitch = true;
+
         SetUpShaderParams();
         
         playerLayerID = LayerMask.NameToLayer("Player");
@@ -109,10 +111,10 @@ public class WorldControl : MonoBehaviour
             pet.SetAnimationState(2 ,"HugTrigger", 1);
         }
         yield return new WaitForSeconds(delay);
-        foreach (GameObject obj in gameObject)
+        /*foreach (GameObject obj in gameObject)
         {
-            // ToggleActive(obj);
-        }
+            ToggleActive(obj);
+        }*/
 
         // set world status
         isRealWorld = !isRealWorld;
@@ -177,6 +179,7 @@ public class WorldControl : MonoBehaviour
             changeSpeed = -changeSpeed;
             sphereRadius = maxRadius;
             canPlayEffect = false;
+            canSwitch = true;
         }
 
         if (sphereRadius <= 0)
@@ -184,6 +187,7 @@ public class WorldControl : MonoBehaviour
             changeSpeed = -changeSpeed;
             sphereRadius = 0; 
             canPlayEffect = false;
+            canSwitch = true;
         }
         
         
@@ -201,15 +205,11 @@ public class WorldControl : MonoBehaviour
     
     public void SwitchWorld()
     {
-        // if(!canSwitch)
-        // {
-        //     return;
-        // }
         
         if (!PauseScreen.GetComponent<PauseManager>().isPaused 
-            && DataManager.Instance.playerData.canSwitchWorld)
+            && DataManager.Instance.playerData.canSwitchWorld
+            && canSwitch)
         {
-            // Debug.Log("SWITCH!!!!!!");
             float delay = 0.000000001f;
             if (!SpiritWorldObjects.activeSelf && RealWorldObjects.activeSelf)
             {
@@ -227,6 +227,7 @@ public class WorldControl : MonoBehaviour
                 temp[1] = RealWorldObjects;
                 
                 canPlayEffect = true;
+                canSwitch = false;
                 
                 StartCoroutine(DelayToggleActive(temp, delay));
                 
