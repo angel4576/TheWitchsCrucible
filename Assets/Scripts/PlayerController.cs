@@ -142,6 +142,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         // Read Vector2 value in Move action
         inputDirection = inputActions.Gameplay.Move.ReadValue<Vector2>();
         if (!PauseScreen.GetComponent<PauseManager>().isPaused)

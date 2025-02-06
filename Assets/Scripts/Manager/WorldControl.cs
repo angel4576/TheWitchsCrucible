@@ -125,7 +125,8 @@ public class WorldControl : MonoBehaviour
         // toggle monsters
         foreach (GameObject monster in monsters)
         {
-            monster.SetActive(!monster.activeSelf);
+            if(!monster.GetComponent<Monster>().isDead)
+                monster.SetActive(!monster.activeSelf);
             
         }
         

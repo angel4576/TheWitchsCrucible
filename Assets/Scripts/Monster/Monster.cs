@@ -42,6 +42,7 @@ public class Monster : MonoBehaviour
     public bool isKillable;
     public float maxHealth = 100;
     public float currentHealth;
+    public bool isDead;
 
     [Header("For testing purposes")]
     public bool idleIfPlayerOutOfRange = false;
@@ -335,6 +336,7 @@ public class Monster : MonoBehaviour
             if(currentHealth <= 0)
             {
                 // die
+                isDead = true;
                 gameObject.SetActive(false);
             }
         }
