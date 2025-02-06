@@ -11,7 +11,7 @@ public class WorldControl : MonoBehaviour
     public static WorldControl Instance {get; private set;}
     
     [Header("Monster")]
-    public GameObject monster;
+    public GameObject[] monsters;
     
     [Header("Switch World Effect Settings")]
     public Transform playerTransform;
@@ -122,8 +122,12 @@ public class WorldControl : MonoBehaviour
         onSwitchWorld?.Invoke();
         isToggling = false;
 
-        // toggle monster 
-        monster.SetActive(!monster.activeSelf);
+        // toggle monsters
+        foreach (GameObject monster in monsters)
+        {
+            monster.SetActive(!monster.activeSelf);
+            
+        }
         
         UpdateLayerCollision();
         
