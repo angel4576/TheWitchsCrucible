@@ -290,15 +290,21 @@ public class PlayerController : MonoBehaviour
     {
         if (!isInvulnerable)
         {
-            // Debug.Log("TRIGGER INVULNERABILITY");
-            DataManager.Instance.playerData.currentHealth -= damage;
+            // DataManager.Instance.playerData.currentHealth -= damage;
+            
+            Debug.Log($"Player light when take damage:{DataManager.Instance.playerData.light}");
+            // Update light when take damage
+            DataManager.Instance.playerData.light -= damage;
+            UIManager.Instance.BroadcastMessage("UpdateLight");
+            
             TriggerInvulnerability();
         }
         
         
-        if (DataManager.Instance.playerData.currentHealth <= 0 && !isDead)
+        if (DataManager.Instance.playerData.light < 0 && !isDead)
         {
             isDead = true;
+            ani.SetTrigger("DieTrigger");
             StartCoroutine(DieCoroutine());
         }
         
@@ -570,7 +576,9 @@ public class PlayerController : MonoBehaviour
         {
             // Set attack animation
             ani.SetTrigger("RangedTrigger");
-
+            
+            Debug.Log($"Player light when range attack:{DataManager.Instance.playerData.light}");
+            
             DataManager.Instance.playerData.light -= rangeAttackCost;
             UIManager.Instance.BroadcastMessage("UpdateLight");
             canAttack = false;

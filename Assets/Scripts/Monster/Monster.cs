@@ -257,11 +257,17 @@ public class Monster : MonoBehaviour
         {
             // Debug.Log("Monster melee attack");
             animator.SetTrigger("Lv1Attack");
-            if(SceneManager.Instance.GetSceneConfiguration().enableEnemyInstantKill)
+            if (SceneManager.Instance.GetSceneConfiguration().enableEnemyInstantKill)
+            {
+                // Debug.Log("Monster Instant Kill!");
                 KillPlayer();
-                // DamagePlayer(meleeAttackDamage);
-            else           
+            }
+            // DamagePlayer(meleeAttackDamage);
+            else
+            {
+                // Debug.Log("Monster Melee Attack!");
                 DamagePlayer(meleeAttackDamage);
+            }
         }
 
         // wait for the cooldown
@@ -269,7 +275,7 @@ public class Monster : MonoBehaviour
 
         isAttacking = false;
         // temp
-        ResetArm();
+        // ResetArm();
     }
 
     // for temp testing 
