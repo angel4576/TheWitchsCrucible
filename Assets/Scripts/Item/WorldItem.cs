@@ -80,6 +80,7 @@ public class WorldItem : MonoBehaviour, IInteractable
         //checkpoint
         DataManager.Instance.WriteCheckpointData(transform.position);
 
+
     }
 
     private void HandleDoorInteraction()
