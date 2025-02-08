@@ -6517,11 +6517,11 @@ Transform:
   m_GameObject: {fileID: 163788368}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.166667, y: -36.833332, z: 0}
-  m_LocalScale: {x: 1.6666666, y: 1.6666666, z: 1.6666666}
+  m_LocalPosition: {x: -10.8, y: -1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 1927756313}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &167883956
 GameObject:
@@ -13555,7 +13555,7 @@ Transform:
   m_GameObject: {fileID: 385962830}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.1100235, y: 31.612171, z: -10}
+  m_LocalPosition: {x: 69.5, y: 31.612171, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19830,7 +19830,7 @@ Transform:
   m_GameObject: {fileID: 596291127}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.1100235, y: 31.612171, z: -10}
+  m_LocalPosition: {x: 69.5, y: 31.612171, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -21274,7 +21274,7 @@ Transform:
   m_GameObject: {fileID: 659785945}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 149.518, y: 15.78, z: 0.08328913}
+  m_LocalPosition: {x: 149.518, y: 16.029999, z: 0.08328913}
   m_LocalScale: {x: 1.8231214, y: 1.8231214, z: 1.8231214}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -22573,7 +22573,7 @@ Transform:
   m_GameObject: {fileID: 705285453}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 160.5, y: 0.25, z: 0}
+  m_LocalPosition: {x: 160.5, y: 0.5, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -34505,9 +34505,9 @@ MonoBehaviour:
   meleeAttackSpeedPerSec: 0.5
   meleeAttackRange: 3
   rangeAttackCost: 1
-  rangeAttackSpeedPerSec: 0
+  rangeAttackSpeedPerSec: 1
   rangeAttackDamage: 5
-  rangeAttackRange: 0
+  rangeAttackRange: 3
   canAttack: 1
   meleeProj: {fileID: 1272124353256304504, guid: 8190f95c3bff3b2449dd9c45167a7e38, type: 3}
   rangedProj: {fileID: 8128267858619025443, guid: 6578665e0b3b69c458d17f5b6654b30d, type: 3}
@@ -34523,7 +34523,7 @@ Transform:
   m_GameObject: {fileID: 1178007867}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.8199768, y: 22.7, z: 0}
+  m_LocalPosition: {x: 57.57, y: 22.7, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -37719,7 +37719,7 @@ Transform:
   m_GameObject: {fileID: 1294759788}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 230, y: 17, z: 0}
+  m_LocalPosition: {x: 230.25, y: 17, z: 0}
   m_LocalScale: {x: 17, y: 13, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -38182,7 +38182,7 @@ Transform:
   m_GameObject: {fileID: 1306386371}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 27.58, y: 1.8, z: 0}
+  m_LocalPosition: {x: 27.28, y: 1.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -41227,7 +41227,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
@@ -55118,11 +55117,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetTrans: {fileID: 1508041006}
   player: {fileID: 1178007869}
-  speed: 10
+  speed: 8
   jumpForce: 20
   loseDistance: 10
   respawnTime: 2
-  distanceToPoint: 0
+  distanceToPoint: 0.8
   distanceToPlayer: 5
   pathFindTimer: 0
   pathFindTimeInterval: 0
@@ -55534,8 +55533,7 @@ Transform:
   m_LocalPosition: {x: -6.5, y: 20.6, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 1
-  m_Children:
-  - {fileID: 163788372}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1928054672
@@ -57378,7 +57376,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
@@ -58977,7 +58974,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
@@ -61905,6 +61901,7 @@ SceneRoots:
   - {fileID: 270699778}
   - {fileID: 1042179874}
   - {fileID: 1178007869}
+  - {fileID: 163788372}
   - {fileID: 1927756313}
   - {fileID: 1306386372}
   - {fileID: 862678436}
