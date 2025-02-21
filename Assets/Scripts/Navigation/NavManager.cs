@@ -348,7 +348,7 @@ public class NavManager : MonoBehaviour
         
         }
 
-        Debug.Log("No path");
+        // Debug.Log("No path");
         return null;
     }
 

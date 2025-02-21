@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     // registered in their own scripts
     public List<Monster> monsters = new List<Monster>();
     public List<WorldItem> items = new List<WorldItem>();
-
+    
     private void Awake() 
     {
         // to ensure game manager is instantiated before monsters and items try to register

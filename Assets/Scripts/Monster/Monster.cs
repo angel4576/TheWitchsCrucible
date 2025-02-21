@@ -46,7 +46,8 @@ public class Monster : MonoBehaviour
 
     [Header("For testing purposes")]
     public bool idleIfPlayerOutOfRange = false;
-
+    public bool disableUpdate  = false;
+    
     // status
     [HideInInspector]public bool isChasing;
     [HideInInspector]public bool isAttacking;
@@ -143,6 +144,9 @@ public class Monster : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if(disableUpdate)
+            return;
+        
         // for test purpose
         if (Keyboard.current.digit7Key.wasPressedThisFrame)
         {
