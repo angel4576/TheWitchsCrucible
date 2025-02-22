@@ -9,13 +9,13 @@ public class SceneConfiguration
 {
     public bool enableAttack = true;
     public bool enableEnemyInstantKill = false;
-
 }
 
 public class SceneManager : MonoBehaviour
 {
     public static SceneManager Instance { get; private set; }
     public int currentSceneIndex { get; private set; }
+    [SerializeField] private float debugTimescale;
 
     // registered scenes
     [Header("Scenes")]
@@ -72,7 +72,7 @@ public class SceneManager : MonoBehaviour
     private void Update()
     {
         // test
-        
+        debugTimescale = Time.timeScale;
     }
 
     #region Scene Management
@@ -230,14 +230,16 @@ public class SceneManager : MonoBehaviour
     public void PauseGame()
     {
         Time.timeScale = 0;
-        inputActionAsset.Disable();
+        // inputActionAsset.Disable();
+        GameManager.Instance.player.inputActions.Disable();
         Debug.Log("Game Paused");
     }
 
     public void ResumeGame()
     {
         Time.timeScale = 1;
-        inputActionAsset.Enable();
+        // inputActionAsset.Enable();
+        GameManager.Instance.player.inputActions.Enable();
         Debug.Log("Game Resumed");
     }
     #endregion

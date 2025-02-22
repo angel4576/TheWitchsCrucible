@@ -112,9 +112,9 @@ public class DataManager : MonoBehaviour
     }
 
     // checkpoint
-    public void WriteCheckpointData(Vector3 position, bool isLevelStart = false)
+    public void WriteCheckpointData(Vector3 position = default, bool isLevelStart = false)
     {
-        checkpointData.position = position;
+        checkpointData.position = !(position == new Vector3(0,0,0)) ? position : GameManager.Instance.player.transform.position;
         checkpointData.playerData = new PlayerData();
         checkpointData.playerData.level = playerData.level;
         checkpointData.playerData.maxHealth = playerData.maxHealth;
@@ -132,6 +132,8 @@ public class DataManager : MonoBehaviour
 
         WriteEnemies(checkpointData);
         WriteItems(checkpointData);
+
+        Debug.Log("Checkpoint data saved.");
     }
 
     public void WriteLevelStartData()
@@ -169,6 +171,7 @@ public class DataManager : MonoBehaviour
             enemyData.position = new Vec3(monster.transform.position);
             enemyData.rotation = new Vec3(monster.transform.eulerAngles);
             enemyData.scale = new Vec3(monster.transform.localScale);
+            enemyData.isEnabled = monster.gameObject.activeSelf;
 
             enemyData.monsterReference = monster;
 
@@ -199,6 +202,10 @@ public class DataManager : MonoBehaviour
     }
 
     public void ResetDataToLastCheckpoint(Transform player = null){
+        ResetDataToCheckpoint(checkpointData, player);
+    }
+
+    public void ResetDataToCheckpoint(CheckpointData checkpointData, Transform player = null){
         // reset world
         // to ensure the active status of monster is correct, switch world first
         if(checkpointData.isInRealWorld != WorldControl.Instance.isRealWorld){
@@ -219,9 +226,12 @@ public class DataManager : MonoBehaviour
             player.position = checkpointData.position;
             // remove any velocity on player
             player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            // reset player's isdead status
+            PlayerController playerController = player.GetComponent<PlayerController>();
+            playerController.isDead = false;
             // check lantern
             if(!checkpointData.playerData.hasPickedUpLantern){
-                player.GetComponent<PlayerController>().lantern.gameObject.SetActive(false);
+                playerController.lantern.gameObject.SetActive(false);
             }
         }
         playerData = checkpointData.playerData;
@@ -230,12 +240,13 @@ public class DataManager : MonoBehaviour
         foreach (EnemyData enemy in checkpointData.enemies)
         {
             // enable monster
-            bool isMonsterActive = enemy.monsterReference.gameObject.activeSelf;
+            //bool isMonsterActive = enemy.monsterReference.gameObject.activeSelf;
             enemy.monsterReference.gameObject.SetActive(true);
 
             enemy.monsterReference.transform.position = enemy.position;
             enemy.monsterReference.transform.eulerAngles = enemy.rotation;
             enemy.monsterReference.transform.localScale = enemy.scale;
+            
 
             // check lantern
             if(!checkpointData.playerData.hasPickedUpLantern){
@@ -245,10 +256,11 @@ public class DataManager : MonoBehaviour
                 enemy.monsterReference.lantern = player.GetComponentInChildren<Lantern>();
             }
 
+            enemy.monsterReference.gameObject.SetActive(enemy.isEnabled);
             // reset monster status
-            if(!isMonsterActive){
-                enemy.monsterReference.gameObject.SetActive(false);
-            }
+            // if(!isMonsterActive){
+            //     enemy.monsterReference.gameObject.SetActive(false);
+            // }
 
         }
         // GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
@@ -288,6 +300,12 @@ public class DataManager : MonoBehaviour
     }
 
     public void ResetDataToLevelStart(){
+        ResetDataToCheckpoint(levelStartData);
+    }
+
+    // the old restart level function, save just in case
+    public void ReloadSceneAndResetDataToLevelStart()
+    {
         playerData = levelStartData.playerData;
         SceneManager.Instance.ReloadScene();
     }
@@ -374,6 +392,8 @@ public class EnemyData
     public Vec3 position;
     public Vec3 rotation;
     public Vec3 scale;
+
+    public bool isEnabled;
 
     public Monster monsterReference;
 }
