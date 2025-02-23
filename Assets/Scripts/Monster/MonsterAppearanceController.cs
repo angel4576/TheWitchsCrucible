@@ -6,7 +6,7 @@ public class MonsterAppearanceController : MonoBehaviour
 {
     public GameObject monster;
     public float animationDuration;
-    private bool hasAppeared;
+    public bool hasAppeared;
     
     // Start is called before the first frame update
     void Start()

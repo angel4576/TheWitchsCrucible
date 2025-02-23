@@ -36,11 +36,13 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
     }
     // Start is called before the first frame update
     void Start()
     {
         RegisterEventLevel1();
+        
     }
 
     // Update is called once per frame

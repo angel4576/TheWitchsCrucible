@@ -124,6 +124,8 @@ public class DataManager : MonoBehaviour
         checkpointData.playerData.canSwitchWorld = playerData.canSwitchWorld;
 
         checkpointData.isInRealWorld = WorldControl.Instance.isRealWorld;
+        var monsterAppearanceControllers = GameObject.FindObjectsOfType<MonsterAppearanceController>(true);
+        checkpointData.isBossEffectPlayed = monsterAppearanceControllers.Length > 0 ? monsterAppearanceControllers[0].hasAppeared : false;
         // when loading the scene, isRealWorld is not ready, so manually assigned true
         if(isLevelStart){
             checkpointData.isInRealWorld = true;
@@ -210,6 +212,13 @@ public class DataManager : MonoBehaviour
         // to ensure the active status of monster is correct, switch world first
         if(checkpointData.isInRealWorld != WorldControl.Instance.isRealWorld){
             WorldControl.Instance.SwitchWorldNoInvoke();
+            Debug.Log("reset to original world status");
+        }
+
+        // reset monster appear effect
+        var monsterAppearanceControllers = GameObject.FindObjectsOfType<MonsterAppearanceController>(true);
+        if(monsterAppearanceControllers.Length > 0){
+            monsterAppearanceControllers[0].hasAppeared = checkpointData.isBossEffectPlayed;
         }
 
         // load player
@@ -301,6 +310,7 @@ public class DataManager : MonoBehaviour
 
     public void ResetDataToLevelStart(){
         ResetDataToCheckpoint(levelStartData);
+        //ReloadSceneAndResetDataToLevelStart();
     }
 
     // the old restart level function, save just in case
@@ -373,6 +383,7 @@ public class CheckpointData
     public Vec3 position;
     public PlayerData playerData;
     public bool isInRealWorld;
+    public bool isBossEffectPlayed = false;
     
     public List<EnemyData> enemies;
     public List<ItemData> items;

@@ -109,6 +109,7 @@ public class WorldControl : MonoBehaviour
             pet.SetAnimationState(2 ,"HugTrigger", 1);
         }
         yield return new WaitForSeconds(delay);
+        Debug.Log(delay + " seconds delay");
         foreach (GameObject obj in gameObject)
         {
             // ToggleActive(obj);
@@ -118,13 +119,30 @@ public class WorldControl : MonoBehaviour
         isRealWorld = !isRealWorld;
         pet.SetAnimationState(1 ,"IsReality", isRealWorld);
         onSwitchWorld?.Invoke();
-        isToggling = false;
+        
 
         // toggle monster 
         monster.SetActive(!monster.activeSelf);
+        Debug.Log("toggle monster");
+        isToggling = false;
         
         UpdateLayerCollision();
         
+    }
+
+    private void ToggleActiveNoDelay(GameObject[] gameObject)
+    {
+        isRealWorld = !isRealWorld;
+        pet.SetAnimationState(1 ,"IsReality", isRealWorld);
+        onSwitchWorld?.Invoke();
+
+        isToggling = false;
+        UpdateLayerCollision();
+
+        // reset the shader effects
+        sphereRadius = isRealWorld ? 0 : maxRadius;
+        changeSpeed = -changeSpeed;
+        canPlayEffect = false;
     }
     
     #region Shader Params
@@ -239,17 +257,25 @@ public class WorldControl : MonoBehaviour
     // used for restart game
     public void SwitchWorldNoInvoke()
     {
-        if (SpiritWorldObjects != null)
-        {
-            ToggleActive(SpiritWorldObjects);
-        }
+        // if (SpiritWorldObjects != null)
+        // {
+        //     ToggleActive(SpiritWorldObjects);
+        // }
 
-        if (RealWorldObjects != null)
-        {
-            ToggleActive(RealWorldObjects);
+        // if (RealWorldObjects != null)
+        // {
+        //     ToggleActive(RealWorldObjects);
             
-        }
-        isRealWorld ^= true;
+        // }
+        // isRealWorld ^= true;
+        //canPlayEffect = true;
+        isToggling = true;
+        float delay = 0.000000001f;
+        GameObject[] temp = new GameObject[2];
+        temp[0] = SpiritWorldObjects;
+        temp[1] = RealWorldObjects;
+        
+        ToggleActiveNoDelay(temp);
     }
 
     // Respond to OnLanternFirstPickedUp event in GameManager

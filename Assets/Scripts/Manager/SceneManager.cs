@@ -81,6 +81,8 @@ public class SceneManager : MonoBehaviour
         Debug.Log("Scene loaded: " + scene.name);
         // save level start data for restart purpose
         if(!isReloading){
+            // make sure monster data has been registered to game manager
+            GameManager.Instance.FindAndRegisterMonsters();
             DataManager.Instance.WriteLevelStartData();
             DataManager.Instance.WriteCheckpointData(DataManager.Instance.levelStartData.position, true);
         }

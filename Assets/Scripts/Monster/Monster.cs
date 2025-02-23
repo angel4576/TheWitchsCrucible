@@ -158,7 +158,7 @@ public class Monster : MonoBehaviour
         }
         else // if player has lantern
         {
-            if(lantern.IsLanternOn){
+            if(false && lantern.IsLanternOn){
                 // if lantern is off, monster can move and chase player in range
                 canMove = false;
                 canChase = false;
