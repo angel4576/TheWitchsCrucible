@@ -520,7 +520,7 @@ public class PlayerController : MonoBehaviour
     {
         PauseScreen.GetComponent<PauseManager>().TogglePause();
     }
-
+ 
     #region Character Attack
     private void MeleeAttack(InputAction.CallbackContext context)
     {

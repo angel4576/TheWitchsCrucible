@@ -24,7 +24,7 @@ public class MovingPlatformSwitch : MonoBehaviour, IInteractable
     public void Interact()
     {
         // isActivated = !isActivated;
-        
+        // Debug.Log("Activate Switch!");
         foreach (var platform in platforms)
         {
             // Trigger moving platforms

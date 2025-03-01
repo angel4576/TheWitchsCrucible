@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     // registered in their own scripts
     public List<Monster> monsters = new List<Monster>();
     public List<WorldItem> items = new List<WorldItem>();
+
+    public DebugSettings debugSettings;
+    public GameObject lanternPrefab;
     
     private void Awake() 
     {
@@ -39,6 +42,13 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         RegisterEventLevel1();
+        
+        // Debug mode
+        if (debugSettings != null && debugSettings.enableDebugMode)
+        {
+            ApplyDebugSettings();
+        }
+        
     }
 
     // Update is called once per frame
@@ -54,11 +64,46 @@ public class GameManager : MonoBehaviour
 
         player = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<PlayerController>();
         // monster = GameObject.FindGameObjectsWithTag("Monster")[0].GetComponent<Monster>();
-        monster = GameObject.Find("Monster")?.GetComponent<Monster>();
+        // monster = GameObject.Find("Monster")?.GetComponent<Monster>();
         world = GameObject.Find("WorldControl").GetComponent<WorldControl>();
 
         // OnLanternFirstPickedUp.AddListener(player.SetLanternStatus);
         // OnLanternFirstPickedUp.AddListener(monster.AcquireLantern);
         // OnLanternFirstPickedUp.AddListener(world.SetCanSwitch);    
     }
+
+    private void ApplyDebugSettings()
+    {
+        if (debugSettings.giveLanternAtStart)
+        {
+            GivePlayerLantern();
+        }
+        
+        if (debugSettings.freezeEnemies)
+        {
+            FreezeEnemies();
+        }
+    }
+
+    private void GivePlayerLantern()
+    {
+        // create a lantern
+        if(lanternPrefab != null)
+            Instantiate(lanternPrefab, player.transform.position, Quaternion.identity);
+    }
+    
+    private void FreezeEnemies()
+    {
+        // freeze small enemies (change their script later)
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Monster");
+        foreach (GameObject enemy in enemies)
+        {
+            Monster smallEnemy = enemy.GetComponent<Monster>();
+            smallEnemy.enabled = false;
+        }
+            
+        // disable lv1 big enemy
+        monster.enabled = false;
+    }
+    
 }
