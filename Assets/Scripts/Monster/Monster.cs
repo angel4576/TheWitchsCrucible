@@ -481,12 +481,16 @@ public class Monster : MonoBehaviour
         }
     }
 
-#region Plaform Spawn
-    public void MonsterOnSwitchWorld(bool switchToSpiritWorld){
-        if(switchToSpiritWorld){
+    #region Plaform Spawn
+    public void MonsterOnSwitchWorld(bool switchToSpiritWorld)
+    {
+        if(switchToSpiritWorld)
+        {
             isdisabled = true;
-            if(spiritWorldPlatform == null){
-                if(spiritWorldPlatformPrefab == null){
+            if(spiritWorldPlatform == null)
+            {
+                if(spiritWorldPlatformPrefab == null)
+                {
                     Debug.LogError("Spirit world platform prefab is not set");
                     return;
                 }
@@ -496,23 +500,30 @@ public class Monster : MonoBehaviour
                 spiritWorldPlatform.transform.localScale = new Vector3(platformHeight, platformWidth, 0);
                 //spiritWorldPlatform.transform.localRotation = Quaternion.Euler(0, 0, 0);
             }
-            else{
+            else
+            {
                 spiritWorldPlatform.SetActive(true);
             }
             monsterMeshRenderer.enabled = false;
+            // gameObject.SetActive(false);
+            
             canMove = false;
             canChase = false;
             canAttack = false;
         }
-        else{
+        else
+        {
             isdisabled = false;
-            if(spiritWorldPlatform != null){
+            if(spiritWorldPlatform != null)
+            {
                 spiritWorldPlatform.SetActive(false);
             }
             monsterMeshRenderer.enabled = true;
+            // gameObject.SetActive(true);
         }
     }
-#endregion
+    
+    #endregion
 
     public enum EnemyType
     {
