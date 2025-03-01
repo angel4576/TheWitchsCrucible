@@ -126,7 +126,9 @@ public class WorldControl : MonoBehaviour
         foreach (GameObject monster in monsters)
         {
             if(!monster.GetComponent<Monster>().isDead)
-                monster.SetActive(!monster.activeSelf);
+                //monster.SetActive(!monster.activeSelf);
+                monster.GetComponent<Monster>().MonsterOnSwitchWorld(!isRealWorld);
+                Debug.Log("MonsterOnSwitchWorld");
             
         }
         

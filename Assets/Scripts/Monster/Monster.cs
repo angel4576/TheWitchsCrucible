@@ -68,6 +68,16 @@ public class Monster : MonoBehaviour
     private Transform pivot;
     private Vector3 originalPosition;
     private Vector3 originalRotation;
+
+    // prefab of a spirit world platform
+    public GameObject spiritWorldPlatformPrefab;
+    public GameObject spiritWorldPlatform;
+    public MeshRenderer monsterMeshRenderer;
+    public float platformWidth = 3.0f;
+    public float platformHeight = 0.5f;
+    bool isdisabled = false;
+
+
     
     
     #region Life Cycle
@@ -126,6 +136,8 @@ public class Monster : MonoBehaviour
             // Debug.Log(originalPosition);
         }
         
+        // get mesh renderer
+        monsterMeshRenderer = GetComponent<MeshRenderer>();
     }
 
     private void OnEnable()
@@ -147,6 +159,12 @@ public class Monster : MonoBehaviour
         if(disableUpdate)
             return;
         
+
+        // for plaform
+        if(isdisabled){
+            return;
+        }
+
         // for test purpose
         if (Keyboard.current.digit7Key.wasPressedThisFrame)
         {
@@ -462,6 +480,39 @@ public class Monster : MonoBehaviour
             animator.SetTrigger("FlashOn");
         }
     }
+
+#region Plaform Spawn
+    public void MonsterOnSwitchWorld(bool switchToSpiritWorld){
+        if(switchToSpiritWorld){
+            isdisabled = true;
+            if(spiritWorldPlatform == null){
+                if(spiritWorldPlatformPrefab == null){
+                    Debug.LogError("Spirit world platform prefab is not set");
+                    return;
+                }
+                spiritWorldPlatform = Instantiate(spiritWorldPlatformPrefab, transform.position, spiritWorldPlatformPrefab.transform.rotation);
+                spiritWorldPlatform.transform.parent = transform;
+                spiritWorldPlatform.transform.localPosition = new Vector3(0, 0, 0);
+                spiritWorldPlatform.transform.localScale = new Vector3(platformHeight, platformWidth, 0);
+                //spiritWorldPlatform.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            }
+            else{
+                spiritWorldPlatform.SetActive(true);
+            }
+            monsterMeshRenderer.enabled = false;
+            canMove = false;
+            canChase = false;
+            canAttack = false;
+        }
+        else{
+            isdisabled = false;
+            if(spiritWorldPlatform != null){
+                spiritWorldPlatform.SetActive(false);
+            }
+            monsterMeshRenderer.enabled = true;
+        }
+    }
+#endregion
 
     public enum EnemyType
     {
