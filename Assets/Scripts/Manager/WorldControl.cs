@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 
 public class WorldControl : MonoBehaviour
 {
@@ -28,9 +29,12 @@ public class WorldControl : MonoBehaviour
     private int realWorldLayerID;
     private int spiritWorldLayerID;
     
+    [Header("World Objects")]
     public GameObject SpiritWorldObjects;
     public GameObject RealWorldObjects;
-
+    public GameObject spiritWorldPlatformPrefab;
+    private List<GameObject> spiritWorldPlatforms = new List<GameObject>(); 
+    
     [Header("World Status")]
     public bool isRealWorld;
 
@@ -125,12 +129,50 @@ public class WorldControl : MonoBehaviour
         // toggle monsters
         foreach (GameObject monster in monsters)
         {
-            if(!monster.GetComponent<Monster>().isDead)
+            if (!monster.GetComponent<Monster>().isDead)
+            {
                 monster.SetActive(!monster.activeSelf);
+                // monster.GetComponent<Monster>().MonsterOnSwitchWorld(!isRealWorld);
+                if (isRealWorld)
+                { 
+                    DestroySpiritWorldPlatform();
+                }
+                else
+                {
+                    SpawnSpiritWorldPlatform(monster);
+                }
+            }
             
         }
         
         UpdateLayerCollision();
+        
+    }
+
+    private void SpawnSpiritWorldPlatform(GameObject monster)
+    {
+        if(spiritWorldPlatformPrefab == null)
+        {
+            Debug.LogError("Spirit world platform prefab is not set");
+        }
+        else
+        {
+             GameObject platform = Instantiate(spiritWorldPlatformPrefab, monster.transform.position, spiritWorldPlatformPrefab.transform.rotation);
+             spiritWorldPlatforms.Add(platform);
+        }
+    }
+
+    private void DestroySpiritWorldPlatform()
+    {
+        // Destory all spirit world platforms
+        foreach (var platform in spiritWorldPlatforms)
+        {
+            if (platform != null)
+            {
+                Destroy(platform);
+            }
+        }
+        spiritWorldPlatforms.Clear();
         
     }
     
