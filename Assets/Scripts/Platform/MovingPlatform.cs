@@ -47,6 +47,7 @@ public class MovingPlatform : MonoBehaviour
             isMovingToDest = !isMovingToDest; // change direction
             canMove = false;
 
+            NavManager.Instance.GenerateNavMesh();
         }
     }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class NavManager : MonoBehaviour
 {
@@ -37,6 +38,9 @@ public class NavManager : MonoBehaviour
     private float moveSpeed;
     [HideInInspector]public float gravity;
 
+    [Header("Events")] 
+    // public UnityEvent OnPlatformReached;
+    
     // AStar
     List<NavPoint> openList;
     List<NavPoint> closeList;
