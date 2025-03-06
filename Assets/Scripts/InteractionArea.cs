@@ -59,7 +59,6 @@ public class InteractionArea : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        canInteract = true;
         // if(other.CompareTag("Pet"))
         // {
         //     WorldControl.Instance.canSwitch = true;
@@ -67,6 +66,7 @@ public class InteractionArea : MonoBehaviour
         // }
         if (other.CompareTag("Interactable"))
         {
+            canInteract = true;
             interactableItem = other.GetComponent<IInteractable>();
             if (interactableItem != null)
             {
@@ -77,20 +77,27 @@ public class InteractionArea : MonoBehaviour
         // F_Interact
         if (other.CompareTag("F_Interactable"))
         {
+            canInteract = true;
             f_interactableItem = other.GetComponent<IInteractable>();
         }
     }
 
     private void OnTriggerExit2D(Collider2D other) 
     {
-        canInteract = false;
         // if(other.CompareTag("Pet"))
         // {
         //     // Leave pet
         //     WorldControl.Instance.canSwitch = false;
         // }
+
+        if (other.CompareTag("Interactable"))
+        {
+            canInteract = false;
+        }
+        
         if(other.CompareTag("F_Interactable"))
         {
+            canInteract = false;
             f_interactableItem = null;
         }
     }
