@@ -26,6 +26,7 @@ public class WorldControl : MonoBehaviour
     public bool canPlayEffect = false; 
     
     private int playerLayerID;
+    private int petLayerID;
     private int realWorldLayerID;
     private int spiritWorldLayerID;
     
@@ -84,6 +85,7 @@ public class WorldControl : MonoBehaviour
         SetUpShaderParams();
         
         playerLayerID = LayerMask.NameToLayer("Player");
+        petLayerID = LayerMask.NameToLayer("Pet");
         realWorldLayerID = LayerMask.NameToLayer("RealWorld");
         spiritWorldLayerID = LayerMask.NameToLayer("SpiritWorld");
         // In real world, ignore spirit world collision
@@ -203,14 +205,21 @@ public class WorldControl : MonoBehaviour
     {
         if (isRealWorld)
         {
-            Physics2D.IgnoreLayerCollision(7, 8, true);
-            Physics2D.IgnoreLayerCollision(7, 9, false);
+            // Player
+            Physics2D.IgnoreLayerCollision(playerLayerID, spiritWorldLayerID, true); // ignore spirit world collision
+            Physics2D.IgnoreLayerCollision(playerLayerID, realWorldLayerID, false);
+            
+            // Pet
+            Physics2D.IgnoreLayerCollision(petLayerID, spiritWorldLayerID, true); 
+            Physics2D.IgnoreLayerCollision(petLayerID, realWorldLayerID, false);
         }
         else // spirit world
         {
-            // Debug.Log("Ignore real world collision");
-            Physics2D.IgnoreLayerCollision(7, 8, false);
-            Physics2D.IgnoreLayerCollision(7, 9, true);
+            Physics2D.IgnoreLayerCollision(playerLayerID, spiritWorldLayerID, false); 
+            Physics2D.IgnoreLayerCollision(playerLayerID, realWorldLayerID, true); // ignore real world collision
+            
+            Physics2D.IgnoreLayerCollision(petLayerID, spiritWorldLayerID, false); 
+            Physics2D.IgnoreLayerCollision(petLayerID, realWorldLayerID, true); 
         }
     }
     
