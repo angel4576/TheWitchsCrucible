@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -156,10 +157,7 @@ public class Monster : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if(disableUpdate)
-            return;
-        
-
+       
         // for plaform
         if(isdisabled){
             return;
@@ -196,9 +194,7 @@ public class Monster : MonoBehaviour
                     StartCoroutine("StartAnimationCountdown"); // cannot move until animation finishes
                     
                 }
-                else
-                {
-                }*/
+               */
                 canMove = true;
                 canChase = CheckPlayerInChaseRange();
                 canAttack = true;
@@ -206,11 +202,7 @@ public class Monster : MonoBehaviour
                 
             }
         }
-
-        // if(canAttack && CheckPlayerInMeleeAttackRange() && !isPlayerDead)
-        // {
-        //     KillPlayer();
-        // }
+        
         if(canAttack && !isAttacking)
         {
             if(type == EnemyType.Melee && CheckPlayerInMeleeAttackRange())
@@ -228,6 +220,8 @@ public class Monster : MonoBehaviour
             canMove = false; // stop moving while attacking
             MeleeAttackVisualization();
         }
+        
+        FlipDirection();
         
     }
 
@@ -395,6 +389,23 @@ public class Monster : MonoBehaviour
         DamagePlayer(99999);
     }
 
+    private void FlipDirection()
+    {
+        if (CheckPlayerInChaseRange())
+        {
+            // monster -> player
+            if (playerTransform.position.x - transform.position.x > 0) // player on the right
+            {
+                transform.localScale = new Vector3(Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+            else
+            {
+                transform.localScale = new Vector3(-1 * Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+            
+        }
+    }
+
     /*IEnumerator StartAnimationCountdown()
     {
         yield return new WaitForSeconds(animationDuration);
@@ -411,6 +422,7 @@ public class Monster : MonoBehaviour
     
     #endregion
     
+    #region Helper Functions
     // helper functions
     private bool CheckPlayerInChaseRange()
     {
@@ -426,7 +438,8 @@ public class Monster : MonoBehaviour
     {
         return Vector2.Distance((Vector2)transform.position + centerOffset, playerTransform.position) < rangeAttackRange;
     }
-
+    #endregion
+    
     // Respond to OnLanternFirstPickedUp event in Game Manager
     public void AcquireLantern()
     {
