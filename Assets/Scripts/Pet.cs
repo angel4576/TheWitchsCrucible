@@ -256,12 +256,12 @@ public class Pet : MonoBehaviour, IInteractable
         ani.SetBool("IsRunning", true);
         if(transform.position.x < nextPosition.x) // move right
         {
-            // Debug.Log("move right");
+            Debug.Log("move right");
             rb.velocity = new Vector2(speed, rb.velocity.y);
         }
         else if(transform.position.x > nextPosition.x)
         {
-            // Debug.Log("move left");
+            Debug.Log("move left");
             rb.velocity = new Vector2(-speed, rb.velocity.y);
         }
     }
@@ -273,7 +273,7 @@ public class Pet : MonoBehaviour, IInteractable
 
         if(curPointIndex >= path.Count - 1) // arrive
         {
-            // Debug.Log("Arrived Path Destination");
+            // Debug.Log("Arrived Path Destination!!");
             ani.SetBool("IsRunning", false);
             rb.velocity = Vector2.zero;
             // rb.velocity = new Vector2(1.0f, 0);
@@ -310,7 +310,7 @@ public class Pet : MonoBehaviour, IInteractable
             if(!isJumping) 
             {
                 JumpTrajectory trajectory = NavManager.Instance.GetJumpTrajectory(curI, curJ, linkType);
-                Debug.Log("Pet Jump!");
+                // Debug.Log("Pet Jump!");
                 Jump(trajectory.hJumpSpeed, trajectory.vJumpSpeed);
                 isJumping = true;
                 // set preset jump parameters

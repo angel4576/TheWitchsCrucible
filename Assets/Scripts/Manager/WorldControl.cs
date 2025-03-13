@@ -91,6 +91,9 @@ public class WorldControl : MonoBehaviour
         // In real world, ignore spirit world collision
         Physics2D.IgnoreLayerCollision(playerLayerID, spiritWorldLayerID, true);
         Physics2D.IgnoreLayerCollision(playerLayerID, realWorldLayerID, false);
+        
+        Physics2D.IgnoreLayerCollision(petLayerID, spiritWorldLayerID, true);
+        Physics2D.IgnoreLayerCollision(petLayerID, realWorldLayerID, false);
 
     }
 

@@ -436,7 +436,7 @@ public class NavManager : MonoBehaviour
         // Draw grid
         if(EnableOnDrawGizmos)
         {
-           for(int i = 0; i < gridH; i++)
+            for(int i = 0; i < gridH; i++)
             {
                 for(int j = 0; j < gridW; j++)
                 {
