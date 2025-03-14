@@ -31,6 +31,23 @@ public class JumpStartPoint : MonoBehaviour
         float y = transform.position.y + jumpSpeed * t + 0.5f * (Physics2D.gravity.y * 5) * t * t;
         return new Vector2(x, y);
     }
+    
+    public void UpdateJumpPoints()
+    {
+        startP = NavManager.Instance.FindNearestNavPoint(transform.position);
+        endP = NavManager.Instance.FindNearestNavPoint(endPointTransform.position);
+        // Debug.Log($"Updated JumpStartPoint: Start({startP.i}, {startP.j}) -> End({endP.i}, {endP.j})");
+    }
+
+    public NavPoint getStartPoint()
+    {
+        return startP;
+    }
+
+    public NavPoint getEndPoint()
+    {
+        return endP;
+    }
 
     private void OnDrawGizmos() 
     {

@@ -27,12 +27,15 @@ public class NavManager : MonoBehaviour
     public float TrajectoryCheckLength;
     public LayerMask layer;
 
-    [Header("Jump Setting")]
+    // [Header("Jump Setting")]
     private int jumpHeightDivision = 3;
     private int jumpSpeedDivision = 3;
-    public float AiJumpHeight; // max jump height
-    public float AiJumpSpeed; // horizontal speed
+    private float AiJumpHeight; // max jump height
+    private float AiJumpSpeed; // horizontal speed
 
+    [Header("Jump Points")]
+    public List<GameObject> points;
+    
     [Header("AI Setting")]
     public GameObject Pet;
     private float moveSpeed;
@@ -105,6 +108,18 @@ public class NavManager : MonoBehaviour
         {
             for(int j = 0; j < gridW; ++j)
             {
+                if(grid[i, j] != null)
+                {
+                    grid[i, j].trajectories.Clear(); // 清除之前的跳跃轨迹
+                    grid[i, j].links.Clear(); // 清除旧的路径
+                }
+            }
+        }
+        
+        for(int i = 0; i < gridH; ++i)
+        {
+            for(int j = 0; j < gridW; ++j)
+            {
                 NavPoint navPoint = new NavPoint(i, j); // grid position
                 
                 Vector2 pos = GetWorldPosition(i, j);
@@ -163,6 +178,42 @@ public class NavManager : MonoBehaviour
         // AddJumpLinks();
     }
 
+    public void ReAddJumpLinks()
+    {
+        // for (int i = 0; i < gridH; i++)
+        // {
+        //     for (int j = 0; j < gridW; j++)
+        //     {
+        //         grid[i, j].trajectories.Clear(); // 确保轨迹不重复
+        //     }
+        // }
+        
+        foreach (var point in points)
+        { 
+            JumpStartPoint jumpPoint = point.GetComponent<JumpStartPoint>();
+            if (jumpPoint != null)
+            {
+                // Debug.Log($"Start point speed: {jumpPoint.moveSpeed}");
+                // Debug.Log($"end point i, j: {jumpPoint.getEndPoint().i}, j: {jumpPoint.getEndPoint().j}");
+                jumpPoint.getStartPoint().ClearJumpLinks();
+                jumpPoint.getStartPoint().AddJumpLink(jumpPoint.getEndPoint().i, jumpPoint.getEndPoint().j
+                    , jumpPoint.moveSpeed, jumpPoint.jumpSpeed);
+            }
+        }
+    }
+
+    public void RefreshJumpPoints()
+    {
+        foreach (var point in points)
+        { 
+            JumpStartPoint jumpPoint = point.GetComponent<JumpStartPoint>();
+            if (jumpPoint != null)
+            {
+                jumpPoint.UpdateJumpPoints();
+            }
+        }
+    }
+    
     void AddFallLink()
     {
         for(int i = 0; i < gridH; ++i)

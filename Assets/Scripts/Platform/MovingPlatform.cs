@@ -48,6 +48,8 @@ public class MovingPlatform : MonoBehaviour
             canMove = false;
 
             NavManager.Instance.GenerateNavMesh();
+            NavManager.Instance.RefreshJumpPoints();
+            NavManager.Instance.ReAddJumpLinks();
         }
     }
 
