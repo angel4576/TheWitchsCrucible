@@ -83,7 +83,11 @@ public class PlayerController : MonoBehaviour
     public bool isInvulnerable;
     public Color invulnerabilityColor;
 
-
+    [Header("Hurt")] 
+    public float hurtForce;
+    public float hurtTime;
+    public bool isHurt;
+    
     // Material
     private Material material;
     
@@ -149,8 +153,6 @@ public class PlayerController : MonoBehaviour
         {
             FlipDirection();
         }
-        
-        
 
         // Set animation state
         SetAnimation();
@@ -169,6 +171,9 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(isHurt)
+            return;
+
         Move();
         
         // Jump
@@ -187,6 +192,7 @@ public class PlayerController : MonoBehaviour
             ani.SetBool("IsLanded", true);
         }
     }
+    
     #endregion
 
     #region Character Movement
@@ -205,7 +211,7 @@ public class PlayerController : MonoBehaviour
 
         if (inputDirection.x != 0 && !pet.canMove)
         {
-            Invoke(nameof(ControlPetMovement), petMoveDelayTime);
+            // Invoke(nameof(ControlPetMovement), petMoveDelayTime);
         }
     }
 
@@ -287,20 +293,23 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Transform attacker)
     {
+        // Get hurt
+        Vector2 attackDirection = new Vector2(transform.position.x - attacker.position.x, 0).normalized;
+        StartCoroutine(Knockback(attackDirection));
+        
+        // Take damage
         if (!isInvulnerable)
         {
             // DataManager.Instance.playerData.currentHealth -= damage;
             
-            Debug.Log($"Player light when take damage:{DataManager.Instance.playerData.light}");
             // Update light when take damage
             DataManager.Instance.playerData.light -= damage;
             UIManager.Instance.BroadcastMessage("UpdateLight");
             
             TriggerInvulnerability();
         }
-        
         
         if (DataManager.Instance.playerData.light < 0 && !isDead)
         {
@@ -309,6 +318,17 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(DieCoroutine());
         }
         
+    }
+
+    IEnumerator Knockback(Vector2 direction)
+    {
+        isHurt = true;
+        rb.velocity = Vector2.zero;
+        rb.AddForce(direction * hurtForce, ForceMode2D.Impulse);
+        
+        yield return new WaitForSeconds(hurtTime);
+        
+        isHurt = false;
     }
 
     #region Invulnerability

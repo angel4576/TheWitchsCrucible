@@ -283,7 +283,7 @@ public class Monster : MonoBehaviour
             else
             {
                 // Debug.Log("Monster Melee Attack!");
-                DamagePlayer(meleeAttackDamage);
+                DamagePlayer(meleeAttackDamage, transform);
             }
         }
 
@@ -376,9 +376,10 @@ public class Monster : MonoBehaviour
         // do nothing
     }
 
-    private void DamagePlayer(float damage)
+    private void DamagePlayer(float damage, Transform attacker)
     {
-        playerScript.TakeDamage(damage);
+        playerScript.TakeDamage(damage, attacker);
+        // playerScript.GetHurt();
     }
 
     private void KillPlayer()
@@ -386,7 +387,7 @@ public class Monster : MonoBehaviour
         // kill player
         isPlayerDead = true;
         // playerScript.Die();
-        DamagePlayer(99999);
+        DamagePlayer(99999, transform);
     }
 
     private void FlipDirection()

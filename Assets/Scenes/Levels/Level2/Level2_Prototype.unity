@@ -12294,6 +12294,8 @@ MonoBehaviour:
   invulnerabilityTime: 2
   isInvulnerable: 0
   invulnerabilityColor: {r: 0.30405825, g: 0.6857805, b: 0.82641506, a: 0.47058824}
+  hurtForce: 10
+  hurtTime: 0.8
 --- !u!50 &917230999
 Rigidbody2D:
   serializedVersion: 4

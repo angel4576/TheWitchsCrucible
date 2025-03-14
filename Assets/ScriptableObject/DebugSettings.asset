@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df2542cb898a5f448fbf1c0f4027fa1, type: 3}
   m_Name: DebugSettings
   m_EditorClassIdentifier: 
-  enableDebugMode: 1
+  enableDebugMode: 0
   giveLanternAtStart: 1
   freezeEnemies: 1
