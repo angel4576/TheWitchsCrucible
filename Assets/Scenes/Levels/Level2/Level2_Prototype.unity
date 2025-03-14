@@ -12293,9 +12293,10 @@ MonoBehaviour:
   rangedProj: {fileID: 8128267858619025443, guid: 6578665e0b3b69c458d17f5b6654b30d, type: 3}
   invulnerabilityTime: 2
   isInvulnerable: 0
-  invulnerabilityColor: {r: 0.30405825, g: 0.6857805, b: 0.82641506, a: 0.47058824}
+  invulnerabilityColor: {r: 0.827451, g: 0.30588236, b: 0.31794843, a: 0.47058824}
   hurtForce: 10
   hurtTime: 0.8
+  isHurt: 0
 --- !u!50 &917230999
 Rigidbody2D:
   serializedVersion: 4
