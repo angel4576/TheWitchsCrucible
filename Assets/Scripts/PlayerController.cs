@@ -295,13 +295,14 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(float damage, Transform attacker)
     {
-        // Get hurt
-        Vector2 attackDirection = new Vector2(transform.position.x - attacker.position.x, 0).normalized;
-        StartCoroutine(Knockback(attackDirection));
         
         // Take damage
         if (!isInvulnerable)
         {
+            // Get hurt
+            Vector2 attackDirection = new Vector2(transform.position.x - attacker.position.x, 0).normalized;
+            StartCoroutine(Knockback(attackDirection));
+            
             // DataManager.Instance.playerData.currentHealth -= damage;
             
             // Update light when take damage
@@ -323,11 +324,11 @@ public class PlayerController : MonoBehaviour
     IEnumerator Knockback(Vector2 direction)
     {
         isHurt = true;
-        rb.velocity = Vector2.zero;
-        rb.AddForce(direction * hurtForce, ForceMode2D.Impulse);
+        rb.velocity = direction * hurtForce;
+        // rb.AddForce(direction * hurtForce, ForceMode2D.Impulse);
         
         yield return new WaitForSeconds(hurtTime);
-        
+        rb.velocity = Vector2.zero;
         isHurt = false;
     }
 

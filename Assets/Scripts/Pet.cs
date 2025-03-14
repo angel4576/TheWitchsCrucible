@@ -256,12 +256,12 @@ public class Pet : MonoBehaviour, IInteractable
         ani.SetBool("IsRunning", true);
         if(transform.position.x < nextPosition.x) // move right
         {
-            Debug.Log("move right");
+            // Debug.Log("move right");
             rb.velocity = new Vector2(speed, rb.velocity.y);
         }
         else if(transform.position.x > nextPosition.x)
         {
-            Debug.Log("move left");
+            // Debug.Log("move left");
             rb.velocity = new Vector2(-speed, rb.velocity.y);
         }
     }
