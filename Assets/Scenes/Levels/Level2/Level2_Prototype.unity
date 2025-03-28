@@ -12312,6 +12312,7 @@ MonoBehaviour:
   invulnerabilityTime: 1.5
   isInvulnerable: 0
   invulnerabilityColor: {r: 0.3056603, g: 0.2923958, b: 0.2923958, a: 0.47058824}
+  pauseTime: 0.15
   hurtForce: 16
   hurtTime: 0.3
   isHurt: 0
@@ -12607,7 +12608,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9442f934b05014449978aeea0991b81c, type: 3}
   - {fileID: 8300000, guid: 43d0fc4f40f17db4dab07a5dd251e4b1, type: 3}
   - {fileID: 8300000, guid: 5acfaf0bc4ae8544fb2416b941fb6e3f, type: 3}
-  hitSounds: []
+  hitSounds:
+  - {fileID: 8300000, guid: 00a42551a05b28b479974e2c6924fc0a, type: 3}
 --- !u!1 &923794389
 GameObject:
   m_ObjectHideFlags: 0
@@ -15177,7 +15179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ImpulseDefinition:
     m_ImpulseChannel: 1
-    m_ImpulseShape: 4
+    m_ImpulseShape: 2
     m_CustomImpulseShape:
       serializedVersion: 2
       m_Curve:
@@ -15211,7 +15213,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    m_ImpulseDuration: 0.2
+    m_ImpulseDuration: 0.3
     m_ImpulseType: 0
     m_DissipationRate: 0.25
     m_RawSignal: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
@@ -15242,7 +15244,7 @@ MonoBehaviour:
     m_DissipationMode: 2
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
-  m_DefaultVelocity: {x: 0.2, y: -0.2, z: 0}
+  m_DefaultVelocity: {x: 0.3, y: -0.3, z: 0}
 --- !u!4 &1022642780
 Transform:
   m_ObjectHideFlags: 0
@@ -21726,12 +21728,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1448265580}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 120.44315, y: -12.741482, z: -0.055375542}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 85.454346, y: -28.240229, z: 0.14808184}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1824774617}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1448265583
 MonoBehaviour:
@@ -27195,6 +27197,7 @@ Transform:
   - {fileID: 1187270263}
   - {fileID: 1898033739}
   - {fileID: 1553653607}
+  - {fileID: 1448265582}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1831845024
@@ -30598,11 +30601,10 @@ SceneRoots:
   - {fileID: 1366100310}
   - {fileID: 599186037}
   - {fileID: 434301385}
+  - {fileID: 1022642780}
   - {fileID: 917230993}
   - {fileID: 1313239725}
   - {fileID: 1080968699}
   - {fileID: 588895271}
   - {fileID: 1389949057}
   - {fileID: 961111429}
-  - {fileID: 1448265582}
-  - {fileID: 1022642780}

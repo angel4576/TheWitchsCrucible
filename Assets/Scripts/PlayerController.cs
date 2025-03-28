@@ -85,6 +85,7 @@ public class PlayerController : MonoBehaviour
     // public Color hurtColor; 
 
     [Header("Hurt")] 
+    public float pauseTime;
     public float hurtForce;
     public float hurtTime;
     // public float knockDistance;
@@ -300,7 +301,7 @@ public class PlayerController : MonoBehaviour
         // Take damage
         if (!isInvulnerable)
         {
-            CameraShakeManager.Instance.PauseTime(0.2f);
+            CameraShakeManager.Instance.PauseTime(pauseTime); 
             
             // Get hurt
             ani.SetTrigger("HitTrigger");
