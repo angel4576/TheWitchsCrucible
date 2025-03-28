@@ -82,12 +82,12 @@ public class PlayerController : MonoBehaviour
     public float invulnerabilityTime;
     public bool isInvulnerable;
     public Color invulnerabilityColor;
-    public Color hurtColor; 
+    // public Color hurtColor; 
 
     [Header("Hurt")] 
     public float hurtForce;
     public float hurtTime;
-    public float knockDistance;
+    // public float knockDistance;
     public bool isHurt;
     
     // Material
@@ -300,6 +300,8 @@ public class PlayerController : MonoBehaviour
         // Take damage
         if (!isInvulnerable)
         {
+            CameraShakeManager.Instance.PauseTime(0.2f);
+            
             // Get hurt
             ani.SetTrigger("HitTrigger");
             Vector2 attackDirection = new Vector2(transform.position.x - attacker.position.x, 0).normalized;
@@ -311,7 +313,6 @@ public class PlayerController : MonoBehaviour
             DataManager.Instance.playerData.light -= damage;
             UIManager.Instance.BroadcastMessage("UpdateLight");
             CameraShakeManager.Instance.GenerateHurtShake();
-            // CameraShakeManager.Instance.PauseTime(0.5f);
             
             TriggerInvulnerability();
         }
@@ -341,9 +342,9 @@ public class PlayerController : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }*/
-        // Color Flash
         
         yield return new WaitForSeconds(hurtTime);
+        
         rb.velocity = Vector2.zero; 
 
         yield return new WaitForSeconds(0.3f); // stun time

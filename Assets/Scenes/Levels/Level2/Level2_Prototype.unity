@@ -12309,13 +12309,11 @@ MonoBehaviour:
   canAttack: 0
   meleeProj: {fileID: 1272124353256304504, guid: 8190f95c3bff3b2449dd9c45167a7e38, type: 3}
   rangedProj: {fileID: 8128267858619025443, guid: 6578665e0b3b69c458d17f5b6654b30d, type: 3}
-  invulnerabilityTime: 2
+  invulnerabilityTime: 1.5
   isInvulnerable: 0
-  invulnerabilityColor: {r: 1, g: 1, b: 1, a: 0.47058824}
-  hurtColor: {r: 0, g: 0, b: 0, a: 0}
-  hurtForce: 20
-  hurtTime: 0.2
-  knockDistance: 20
+  invulnerabilityColor: {r: 0.3056603, g: 0.2923958, b: 0.2923958, a: 0.47058824}
+  hurtForce: 16
+  hurtTime: 0.3
   isHurt: 0
 --- !u!50 &917230999
 Rigidbody2D:
@@ -12609,6 +12607,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9442f934b05014449978aeea0991b81c, type: 3}
   - {fileID: 8300000, guid: 43d0fc4f40f17db4dab07a5dd251e4b1, type: 3}
   - {fileID: 8300000, guid: 5acfaf0bc4ae8544fb2416b941fb6e3f, type: 3}
+  hitSounds: []
 --- !u!1 &923794389
 GameObject:
   m_ObjectHideFlags: 0
@@ -15178,7 +15177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ImpulseDefinition:
     m_ImpulseChannel: 1
-    m_ImpulseShape: 2
+    m_ImpulseShape: 4
     m_CustomImpulseShape:
       serializedVersion: 2
       m_Curve:
@@ -15212,7 +15211,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    m_ImpulseDuration: 0.5
+    m_ImpulseDuration: 0.2
     m_ImpulseType: 0
     m_DissipationRate: 0.25
     m_RawSignal: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
@@ -15243,7 +15242,7 @@ MonoBehaviour:
     m_DissipationMode: 2
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
-  m_DefaultVelocity: {x: 0, y: -1, z: 0}
+  m_DefaultVelocity: {x: 0.2, y: -0.2, z: 0}
 --- !u!4 &1022642780
 Transform:
   m_ObjectHideFlags: 0
@@ -26091,7 +26090,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1735415756}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29ad2d254367efe4b9ce10f339c3643c, type: 3}
   m_Name: 
@@ -27654,37 +27653,6 @@ Transform:
   m_Children:
   - {fileID: 1543235929}
   m_Father: {fileID: 917230993}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1879259481
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1879259482}
-  m_Layer: 0
-  m_Name: CameraRig
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1879259482
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1879259481}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 121.48858, y: -15.010812, z: -0.07428114}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1883133134
 GameObject:
@@ -30638,4 +30606,3 @@ SceneRoots:
   - {fileID: 961111429}
   - {fileID: 1448265582}
   - {fileID: 1022642780}
-  - {fileID: 1879259482}
