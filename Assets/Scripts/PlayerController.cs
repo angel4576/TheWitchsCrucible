@@ -88,6 +88,7 @@ public class PlayerController : MonoBehaviour
     public float pauseTime;
     public float hurtForce;
     public float hurtTime;
+    public PostProcessingEffect hurtEffect; 
     // public float knockDistance;
     public bool isHurt;
     
@@ -301,7 +302,9 @@ public class PlayerController : MonoBehaviour
         // Take damage
         if (!isInvulnerable)
         {
+            // Visual effect
             CameraShakeManager.Instance.PauseTime(pauseTime); 
+            hurtEffect.PlayHitEffect();
             
             // Get hurt
             ani.SetTrigger("HitTrigger");
