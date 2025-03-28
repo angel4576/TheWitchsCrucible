@@ -82,10 +82,12 @@ public class PlayerController : MonoBehaviour
     public float invulnerabilityTime;
     public bool isInvulnerable;
     public Color invulnerabilityColor;
+    public Color hurtColor; 
 
     [Header("Hurt")] 
     public float hurtForce;
     public float hurtTime;
+    public float knockDistance;
     public bool isHurt;
     
     // Material
@@ -149,7 +151,7 @@ public class PlayerController : MonoBehaviour
         
         // Read Vector2 value in Move action
         inputDirection = inputActions.Gameplay.Move.ReadValue<Vector2>();
-        if (!PauseScreen.GetComponent<PauseManager>().isPaused)
+        if (!PauseScreen.GetComponent<PauseManager>().isPaused && !isHurt)
         {
             FlipDirection();
         }
@@ -295,11 +297,11 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(float damage, Transform attacker)
     {
-        
         // Take damage
         if (!isInvulnerable)
         {
             // Get hurt
+            ani.SetTrigger("HitTrigger");
             Vector2 attackDirection = new Vector2(transform.position.x - attacker.position.x, 0).normalized;
             StartCoroutine(Knockback(attackDirection));
             
@@ -308,6 +310,8 @@ public class PlayerController : MonoBehaviour
             // Update light when take damage
             DataManager.Instance.playerData.light -= damage;
             UIManager.Instance.BroadcastMessage("UpdateLight");
+            CameraShakeManager.Instance.GenerateHurtShake();
+            // CameraShakeManager.Instance.PauseTime(0.5f);
             
             TriggerInvulnerability();
         }
@@ -326,11 +330,26 @@ public class PlayerController : MonoBehaviour
         isHurt = true;
         rb.velocity = direction * hurtForce;
         // rb.AddForce(direction * hurtForce, ForceMode2D.Impulse);
+
+        /*Vector2 startPos = rb.position;
+        float distanceTraveled = 0f;
+        float elapsedTime = 0f;
+        
+        while (distanceTraveled < knockDistance && elapsedTime < hurtTime)
+        {
+            distanceTraveled = Vector2.Distance(rb.position, startPos);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }*/
+        // Color Flash
         
         yield return new WaitForSeconds(hurtTime);
-        rb.velocity = Vector2.zero;
+        rb.velocity = Vector2.zero; 
+
+        yield return new WaitForSeconds(0.3f); // stun time
         isHurt = false;
     }
+    
 
     #region Invulnerability
     private void TriggerInvulnerability()
