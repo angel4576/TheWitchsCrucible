@@ -7,10 +7,12 @@ public class PlayerAudioController : MonoBehaviour
     public AudioClip[] runningSounds;
     public AudioClip[] jumpingSounds;
     public AudioClip[] deathSounds;
+    public AudioClip[] hitSounds;
     private Rigidbody2D rb2d;
     private AudioSource audioSource;
     private bool isMoving = false;
     private bool isJumping = false;
+    private bool isHurt = false;
     private float stepTimer = 0f;
     private float stepInterval = 0.3f;
 
@@ -39,6 +41,17 @@ public class PlayerAudioController : MonoBehaviour
 
         isJumping = false;
 
+        if (playerController != null && playerController.isHurt)
+        {
+            if (!isHurt)
+            {
+                isHurt = true;
+                PlayHitSound();
+            }
+            return;
+        }
+        
+        isHurt = false;
         
         if (rb2d.velocity.magnitude > 0.1f && physicsCheck.isOnGround)
         {
@@ -67,6 +80,7 @@ public class PlayerAudioController : MonoBehaviour
         {
             PlayDeathSound();
         }
+        
     }
 
     private void PlayJumpSound()
@@ -91,6 +105,15 @@ public class PlayerAudioController : MonoBehaviour
         {
             PlayRandomSound(deathSounds);
         }
+    }
+
+    private void PlayHitSound()
+    {
+        if (hitSounds != null)
+        {
+            PlayRandomSound(hitSounds);
+        }
+        
     }
 
     private void PlayRandomSound(AudioClip[] soundArray)
