@@ -88,7 +88,8 @@ public class PlayerController : MonoBehaviour
     public float pauseTime;
     public float hurtForce;
     public float hurtTime;
-    public PostProcessingEffect hurtEffect; 
+    public PostProcessingEffect hurtEffect;
+    public ParticleSystem hurtParticles;
     // public float knockDistance;
     public bool isHurt;
     
@@ -304,6 +305,7 @@ public class PlayerController : MonoBehaviour
         {
             // Visual effect
             CameraShakeManager.Instance.PauseTime(pauseTime); 
+            PlayHurtParticleEffect();
             hurtEffect.PlayHitEffect();
             
             // Get hurt
@@ -328,6 +330,14 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(DieCoroutine());
         }
         
+    }
+
+    private void PlayHurtParticleEffect()
+    {
+        if (hurtParticles != null)
+        {
+            hurtParticles.Play();
+        }
     }
 
     IEnumerator Knockback(Vector2 direction)
