@@ -40,6 +40,7 @@ public class CameraShakeManager : MonoBehaviour
     public void GenerateHurtShake()
     {
         // customCameraShake.HurtShake(3.0f, 10.0f, 1.2f);
+        // CinemachineImpulseManager.Instance.IgnoreTimeScale = true;
         impulseSource.GenerateImpulse();
     }
 
