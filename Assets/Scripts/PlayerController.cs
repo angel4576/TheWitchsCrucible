@@ -93,6 +93,9 @@ public class PlayerController : MonoBehaviour
     // public float knockDistance;
     public bool isHurt;
     
+    [Header("Dialogue")]
+    public DialogueController dialogueController;
+    
     // Material
     private Material material;
     
@@ -177,6 +180,9 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         if(isHurt)
+            return;
+        
+        if(dialogueController != null && dialogueController.IsDialoguePlaying())
             return;
 
         Move();

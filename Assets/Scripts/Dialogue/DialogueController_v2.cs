@@ -1,28 +1,22 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 
-public class DialogueController : MonoBehaviour
+public class DialogueController_v2 : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI NameText;
     [SerializeField] private TextMeshProUGUI NPCDialogueText;
     [SerializeField] private float typeSpeed = 10f;
     [SerializeField] private float autoNextDelay = 1.5f; // Delay before autoplaying the next paragraph
 
-    [Header("Dialogue Asset")]
     [SerializeField] private Sprite playerBubble;
     [SerializeField] private Sprite petBubble;
     [SerializeField] private Sprite playerIcon;
     [SerializeField] private Sprite petIcon;
-
-    [Header("Dialogue Visualization")]
-    [SerializeField] private Image bubbleImage;
-    [SerializeField] private Image iconImage;
     
     private Queue<string> paragraphs = new Queue<string>();
+    private Queue<string> dialogLines = new Queue<string>();
 
     private bool conversationOver;
     private string p;
@@ -76,18 +70,15 @@ public class DialogueController : MonoBehaviour
         }
     }
 
-    private void SetDialogueBubbleStyle(DialogueLine line)
+    private void SetDialogueBubbleStyle(DialogueText dialogueText)
     {
-        if (line.speakerName == "Pet")
+        if (dialogueText.speakerName == "Pet")
         {
-            bubbleImage.color = Color.grey;
-            iconImage.sprite = petIcon;
+            
         }
-        else if (line.speakerName == "Player")
+        else if (dialogueText.speakerName == "Player")
         {
-            // temp, change sprite later
-            bubbleImage.color = Color.white;
-            iconImage.sprite = playerIcon;
+            
         }
     }
     
@@ -99,6 +90,7 @@ public class DialogueController : MonoBehaviour
         }
 
         // NameText.text = dialogueText.speakerName;
+        
 
         for (int i = 0; i < dialogueText.lines.Length; i++)
         {

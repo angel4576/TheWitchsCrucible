@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0df2542cb898a5f448fbf1c0f4027fa1, type: 3}
-  m_Name: DebugSettings
+  m_Script: {fileID: 11500000, guid: 7d94f1d5176d66e4582daa62c92d9261, type: 3}
+  m_Name: PlayerLine 1
   m_EditorClassIdentifier: 
-  enableDebugMode: 1
-  giveLanternAtStart: 1
-  freezeEnemies: 0
+  speakerName: Player
+  content: Oh my Gosh! Bean!
