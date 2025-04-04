@@ -109,17 +109,19 @@ public class PlayerController : MonoBehaviour
         inputActions.Gameplay.Pause.started += Pause;
         inputActions.Gameplay.Fire.started += MeleeAttack;
         inputActions.Gameplay.RangeAttack.started += RangeAttack;
+        
+        dialogueController.SetInputAction(inputActions);
     }
 
     private void OnEnable()
     {
-        inputActions.Enable();
+        inputActions.Gameplay.Enable();
     }
 
 
     private void OnDisable()
     {
-        inputActions.Disable();
+        inputActions.Gameplay.Disable();
     }
 
     // Start is called before the first frame update

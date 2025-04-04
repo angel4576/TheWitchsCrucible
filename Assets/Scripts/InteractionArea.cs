@@ -51,6 +51,7 @@ public class InteractionArea : MonoBehaviour
     // Item interaction
     private void F_Interact(InputAction.CallbackContext context)
     {
+        Debug.Log("Gameplay F");
         if (canInteract && f_interactableItem != null) 
         {
             f_interactableItem.Interact();

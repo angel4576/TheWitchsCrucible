@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class DialogueController : MonoBehaviour
@@ -12,6 +13,10 @@ public class DialogueController : MonoBehaviour
     [SerializeField] private float typeSpeed = 10f;
     [SerializeField] private float autoNextDelay = 1.5f; // Delay before autoplaying the next paragraph
 
+    private PlayerInputControl inputActions;
+    [Header("Dialogue Settings")] 
+    public bool isAutoPlay;
+    
     [Header("Dialogue Asset")]
     [SerializeField] private Sprite playerBubble;
     [SerializeField] private Sprite petBubble;
@@ -22,10 +27,10 @@ public class DialogueController : MonoBehaviour
     [SerializeField] private Image bubbleImage;
     [SerializeField] private Image iconImage;
     
-    private Queue<string> paragraphs = new Queue<string>();
+    private Queue<DialogueLine> paragraphs = new Queue<DialogueLine>();
 
     private bool conversationOver;
-    private string p;
+    private DialogueLine p;
     private bool isTyping;
     private Coroutine typeDialogueCoroutine;
 
@@ -36,6 +41,20 @@ public class DialogueController : MonoBehaviour
     private DialogueText dialogueTextGlobal;
     
     // private bool isDialoguePlaying;
+
+    public void SetInputAction(PlayerInputControl actions)
+    {
+        inputActions = actions;
+
+        inputActions.UI.Confirm.performed += OnDialogueConfirmPressed;
+        // inputActions.UI.Confirm.Enable();
+    }
+
+    private void OnDialogueConfirmPressed(InputAction.CallbackContext obj)
+    {
+        Debug.Log("UI F");
+        DisplayNextParagraph(dialogueTextGlobal);
+    }
 
     public void SetParent(MonoBehaviour parentObject)
     {
@@ -85,7 +104,7 @@ public class DialogueController : MonoBehaviour
         }
         else if (line.speakerName == "Player")
         {
-            // temp, change sprite later
+            // temp, change bubble sprite later
             bubbleImage.color = Color.white;
             iconImage.sprite = playerIcon;
         }
@@ -93,6 +112,10 @@ public class DialogueController : MonoBehaviour
     
     public void StartConversation(DialogueText dialogueText)
     {
+        // Change input action map
+        inputActions.Gameplay.Disable();
+        inputActions.UI.Enable();
+        
         if (!gameObject.activeSelf)
         {
             gameObject.SetActive(true);
@@ -102,7 +125,7 @@ public class DialogueController : MonoBehaviour
 
         for (int i = 0; i < dialogueText.lines.Length; i++)
         {
-            paragraphs.Enqueue(dialogueText.lines[i].content);
+            paragraphs.Enqueue(dialogueText.lines[i]);
         }
 
         if (parent is NPC npcParent)
@@ -120,6 +143,9 @@ public class DialogueController : MonoBehaviour
 
     public void EndConversation()
     {
+        inputActions.UI.Disable();
+        inputActions.Gameplay.Enable();
+        
         paragraphs.Clear();
         NPCDialogueText.text = "";
         conversationOver = false;
@@ -135,16 +161,19 @@ public class DialogueController : MonoBehaviour
         }
     }
 
-    private IEnumerator TypeDialogueText(string p)
+    private IEnumerator TypeDialogueText(DialogueLine p)
     {
         isTyping = true;
+        
+        SetDialogueBubbleStyle(p);
 
         int maxVisibleChars = 0;
 
-        NPCDialogueText.text = p;
+        NPCDialogueText.text = p.content;
         NPCDialogueText.maxVisibleCharacters = maxVisibleChars;
 
-        foreach (char c in p.ToCharArray())
+        // Typing dialogue text
+        foreach (char c in p.content.ToCharArray())
         {
             maxVisibleChars++;
             NPCDialogueText.maxVisibleCharacters = maxVisibleChars;
@@ -152,16 +181,19 @@ public class DialogueController : MonoBehaviour
             yield return new WaitForSeconds(MAX_TYPE_TIME / typeSpeed);
         }
 
-        isTyping = false;
+        isTyping = false; // finish typing
         if (!isTyping)
         {
             // Wait for some time before automatically showing the next paragraph
             if (paragraphs.Count > 0) // Check if more paragraphs are left
             {
-                //Debug.Log("we have paragraphs numbers left:" + paragraphs.Count);
-                yield return new WaitForSeconds(autoNextDelay); // Added delay before next paragraph
-                DisplayNextParagraph(dialogueTextGlobal); // Automatically call next paragraph after typing finishes
-                                                          //Debug.Log("DisplayNextParagraph called" + paragraphs.Count);
+                if (isAutoPlay)
+                {
+                    //Debug.Log("we have paragraphs numbers left:" + paragraphs.Count);
+                    yield return new WaitForSeconds(autoNextDelay); // Added delay before next paragraph
+                    DisplayNextParagraph(dialogueTextGlobal); // Automatically call next paragraph after typing finishes
+                                                              //Debug.Log("DisplayNextParagraph called" + paragraphs.Count);
+                }
             }
             else
             {
@@ -176,7 +208,7 @@ public class DialogueController : MonoBehaviour
     private void FinishParagraphEarly()
     {
         StopCoroutine(typeDialogueCoroutine);
-        NPCDialogueText.maxVisibleCharacters = p.Length;
+        NPCDialogueText.maxVisibleCharacters = p.content.Length;
         isTyping = false;
     }
 

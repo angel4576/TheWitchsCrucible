@@ -185,7 +185,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19304118}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -194,7 +194,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.000045776367, y: 0}
+  m_AnchoredPosition: {x: -0.00018310547, y: -0.000061035156}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &19304120
@@ -19569,6 +19569,8 @@ MonoBehaviour:
   petBubble: {fileID: 0}
   playerIcon: {fileID: 0}
   petIcon: {fileID: 0}
+  bubbleImage: {fileID: 0}
+  iconImage: {fileID: 0}
 --- !u!82 &1313239728
 AudioSource:
   m_ObjectHideFlags: 0
@@ -30567,7 +30569,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -340.7499, y: -135}
   m_SizeDelta: {x: 400, y: 251.66}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2103732588
@@ -30597,7 +30599,9 @@ MonoBehaviour:
   playerBubble: {fileID: 21300000, guid: 46ca8fc653c1b9d42ae3eb416ce6d52c, type: 3}
   petBubble: {fileID: 0}
   playerIcon: {fileID: 21300000, guid: c8f6ecd6346fddf4c88e2fda4777bfbb, type: 3}
-  petIcon: {fileID: 0}
+  petIcon: {fileID: 21300000, guid: 521491bae09485049bb21c5664b6bb63, type: 3}
+  bubbleImage: {fileID: 2103732590}
+  iconImage: {fileID: 19304120}
 --- !u!114 &2103732590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30618,7 +30622,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 46ca8fc653c1b9d42ae3eb416ce6d52c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d0196d5443b39c54d8dba0a3fb13d0a0, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
