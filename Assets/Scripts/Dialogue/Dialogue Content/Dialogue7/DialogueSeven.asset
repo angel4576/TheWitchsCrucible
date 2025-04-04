@@ -21,3 +21,12 @@ MonoBehaviour:
     \r"
   - 'PET: Never. I will always be with you. It''s time for me to change back now!
     Do you remember what to do? That''s right! X button!'
+  lines:
+  - {fileID: 11400000, guid: bf63bcab5fb10f54d889045abc6f691b, type: 2}
+  - {fileID: 11400000, guid: bbad243e759f119428603d44cb5c54b4, type: 2}
+  - {fileID: 11400000, guid: 4e83e7a12f897bc40a0441414aa9dfb5, type: 2}
+  - {fileID: 11400000, guid: 44bfe8fe7b314a049b98c4dec341ce7c, type: 2}
+  - {fileID: 11400000, guid: e402d109ef829984fb3664465707a26c, type: 2}
+  - {fileID: 11400000, guid: eb97343fb06f91a4284fc95490bb8155, type: 2}
+  - {fileID: 11400000, guid: 801ac45e7e7fd03459dc51678dab702e, type: 2}
+  - {fileID: 11400000, guid: 14446bad41cb9504a92b2d5dbf0e2e7e, type: 2}
