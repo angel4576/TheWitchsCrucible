@@ -93,6 +93,9 @@ public class PlayerController : MonoBehaviour
     // public float knockDistance;
     public bool isHurt;
     
+    [Header("Dialogue")]
+    public DialogueController dialogueController;
+    
     // Material
     private Material material;
     
@@ -106,17 +109,19 @@ public class PlayerController : MonoBehaviour
         inputActions.Gameplay.Pause.started += Pause;
         inputActions.Gameplay.Fire.started += MeleeAttack;
         inputActions.Gameplay.RangeAttack.started += RangeAttack;
+        
+        dialogueController.SetInputAction(inputActions);
     }
 
     private void OnEnable()
     {
-        inputActions.Enable();
+        inputActions.Gameplay.Enable();
     }
 
 
     private void OnDisable()
     {
-        inputActions.Disable();
+        inputActions.Gameplay.Disable();
     }
 
     // Start is called before the first frame update
@@ -177,6 +182,9 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         if(isHurt)
+            return;
+        
+        if(dialogueController != null && dialogueController.IsDialoguePlaying())
             return;
 
         Move();
