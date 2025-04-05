@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableDebugMode: 1
   giveLanternAtStart: 1
-  freezeEnemies: 1
+  freezeEnemies: 0
