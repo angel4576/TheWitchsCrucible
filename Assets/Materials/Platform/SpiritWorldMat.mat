@@ -45,9 +45,17 @@ Material:
     - _IsRealWorld: 0
     - _NoiseFrequency: 1
     - _NoiseOffset: 0.6
-    - _SphereRadius: 0
+    - _SphereRadius: 25
     m_Colors:
+<<<<<<< Updated upstream
     - _CenterPosition: {r: 121.77022, g: -14.495003, b: 0, a: 0}
+=======
+<<<<<<< HEAD
+    - _CenterPosition: {r: 121.77022, g: -14.495003, b: 0, a: 0}
+=======
+    - _CenterPosition: {r: 20.656702, g: -1.2449999, b: 0, a: 0}
+>>>>>>> 4db9d138cef5fb66dac13e1e3e2a3acfe32257b2
+>>>>>>> Stashed changes
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}

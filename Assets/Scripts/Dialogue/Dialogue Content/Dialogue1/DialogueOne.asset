@@ -17,3 +17,9 @@ MonoBehaviour:
   - "Girl: Oh my gosh! Bean! I thought\u2026how did you get here, Bean? "
   - 'PET: Yes! It''s me! Come on, try to move! I hope you didn''t get broken just
     now! Don''t forget you can jump!'
+  lines:
+  - {fileID: 11400000, guid: 403153ba82dbd954a89fad48e1fbf096, type: 2}
+  - {fileID: 11400000, guid: eb967c0c454bdb74c8d0d3c311bb7608, type: 2}
+  - {fileID: 11400000, guid: 96414f383a435624c92a6193d3c8417c, type: 2}
+  - {fileID: 11400000, guid: 7eab01488594f7b44be4978a6bf89dd3, type: 2}
+  - {fileID: 11400000, guid: 26339c1832b822e44865b37e2d056e3b, type: 2}

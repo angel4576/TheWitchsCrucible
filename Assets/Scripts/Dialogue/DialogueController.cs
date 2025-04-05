@@ -1,19 +1,36 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class DialogueController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI NameText;
     [SerializeField] private TextMeshProUGUI NPCDialogueText;
     [SerializeField] private float typeSpeed = 10f;
-    [SerializeField] private float autoNextDelay = 1.5f; // Delay before auto-playing the next paragraph
+    [SerializeField] private float autoNextDelay = 1.5f; // Delay before autoplaying the next paragraph
 
-    private Queue<string> paragraphs = new Queue<string>();
+    private PlayerInputControl inputActions;
+    [Header("Dialogue Settings")] 
+    public bool isAutoPlay;
+    
+    [Header("Dialogue Asset")]
+    [SerializeField] private Sprite playerBubble;
+    [SerializeField] private Sprite petBubble;
+    [SerializeField] private Sprite playerIcon;
+    [SerializeField] private Sprite petIcon;
+
+    [Header("Dialogue Visualization")]
+    [SerializeField] private Image bubbleImage;
+    [SerializeField] private Image iconImage;
+    
+    private Queue<DialogueLine> paragraphs = new Queue<DialogueLine>();
 
     private bool conversationOver;
-    private string p;
+    private DialogueLine p;
     private bool isTyping;
     private Coroutine typeDialogueCoroutine;
 
@@ -22,6 +39,22 @@ public class DialogueController : MonoBehaviour
     private const float MAX_TYPE_TIME = 0.1f;
 
     private DialogueText dialogueTextGlobal;
+    
+    // private bool isDialoguePlaying;
+
+    public void SetInputAction(PlayerInputControl actions)
+    {
+        inputActions = actions;
+
+        inputActions.UI.Confirm.performed += OnDialogueConfirmPressed;
+        // inputActions.UI.Confirm.Enable();
+    }
+
+    private void OnDialogueConfirmPressed(InputAction.CallbackContext obj)
+    {
+        Debug.Log("UI F");
+        DisplayNextParagraph(dialogueTextGlobal);
+    }
 
     public void SetParent(MonoBehaviour parentObject)
     {
@@ -62,19 +95,37 @@ public class DialogueController : MonoBehaviour
         }
     }
 
+    private void SetDialogueBubbleStyle(DialogueLine line)
+    {
+        if (line.speakerName == "Pet")
+        {
+            bubbleImage.color = Color.grey;
+            iconImage.sprite = petIcon;
+        }
+        else if (line.speakerName == "Player")
+        {
+            // temp, change bubble sprite later
+            bubbleImage.color = Color.white;
+            iconImage.sprite = playerIcon;
+        }
+    }
+    
     public void StartConversation(DialogueText dialogueText)
     {
+        // Change input action map
+        inputActions.Gameplay.Disable();
+        inputActions.UI.Enable();
+        
         if (!gameObject.activeSelf)
         {
             gameObject.SetActive(true);
         }
 
-        NameText.text = dialogueText.speakerName;
+        // NameText.text = dialogueText.speakerName;
 
-        for (int i = 0; i < dialogueText.paragraphs.Length; i++)
+        for (int i = 0; i < dialogueText.lines.Length; i++)
         {
-            paragraphs.Enqueue(dialogueText.paragraphs[i]);
-            //Debug.Log(dialogueText.paragraphs[i]);
+            paragraphs.Enqueue(dialogueText.lines[i]);
         }
 
         if (parent is NPC npcParent)
@@ -92,6 +143,9 @@ public class DialogueController : MonoBehaviour
 
     public void EndConversation()
     {
+        inputActions.UI.Disable();
+        inputActions.Gameplay.Enable();
+        
         paragraphs.Clear();
         NPCDialogueText.text = "";
         conversationOver = false;
@@ -107,16 +161,19 @@ public class DialogueController : MonoBehaviour
         }
     }
 
-    private IEnumerator TypeDialogueText(string p)
+    private IEnumerator TypeDialogueText(DialogueLine p)
     {
         isTyping = true;
+        
+        SetDialogueBubbleStyle(p);
 
         int maxVisibleChars = 0;
 
-        NPCDialogueText.text = p;
+        NPCDialogueText.text = p.content;
         NPCDialogueText.maxVisibleCharacters = maxVisibleChars;
 
-        foreach (char c in p.ToCharArray())
+        // Typing dialogue text
+        foreach (char c in p.content.ToCharArray())
         {
             maxVisibleChars++;
             NPCDialogueText.maxVisibleCharacters = maxVisibleChars;
@@ -124,16 +181,19 @@ public class DialogueController : MonoBehaviour
             yield return new WaitForSeconds(MAX_TYPE_TIME / typeSpeed);
         }
 
-        isTyping = false;
+        isTyping = false; // finish typing
         if (!isTyping)
         {
             // Wait for some time before automatically showing the next paragraph
             if (paragraphs.Count > 0) // Check if more paragraphs are left
             {
-                //Debug.Log("we have paragraphs numbers left:" + paragraphs.Count);
-                yield return new WaitForSeconds(autoNextDelay); // Added delay before next paragraph
-                DisplayNextParagraph(dialogueTextGlobal); // Automatically call next paragraph after typing finishes
-                                                          //Debug.Log("DisplayNextParagraph called" + paragraphs.Count);
+                if (isAutoPlay)
+                {
+                    //Debug.Log("we have paragraphs numbers left:" + paragraphs.Count);
+                    yield return new WaitForSeconds(autoNextDelay); // Added delay before next paragraph
+                    DisplayNextParagraph(dialogueTextGlobal); // Automatically call next paragraph after typing finishes
+                                                              //Debug.Log("DisplayNextParagraph called" + paragraphs.Count);
+                }
             }
             else
             {
@@ -148,7 +208,14 @@ public class DialogueController : MonoBehaviour
     private void FinishParagraphEarly()
     {
         StopCoroutine(typeDialogueCoroutine);
-        NPCDialogueText.maxVisibleCharacters = p.Length;
+        NPCDialogueText.maxVisibleCharacters = p.content.Length;
         isTyping = false;
     }
+
+    public bool IsDialoguePlaying()
+    {
+        return isTyping || paragraphs.Count > 0;
+    }
+    
+    
 }
