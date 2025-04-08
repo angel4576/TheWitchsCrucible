@@ -9,7 +9,7 @@ public class CameraShakeManager : MonoBehaviour
     public static CameraShakeManager Instance { get; private set; }
     
     public CinemachineImpulseSource impulseSource;
-    public CustomCameraShake customCameraShake;
+    // public CustomCameraShake customCameraShake;
 
     private bool isPause;
     private void Awake()

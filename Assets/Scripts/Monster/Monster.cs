@@ -91,6 +91,10 @@ public class Monster : MonoBehaviour
         healthBar = GetComponentInChildren<Healthbar>();
 
         animator = GetComponent<Animator>();
+        if (animator == null)
+        {
+            Debug.LogWarning("No animator attached");
+        }
         
         // for now, switching world enables/disables the monsters, if changed, a reference to the real/mental world must be retrieved
         // and this script must be updated
@@ -100,6 +104,8 @@ public class Monster : MonoBehaviour
         {
             GameManager.Instance.monsters.Add(this);
         }
+        
+        AddListeners();
     }
 
     private void OnDestroy() 
@@ -109,6 +115,8 @@ public class Monster : MonoBehaviour
         {
             GameManager.Instance.monsters.Remove(this);
         }
+        
+        RemoveListeners();
     }
 
     // Start is called before the first frame update
@@ -341,6 +349,16 @@ public class Monster : MonoBehaviour
         isAttacking = false;
     }
     #endregion
+
+    private void AddListeners()
+    {
+        lantern.OnLanternActivated.AddListener(ReactOnLantern);
+    }
+
+    private void RemoveListeners()
+    {
+        lantern.OnLanternActivated.RemoveListener(ReactOnLantern);
+    }
     
     public void TakeDamage(float damage)
     {
