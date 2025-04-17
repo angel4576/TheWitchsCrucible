@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FogMat 1
+  m_Name: Dust
   m_Shader: {fileID: 4800000, guid: bf678126eacf5da4c944b597d4f34993, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -32,7 +32,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 206c2bc02be34784cbda8e7b929a05f4, type: 3}
+        m_Texture: {fileID: 2800000, guid: 24003fa05e749714ab3ab5609ab2c267, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
@@ -50,14 +50,14 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
-    - _FlowIntensity: 0
+    - _FlowIntensity: 0.22
     - _FlowSpeed: 0.05
-    - _Opacity: 7.2
+    - _Opacity: 20
     - _Speed: 1
-    - _TimeSpeed: 0
+    - _TimeSpeed: 3.7
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 0.46252042, g: 0.8990512, b: 0.9924528, a: 1}
+    - _MainColor: {r: 0, g: 0.5018867, b: 0.43018866, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

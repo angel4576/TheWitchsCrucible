@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FogMat
+  m_Name: Smoke 2
   m_Shader: {fileID: 4800000, guid: bf678126eacf5da4c944b597d4f34993, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -50,11 +50,11 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
-    - _FlowIntensity: 0.22
+    - _FlowIntensity: 0.18
     - _FlowSpeed: 0.05
-    - _Opacity: 1.9
+    - _Opacity: 1
     - _Speed: 1
-    - _TimeSpeed: 1.1
+    - _TimeSpeed: 2.7
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
