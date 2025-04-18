@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 029834ebacc695b4ca4516a57eab1a61
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - playerTransform: {instanceID: 0}
+  - playerScript: {instanceID: 0}
+  - lantern: {instanceID: 0}
+  - healthBar: {instanceID: 0}
+  - rangeAttackProjectile: {fileID: 6428373708108075328, guid: 7623ac14d6212cd49988cf8ab194b768, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

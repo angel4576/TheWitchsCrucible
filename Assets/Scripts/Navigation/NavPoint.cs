@@ -103,9 +103,9 @@ public class NavPoint
     {
         trajectories.Add(new JumpTrajectory(moveSpeed, jumpSpeed));
         links.Add(new Link(row, col, trajectories.Count-1)); // index 
-        Debug.Log($"JumpLink Added: Start({this.i}, {this.j}) -> End({i}, {j}), MoveSpeed: {moveSpeed}, JumpSpeed: {jumpSpeed}");
+        /*Debug.Log($"JumpLink Added: Start({this.i}, {this.j}) -> End({i}, {j}), MoveSpeed: {moveSpeed}, JumpSpeed: {jumpSpeed}");
         Debug.Log($"Trajectory Count: {trajectories.Count}");
-        Debug.Log($"Link Count: {links.Count}");
+        Debug.Log($"Link Count: {links.Count}");*/
 
     }
 

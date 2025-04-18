@@ -5,6 +5,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class NavManager : MonoBehaviour
 {
@@ -36,8 +37,8 @@ public class NavManager : MonoBehaviour
     [Header("Jump Points")]
     public List<GameObject> points;
     
-    [Header("AI Setting")]
-    public GameObject Pet;
+    // [Header("AI Setting")]
+    // public GameObject Pet;
     private float moveSpeed;
     [HideInInspector]public float gravity;
 
@@ -64,22 +65,72 @@ public class NavManager : MonoBehaviour
         IsInEditor = false;
 
         grid = new NavPoint[gridH, gridW];
-        GenerateNavMesh();
+        // GenerateNavMesh();
         
         openList = new List<NavPoint>();
         closeList = new List<NavPoint>();
 
-        Rigidbody2D rb = Pet.GetComponent<Rigidbody2D>();
-        gravity = Physics2D.gravity.y * rb.gravityScale;
+        // Rigidbody2D rb = Pet.GetComponent<Rigidbody2D>();
+        gravity = Physics2D.gravity.y * 5;
+        
+        // Register to scene manager for reacquire reference 
+        // GameSceneManager.Instance.Register(this);
 
+    }
+
+    private void OnEnable()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Debug.Log("[NavManager] Scene Loaded. Clearing points...");
+        // ClearJumpPoints();
     }
 
     private void Start() 
     {
         EnableOnDrawGizmos = false;
-
         
     }
+
+    public void SetNavOrigin(Transform origin)
+    {
+        gridOrigin = origin;
+        ClearJumpPoints();
+    }
+
+    public void ClearJumpPoints()
+    {
+        if (points == null) 
+            points = new List<GameObject>();
+        
+        points.Clear();
+    }
+    
+    public void SetJumpPoints(GameObject jumpPoint)
+    {
+        // if (jumpPoint == null)
+        //     return;
+        
+        if (!points.Contains(jumpPoint))
+        {
+            points.Add(jumpPoint);
+        }
+        
+    }
+    
+    public void ReacquireReferences()
+    {
+        
+    }
+
 
     public Vector2 GetWorldPosition(int i, int j) // grid position to world position
     {
@@ -474,6 +525,7 @@ public class NavManager : MonoBehaviour
 
     #endregion
 
+   
     // Debug draw
     private void OnDrawGizmos() 
     {
@@ -535,6 +587,7 @@ public class NavManager : MonoBehaviour
 
         
     }
-    
 
+
+    
 }

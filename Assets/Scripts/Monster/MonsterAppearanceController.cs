@@ -5,6 +5,7 @@ using UnityEngine;
 public class MonsterAppearanceController : MonoBehaviour
 {
     public GameObject monster;
+    public Vector3 spawnPosition;
     public float animationDuration;
     private bool hasAppeared;
     
@@ -38,9 +39,9 @@ public class MonsterAppearanceController : MonoBehaviour
         
         gameObject.SetActive(false);
         
-        // show monster
-        if(monster != null)
-            monster.SetActive(true);
+        // Set monster position
+        if (monster != null)
+            monster.transform.position = spawnPosition;
     }
     
 }

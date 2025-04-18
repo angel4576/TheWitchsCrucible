@@ -107,8 +107,8 @@ public class PlayerController : MonoBehaviour
         // +=: register actions to action binding
         inputActions.Gameplay.Jump.started += Jump; // call jump when the moment corresponding button is pressed
         inputActions.Gameplay.Pause.started += Pause;
-        inputActions.Gameplay.Fire.started += MeleeAttack;
-        inputActions.Gameplay.RangeAttack.started += RangeAttack;
+        // inputActions.Gameplay.Fire.started += MeleeAttack;
+        // inputActions.Gameplay.RangeAttack.started += RangeAttack;
         
         dialogueController.SetInputAction(inputActions);
     }
@@ -122,6 +122,7 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     {
         inputActions.Gameplay.Disable();
+        
     }
 
     // Start is called before the first frame update
@@ -151,6 +152,14 @@ public class PlayerController : MonoBehaviour
         {
             DisableCloak();
         }
+        
+        GameManager.Instance?.RegisterPlayer(this);
+        GameManager.Instance?.OnLanternFirstPickedUp.AddListener(SetLanternStatus);
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance?.OnLanternFirstPickedUp.RemoveListener(SetLanternStatus);
     }
 
     // Update is called once per frame

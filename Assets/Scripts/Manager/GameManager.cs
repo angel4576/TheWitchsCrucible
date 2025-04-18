@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,23 +7,19 @@ using UnityEngine.Events;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance {get; private set;}
-
-    // temporary solution
-    // the assignment made in inspector will be lost during reloading scene
-    // for now using code to assign them here in start and when reloading scene
+    
     public PlayerController player;
     public Monster monster;
-    public WorldControl world;
-
-    public UnityEvent OnLanternFirstPickedUp;
-
-    // hold references to monsters and items
-    // registered in their own scripts
+    public Boss boss;
+    // public WorldControl world;
+    
     public List<Monster> monsters = new List<Monster>();
     public List<WorldItem> items = new List<WorldItem>();
 
     public DebugSettings debugSettings;
     public GameObject lanternPrefab;
+    
+    public UnityEvent OnLanternFirstPickedUp;
     
     private void Awake() 
     {
@@ -41,7 +38,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        RegisterEventLevel1();
+        // RegisterEventLevel1();
         
         // Debug mode
         if (debugSettings != null && debugSettings.enableDebugMode)
@@ -51,27 +48,40 @@ public class GameManager : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public void RegisterPlayer(PlayerController p)
+    {
+        player = p;
+    }
+
+    public void RegisterBoss(Boss b)
+    {
+        boss = b;
+    }
+
+    public void RegisterMonsters(Monster m)
     {
         
     }
+    
+    
 
     // register events for level 1
     // this is a temporary solution
     public void RegisterEventLevel1(){
-        OnLanternFirstPickedUp.RemoveAllListeners();
+        // OnLanternFirstPickedUp.RemoveAllListeners();
 
         player = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<PlayerController>();
         // monster = GameObject.FindGameObjectsWithTag("Monster")[0].GetComponent<Monster>();
         // monster = GameObject.Find("Monster")?.GetComponent<Monster>();
-        world = GameObject.Find("WorldControl").GetComponent<WorldControl>();
+        // world = GameObject.Find("WorldControl").GetComponent<WorldControl>();
 
         // OnLanternFirstPickedUp.AddListener(player.SetLanternStatus);
         // OnLanternFirstPickedUp.AddListener(monster.AcquireLantern);
         // OnLanternFirstPickedUp.AddListener(world.SetCanSwitch);    
     }
 
+    #region Debug Settings
+    
     private void ApplyDebugSettings()
     {
         if (debugSettings.giveLanternAtStart)
@@ -105,5 +115,7 @@ public class GameManager : MonoBehaviour
         // disable lv1 big enemy
         monster.enabled = false;
     }
+    
+    #endregion
     
 }

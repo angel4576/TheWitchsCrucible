@@ -94,7 +94,25 @@ public class WorldControl : MonoBehaviour
         
         Physics2D.IgnoreLayerCollision(petLayerID, spiritWorldLayerID, true);
         Physics2D.IgnoreLayerCollision(petLayerID, realWorldLayerID, false);
+        
+        // Add listener
+        GameManager.Instance?.OnLanternFirstPickedUp.AddListener(SetCanSwitch);
 
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance?.OnLanternFirstPickedUp.RemoveListener(SetCanSwitch);
+    }
+
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        
     }
 
     void Update()

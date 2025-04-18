@@ -23,8 +23,15 @@ public class JumpStartPoint : MonoBehaviour
         endP = NavManager.Instance.FindNearestNavPoint(endPointTransform.position);
 
         startP.AddJumpLink(endP.i, endP.j, moveSpeed, jumpSpeed);
+        
+        NavManager.Instance.SetJumpPoints(this.gameObject);
     }
 
+    private void RegisterJumpPoints()
+    {
+        
+    }
+    
     private Vector2 GetJumpPosition(float t)
     {
         float x = transform.position.x + moveSpeed * t;
