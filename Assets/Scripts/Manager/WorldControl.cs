@@ -13,6 +13,7 @@ public class WorldControl : MonoBehaviour
     
     [Header("Monster")]
     public GameObject[] monsters;
+    public GameObject boss;
     
     [Header("Switch World Effect Settings")]
     public Transform playerTransform;
@@ -150,18 +151,28 @@ public class WorldControl : MonoBehaviour
         isToggling = false;
 
         // toggle monsters
+        if (isRealWorld)
+        {
+            boss.SetActive(true);
+        }
+        else
+        {
+            boss.SetActive(false);
+        }
+        
         foreach (GameObject monster in monsters)
         {
             if (!monster.GetComponent<Monster>().isDead)
             {
-                monster.SetActive(!monster.activeSelf);
-                // monster.GetComponent<Monster>().MonsterOnSwitchWorld(!isRealWorld);
+                // monster.SetActive(!monster.activeSelf);
                 if (isRealWorld)
                 { 
+                    monster.SetActive(true);
                     DestroySpiritWorldPlatform();
                 }
                 else
                 {
+                    monster.SetActive(false);
                     SpawnSpiritWorldPlatform(monster);
                 }
             }

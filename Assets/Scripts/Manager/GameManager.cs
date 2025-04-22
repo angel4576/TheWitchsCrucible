@@ -8,9 +8,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance {get; private set;}
     
-    public PlayerController player;
-    public Monster monster;
-    public Boss boss;
+    private PlayerController player;
+    private Monster monster;
+    private Boss boss;
     // public WorldControl world;
     
     public List<Monster> monsters = new List<Monster>();
@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
         }
             
         // disable lv1 big enemy
-        monster.enabled = false;
+        // monster.enabled = false;
     }
     
     #endregion
