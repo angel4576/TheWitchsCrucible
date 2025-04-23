@@ -33,10 +33,6 @@ public class PlayerController : MonoBehaviour
     public bool jumpTriggered;
     private bool isJump;
 
-    [Header("Pet Control")]
-    public float petMoveDelayTime;
-    public float petJumpDelayTime;
-
     [Header("Lantern")]
     public Lantern lantern;
     private bool hasLantern;
@@ -53,7 +49,6 @@ public class PlayerController : MonoBehaviour
     // private bool isDead;
     public float deathDelay; // seconds before player dies and start the process of restarting
     
-
     [Header("Switch Effect")]
     public GameObject switchEffect;
     public Vector3 switchEffectOffset;
@@ -67,16 +62,16 @@ public class PlayerController : MonoBehaviour
 
     
     [Header("Attacks")]
-    public float meleeDamage;
-    public float meleeLightHeal;
-    [SerializeField]
-    private float meleeAttackSpeedPerSec, meleeAttackRange, rangeAttackCost, rangeAttackSpeedPerSec;
+    [HideInInspector]public float meleeDamage;
+    [HideInInspector]public float meleeLightHeal;
+    //[SerializeField]
+    [HideInInspector]private float meleeAttackSpeedPerSec, meleeAttackRange, rangeAttackCost, rangeAttackSpeedPerSec;
     public float rangeAttackDamage, rangeAttackRange;
-    [SerializeField]
-    private bool canAttack = true;
+    //[SerializeField]
+    [HideInInspector]private bool canAttack = true;
 
-    public GameObject meleeProj;
-    public GameObject rangedProj;
+    [HideInInspector]public GameObject meleeProj;
+    [HideInInspector]public GameObject rangedProj;
     
     [Header("Invulnerability")]
     public float invulnerabilityTime;
@@ -405,7 +400,7 @@ public class PlayerController : MonoBehaviour
     public void Die()
     {
         Debug.Log("Player died");
-        SceneManager.Instance.RestartFromCheckPoint();
+        // SceneManager.Instance.RestartFromCheckPoint();
         //SceneManager.Instance.ReloadScene();
     }
 

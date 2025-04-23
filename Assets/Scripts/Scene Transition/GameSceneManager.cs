@@ -9,9 +9,14 @@ using UnityEngine.InputSystem;
 public class GameSceneManager : MonoBehaviour
 {
     public static GameSceneManager Instance { get; private set; }
+    
+    
+    [Header("Scene Names")] 
+    public string level1Name;
+    public string level2Name;
 
-    [Header("Scene List")]
-    public string[] scenes;
+    [Header("Scene Configuration")] 
+    public List<SceneConfig> sceneConfigs;
 
     [Header("Fade")]
     // public FadeController fadeController;
@@ -66,11 +71,25 @@ public class GameSceneManager : MonoBehaviour
     
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("[Game Scene Manager] Load Scene Complete");
+        Debug.Log($"[Game Scene Manager] Load Scene {scene.name} Complete");
         ResumeGame();
+
+        /*SceneConfig config = null;
+        foreach (var c in sceneConfigs)
+        {
+            if (c.sceneName == scene.name)
+            {
+                config = c;
+            }
+        }*/
         
-        // if restart
-        DataManager.Instance.playerData.hasPickedUpLantern = false;
+        SceneConfig config = sceneConfigs.Find(c => c.sceneName == scene.name);
+        
+        if (config != null)
+        {
+            DataManager.Instance.playerData.hasPickedUpLantern = config.hasPickupLantern;
+        }
+        
         
         // save level start data for restart purpose
         /*if(!isReloading)
@@ -83,10 +102,48 @@ public class GameSceneManager : MonoBehaviour
         
     }
 
+    public string GetCurrentSceneName()
+    {
+        return currentSceneName;
+    }
+    
+    // Scene Transition
+    public void LoadGameScene(string sceneName)
+    {
+        StartCoroutine(TransitionToScene(sceneName));
+    }
+
+    private IEnumerator TransitionToScene(string sceneName)
+    {
+        // Unload old scene（except Persistent Scene）
+        Scene current = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+        if (current.name != "PersistentScene")
+        {
+            UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(current);
+        }
+
+        // Load new scene
+        yield return UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        UnityEngine.SceneManagement.SceneManager.SetActiveScene(UnityEngine.SceneManagement.SceneManager.GetSceneByName(sceneName));
+        
+        // Get current scene name
+        currentSceneName = sceneName;
+    }
+
     public void RestartScene()
     {
         // StartCoroutine(RestartWithFade());
-        UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneIndex);
+        // UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneIndex);
+        StartCoroutine(RestartAdditiveScene(currentSceneName));
+    }
+
+    IEnumerator RestartAdditiveScene(string sceneName)
+    {
+        // Unload then load
+        yield return UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(sceneName);
+        yield return UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        Scene scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName(sceneName);
+        UnityEngine.SceneManagement.SceneManager.SetActiveScene(scene);
     }
 
     public void RestartFromCheckPoint()

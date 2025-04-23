@@ -26,11 +26,7 @@ public class JumpStartPoint : MonoBehaviour
         
         NavManager.Instance.SetJumpPoints(this.gameObject);
     }
-
-    private void RegisterJumpPoints()
-    {
-        
-    }
+    
     
     private Vector2 GetJumpPosition(float t)
     {

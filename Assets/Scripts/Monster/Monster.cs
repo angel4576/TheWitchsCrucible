@@ -282,17 +282,8 @@ public class Monster : MonoBehaviour
         {
             // Debug.Log("Monster melee attack");
             animator.SetTrigger("Lv1Attack");
-            if (SceneManager.Instance.GetSceneConfiguration().enableEnemyInstantKill)
-            {
-                // Debug.Log("Monster Instant Kill!");
-                KillPlayer();
-            }
-            // DamagePlayer(meleeAttackDamage);
-            else
-            {
-                // Debug.Log("Monster Melee Attack!");
-                DamagePlayer(meleeAttackDamage, transform);
-            }
+            DamagePlayer(meleeAttackDamage, transform);
+            
         }
 
         // wait for the cooldown

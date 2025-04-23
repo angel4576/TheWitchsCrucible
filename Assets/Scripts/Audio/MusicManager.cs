@@ -10,6 +10,7 @@ public class MusicManager : MonoBehaviour
     private AudioSource audioSource;
 
     public Monster monster;
+    public Boss boss;
     private WorldControl worldControl;
 
     private float pursuitMusicTime = 0f;

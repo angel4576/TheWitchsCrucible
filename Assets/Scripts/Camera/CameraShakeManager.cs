@@ -14,15 +14,16 @@ public class CameraShakeManager : MonoBehaviour
     private bool isPause;
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        // Singleton for local scene
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
+            
+            // DontDestroyOnLoad(gameObject);
         }
+        
+        Instance = this;
     }
 
     // Start is called before the first frame update
@@ -41,7 +42,14 @@ public class CameraShakeManager : MonoBehaviour
     {
         // customCameraShake.HurtShake(3.0f, 10.0f, 1.2f);
         // CinemachineImpulseManager.Instance.IgnoreTimeScale = true;
-        impulseSource.GenerateImpulse();
+        if (impulseSource != null)
+        {
+            impulseSource.GenerateImpulse();
+        }
+        else
+        {
+            Debug.LogWarning("ImpulseSource is not assigned!");
+        }
     }
 
     public void PauseTime(float time)

@@ -25,7 +25,7 @@ public class NavManager : MonoBehaviour
 
     [Header("Raycast Check")]
     public float platformChecklength;
-    public float TrajectoryCheckLength;
+    // public float TrajectoryCheckLength;
     public LayerMask layer;
 
     // [Header("Jump Setting")]
@@ -52,15 +52,23 @@ public class NavManager : MonoBehaviour
 
     private void Awake() 
     {
-        if (Instance == null)
+        // if (Instance == null)
+        // {
+        //     Instance = this;
+        //     DontDestroyOnLoad(gameObject);
+        // }
+        // else
+        // {
+        //     Destroy(gameObject);
+        // }
+        
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            Destroy(gameObject); 
+            return;
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+
+        Instance = this;
 
         IsInEditor = false;
 
