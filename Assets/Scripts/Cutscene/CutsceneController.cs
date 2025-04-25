@@ -65,8 +65,8 @@ public class CutsceneController : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         
         // Play light tower animation
-        Instantiate(flash, targetTransform.position + new Vector3(0, 5, 0), Quaternion.identity);
-        Instantiate(lanternPrefab, targetTransform.position + new Vector3(0, 5, 0), Quaternion.identity);
+        Instantiate(flash, targetTransform.position + new Vector3(0, 6, 0), Quaternion.identity);
+        Instantiate(lanternPrefab, targetTransform.position + new Vector3(0, 6, 0), Quaternion.identity);
         yield return new WaitForSeconds(1.5f);
         
         // Transition to next scene
