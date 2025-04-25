@@ -51,6 +51,8 @@ public class Boss : MonoBehaviour
 
     // flags
     [HideInInspector]private bool isPlayerDead = false; // ensure that player is killed only once
+
+    private bool isCutscenePlay = false;
     
     private Animator animator;
   
@@ -128,8 +130,14 @@ public class Boss : MonoBehaviour
         canAttack = false;
         // foundLantern = true;
 
+        EventManager.OnCutsceneReachLight += HandleCutsceneReachLight;
     }
-    
+
+    private void OnDisable()
+    {
+        EventManager.OnCutsceneReachLight -= HandleCutsceneReachLight;
+    }
+
 
     // Update is called once per frame
     private void Update()
@@ -139,15 +147,16 @@ public class Boss : MonoBehaviour
         if(isdisabled){
             return;
         }
+        
+        if(isCutscenePlay)
+            return;
 
         // for test purpose
-        if (Keyboard.current.digit7Key.wasPressedThisFrame)
+        /*if (Keyboard.current.digit7Key.wasPressedThisFrame)
         {
             TakeDamage(7);
-        }
-
+        }*/
         
-        //if(lantern == null) // if player does not have lantern
         if(!foundLantern)
         {
             canMove = false;
@@ -425,6 +434,17 @@ public class Boss : MonoBehaviour
         {
             animator.SetTrigger("FlashOn");
         }
+    }
+
+    private void HandleCutsceneReachLight()
+    {
+        isCutscenePlay = true;
+        
+        canMove = false;
+        canChase = false;
+        canAttack = false;
+        
+        animator.SetTrigger("FlashOn");
     }
 
     /*#region Plaform Spawn

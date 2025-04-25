@@ -114,13 +114,14 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         inputActions.Gameplay.Enable();
+        EventManager.OnCutsceneStart += HandleCutsceneStart;
     }
 
 
     private void OnDisable()
     {
         inputActions.Gameplay.Disable();
-        
+        EventManager.OnCutsceneStart -= HandleCutsceneStart;
     }
 
     // Start is called before the first frame update
@@ -188,8 +189,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isCutscenePlay)
-            return;
+        
         
         if(isHurt)
             return;
@@ -197,6 +197,9 @@ public class PlayerController : MonoBehaviour
         if(dialogueController != null && dialogueController.IsDialoguePlaying())
             return;
 
+        if (isCutscenePlay)
+            return;
+        
         Move();
         
         // Jump
@@ -221,7 +224,6 @@ public class PlayerController : MonoBehaviour
     #region Character Movement
     private void Move()
     {
-        
         if (inputDirection.y != 0)
         {
             inputDirection.x *= math.sqrt(2);
@@ -231,11 +233,7 @@ public class PlayerController : MonoBehaviour
         //     rb.velocity = new Vector2(0, rb.velocity.y);
         // else
         rb.velocity = new Vector2(inputDirection.x * speed, rb.velocity.y);
-
-        if (inputDirection.x != 0 && !pet.canMove)
-        {
-            // Invoke(nameof(ControlPetMovement), petMoveDelayTime);
-        }
+        
     }
 
     private void Jump(InputAction.CallbackContext context)
@@ -684,8 +682,8 @@ public class PlayerController : MonoBehaviour
         //lantern.ResetLantern();
     }
 
-    public void SetCutsceneStatus()
+    private void HandleCutsceneStart()
     {
-        
+        isCutscenePlay = true;
     }
 }
