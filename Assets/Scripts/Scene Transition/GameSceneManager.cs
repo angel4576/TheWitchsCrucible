@@ -55,10 +55,10 @@ public class GameSceneManager : MonoBehaviour
         currentSceneIndex = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
         currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         
-        /*if (fadeCanvas == null || fadeImage == null)
+        if (fadeCanvas == null || fadeImage == null)
         {
             CreateFadeCanvas();
-        }*/
+        }
     }
 
     public void Register(ISceneReferenceReceiver receiver)
@@ -118,9 +118,11 @@ public class GameSceneManager : MonoBehaviour
 
     private IEnumerator TransitionToScene(string sceneName)
     {
+        yield return FadeOutRoutine();
+        
         // Unload old scene（except Persistent Scene）
         Scene current = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-        if (current.name != "PersistentScene")
+        if (current.name != "Persistent")
         {
             UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(current);
         }
@@ -131,6 +133,8 @@ public class GameSceneManager : MonoBehaviour
         
         // Get current scene name
         currentSceneName = sceneName;
+
+        yield return FadeInRoutine();
     }
 
     public void RestartScene()
