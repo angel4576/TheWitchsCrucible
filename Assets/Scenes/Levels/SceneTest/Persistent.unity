@@ -171,8 +171,10 @@ MonoBehaviour:
   sceneConfigs:
   - sceneName: Level1_SceneTest
     hasPickupLantern: 0
+    lightStartValue: 0
   - sceneName: Level2_SceneTest
     hasPickupLantern: 1
+    lightStartValue: 3
   fadeDuration: 1
   fadeCanvas: {fileID: 0}
   fadeImage: {fileID: 0}

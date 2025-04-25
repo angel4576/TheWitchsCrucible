@@ -88,6 +88,9 @@ public class GameSceneManager : MonoBehaviour
         if (config != null)
         {
             DataManager.Instance.playerData.hasPickedUpLantern = config.hasPickupLantern;
+            
+            // Reset light value
+            DataManager.Instance.playerData.light = config.lightStartValue;
         }
         
         

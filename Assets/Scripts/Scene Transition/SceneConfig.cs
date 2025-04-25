@@ -8,4 +8,5 @@ public class SceneConfig
 {
     public string sceneName;
     public bool hasPickupLantern;
+    public float lightStartValue;
 }
