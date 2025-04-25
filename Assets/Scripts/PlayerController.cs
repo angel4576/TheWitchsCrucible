@@ -94,6 +94,9 @@ public class PlayerController : MonoBehaviour
     // Material
     private Material material;
     
+    // Cutscene control
+    private bool isCutscenePlay = false;
+    
     #region Lifecycle 
     private void Awake()
     {
@@ -185,6 +188,9 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isCutscenePlay)
+            return;
+        
         if(isHurt)
             return;
         
@@ -676,5 +682,10 @@ public class PlayerController : MonoBehaviour
         // reset the lantern to off
         // this is not working because the lantern's Start() is queued to be called in next frame
         //lantern.ResetLantern();
+    }
+
+    public void SetCutsceneStatus()
+    {
+        
     }
 }
