@@ -9,9 +9,10 @@ using UnityEngine.InputSystem;
 public class GameSceneManager : MonoBehaviour
 {
     public static GameSceneManager Instance { get; private set; }
-    
-    
+
+
     [Header("Scene Names")] 
+    public string persistentName;
     public string level1Name;
     public string level2Name;
 
@@ -122,7 +123,7 @@ public class GameSceneManager : MonoBehaviour
         
         // Unload old scene（except Persistent Scene）
         Scene current = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-        if (current.name != "Persistent")
+        if (current.name != persistentName) // temp
         {
             UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(current);
         }
