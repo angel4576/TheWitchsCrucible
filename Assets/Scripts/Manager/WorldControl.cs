@@ -151,13 +151,16 @@ public class WorldControl : MonoBehaviour
         isToggling = false;
 
         // toggle monsters
-        if (isRealWorld)
+        if (boss != null) // temp
         {
-            boss.SetActive(true);
-        }
-        else
-        {
-            boss.SetActive(false);
+            if (isRealWorld)
+            {
+                boss.SetActive(true);
+            }
+            else
+            {
+                boss.SetActive(false);
+            }
         }
         
         foreach (GameObject monster in monsters)
