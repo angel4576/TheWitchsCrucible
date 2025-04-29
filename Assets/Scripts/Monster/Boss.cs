@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 using UnityEngine.InputSystem;
 
-public class Monster : MonoBehaviour
+public class Boss : MonoBehaviour
 {
     public Transform playerTransform;
     public PlayerController playerScript;
     public Lantern lantern;
-    public Healthbar healthBar;
+    // public Healthbar healthBar;
     public float xDistanceToPlayer; // distance to player when switch to real world
     
     [Header("Monster Appear")]
@@ -20,25 +20,16 @@ public class Monster : MonoBehaviour
     public float animationDuration;
     
     [Header("Monster Attributes")]
-    public EnemyType type;
+    // public EnemyType type;
     public float moveSpeed;
     public float chaseRange;
     public Vector2 centerOffset;
     
     [Header("Melee Attack")]
     public float meleeAttackRange;
-    public float meleeAttackDamage;
     public float meleeAttackDelay; // the time before each attack
     public float meleeAttackCooldown; // the time after a attack before another attack can be made
-
-    [Header("Range Attack")]
-    public float rangeAttackRange;
-    public float rangeAttackDamage;
-    public float rangeAttackDelay; // the time before each attack
-    public float rangeAttackCooldown; // the time after a attack before another attack can be made
-    public float rangeAttackProjectileSpeed;
-    public GameObject rangeAttackProjectile;
-
+    
     [Header("Monster Status")]
     public bool isKillable;
     public float maxHealth = 100;
@@ -47,7 +38,6 @@ public class Monster : MonoBehaviour
 
     [Header("For testing purposes")]
     public bool idleIfPlayerOutOfRange = false;
-    public bool disableUpdate  = false;
     
     // status
     [HideInInspector]public bool isChasing;
@@ -61,34 +51,23 @@ public class Monster : MonoBehaviour
 
     // flags
     [HideInInspector]private bool isPlayerDead = false; // ensure that player is killed only once
+
+    private bool isCutscenePlay = false;
     
     private Animator animator;
-
-    // temp: melee attack visualization
-    public Transform arm;
-    private Transform pivot;
-    private Vector3 originalPosition;
-    private Vector3 originalRotation;
-
-    // prefab of a spirit world platform
-    public GameObject spiritWorldPlatformPrefab;
-    public GameObject spiritWorldPlatform;
+  
     public MeshRenderer monsterMeshRenderer;
-    public float platformWidth = 3.0f;
-    public float platformHeight = 0.5f;
+    
     bool isdisabled = false;
-
-
     
     
     #region Life Cycle
     private void Awake()
     {
-        // retrieve references
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         // lantern = GameObject.Find("Lantern").GetComponent<Lantern>();   
-        healthBar = GetComponentInChildren<Healthbar>();
+        // healthBar = GetComponentInChildren<Healthbar>();
 
         animator = GetComponent<Animator>();
         if (animator == null)
@@ -100,10 +79,10 @@ public class Monster : MonoBehaviour
         // and this script must be updated
 
         // register to game manager
-        if(GameManager.Instance != null && !GameManager.Instance.monsters.Contains(this))
+        /*if(GameManager.Instance != null && !GameManager.Instance.monsters.Contains(this))
         {
             GameManager.Instance.monsters.Add(this);
-        }
+        }*/
         
         AddListeners();
     }
@@ -111,11 +90,11 @@ public class Monster : MonoBehaviour
     private void OnDestroy() 
     {
         // unregister from game manager
-        if(GameManager.Instance != null && GameManager.Instance.monsters.Contains(this))
+        /*if(GameManager.Instance != null && GameManager.Instance.monsters.Contains(this))
         {
             GameManager.Instance.monsters.Remove(this);
-        }
-        
+        }*/
+        GameManager.Instance?.OnLanternFirstPickedUp.RemoveListener(AcquireLantern);
         RemoveListeners();
     }
 
@@ -127,26 +106,18 @@ public class Monster : MonoBehaviour
         canChase = false;
         canMove = true;
         canAttack = false;
-        // foundLantern = false;
-        // isAppear = false;
 
         currentHealth = maxHealth;
 
         // disable health bar if it is not killable
-        if(!isKillable){
+        /*if(!isKillable){
             healthBar.gameObject.SetActive(false);
-        }
-
-        if (arm != null)
-        {
-            pivot = arm.transform.GetChild(0); 
-            // originalPosition = arm.position;
-            originalRotation = arm.rotation.eulerAngles;
-            // Debug.Log(originalPosition);
-        }
+        }*/
         
         // get mesh renderer
-        monsterMeshRenderer = GetComponent<MeshRenderer>();
+        // monsterMeshRenderer = GetComponent<MeshRenderer>();
+        GameManager.Instance?.RegisterBoss(this);
+        GameManager.Instance?.OnLanternFirstPickedUp.AddListener(AcquireLantern);
     }
 
     private void OnEnable()
@@ -157,10 +128,16 @@ public class Monster : MonoBehaviour
         canMove = false;
         canChase = false;
         canAttack = false;
-        foundLantern = true;
+        // foundLantern = true;
 
-        // ResetArm();
+        EventManager.OnCutsceneReachLight += HandleCutsceneReachLight;
     }
+
+    private void OnDisable()
+    {
+        EventManager.OnCutsceneReachLight -= HandleCutsceneReachLight;
+    }
+
 
     // Update is called once per frame
     private void Update()
@@ -170,15 +147,16 @@ public class Monster : MonoBehaviour
         if(isdisabled){
             return;
         }
+        
+        if(isCutscenePlay)
+            return;
 
         // for test purpose
-        if (Keyboard.current.digit7Key.wasPressedThisFrame)
+        /*if (Keyboard.current.digit7Key.wasPressedThisFrame)
         {
             TakeDamage(7);
-        }
-
+        }*/
         
-        //if(lantern == null) // if player does not have lantern
         if(!foundLantern)
         {
             canMove = false;
@@ -213,20 +191,16 @@ public class Monster : MonoBehaviour
         
         if(canAttack && !isAttacking)
         {
-            if(type == EnemyType.Melee && CheckPlayerInMeleeAttackRange())
+            if(CheckPlayerInMeleeAttackRange())
             {
                 MeleeAttack();
             }
-            else if(type == EnemyType.Range && CheckPlayerInRangeAttackRange())
-            {
-                RangeAttack();
-            }
+            
         }
 
         if(isAttacking)
         {
             canMove = false; // stop moving while attacking
-            MeleeAttackVisualization();
         }
         
         FlipDirection();
@@ -272,7 +246,6 @@ public class Monster : MonoBehaviour
     private IEnumerator MeleeAttackCoroutine()
     {
         isAttacking = true;
-        MeleeAttackVisualization();
         
         // wait for the delay
         yield return new WaitForSeconds(meleeAttackDelay);
@@ -282,63 +255,24 @@ public class Monster : MonoBehaviour
         {
             // Debug.Log("Monster melee attack");
             animator.SetTrigger("Lv1Attack");
-            DamagePlayer(meleeAttackDamage, transform);
+            KillPlayer();
             
+            /*if (SceneManager.Instance.GetSceneConfiguration().enableEnemyInstantKill)
+            {
+            }
+            else
+            {
+                DamagePlayer(meleeAttackDamage, transform);
+            }*/
         }
 
         // wait for the cooldown
         yield return new WaitForSeconds(meleeAttackCooldown);
 
         isAttacking = false;
-        // temp
-        // ResetArm();
+     
     }
-
-    // for temp testing 
-    private void MeleeAttackVisualization()
-    {
-        if (transform.position.x < playerTransform.position.x) 
-        {
-            arm.transform.Translate(Vector3.right * 7.0f * Time.deltaTime);
-        }
-        else
-        {
-            arm.transform.Translate(Vector3.left * 7.0f * Time.deltaTime);
-        }
-        // arm.transform.RotateAround(pivot.transform.position, new Vector3(0, 0, 1), -1);
-    }
-
-    private void ResetArm()
-    {
-        originalPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-        arm.transform.position = originalPosition; 
-        arm.transform.eulerAngles = originalRotation;
-    }
-
-    public void RangeAttack()
-    {
-        Vector2 direction = (playerTransform.position + new Vector3(0, 1.2f, 0) - transform.position).normalized; // offset to the player's body
-        float distance = Vector2.Distance(transform.position, playerTransform.position);
-        StartCoroutine(RangeAttackCoroutine(direction, distance, rangeAttackProjectileSpeed, rangeAttackDamage));
-    }
-
-    private IEnumerator RangeAttackCoroutine(Vector2 direction, float distance, float flyingSpeed, float damage)
-    {
-        isAttacking = true;
-        
-        // wait for the delay
-        yield return new WaitForSeconds(rangeAttackDelay);
-
-        // perform the attack
-        Debug.Log("range attack");
-        GameObject projectile = Instantiate(rangeAttackProjectile, transform.position, Quaternion.identity);
-        projectile.GetComponent<Projectile>().Initialize(flyingSpeed, 3f, damage, direction); // 3 seconds lifetime
-
-        // wait for the cooldown
-        yield return new WaitForSeconds(rangeAttackCooldown);
-
-        isAttacking = false;
-    }
+    
     #endregion
 
     private void AddListeners()
@@ -357,7 +291,7 @@ public class Monster : MonoBehaviour
         if(isKillable)
         {
             currentHealth -= damage;
-            healthBar.SetHealth(currentHealth, maxHealth);
+            // healthBar.SetHealth(currentHealth, maxHealth);
             if(currentHealth <= 0)
             {
                 // die
@@ -368,7 +302,6 @@ public class Monster : MonoBehaviour
     }
 
     #region Movement
-    // movement
     private void ChasePlayer()
     {
         isChasing = true;
@@ -388,7 +321,6 @@ public class Monster : MonoBehaviour
     private void DamagePlayer(float damage, Transform attacker)
     {
         playerScript.TakeDamage(damage, attacker);
-        // playerScript.GetHurt();
     }
 
     private void KillPlayer()
@@ -444,10 +376,10 @@ public class Monster : MonoBehaviour
         return Vector2.Distance((Vector2)transform.position + centerOffset, playerTransform.position) < meleeAttackRange;
     }
 
-    private bool CheckPlayerInRangeAttackRange()
+    /*private bool CheckPlayerInRangeAttackRange()
     {
         return Vector2.Distance((Vector2)transform.position + centerOffset, playerTransform.position) < rangeAttackRange;
-    }
+    }*/
     #endregion
     
     // Respond to OnLanternFirstPickedUp event in Game Manager
@@ -479,16 +411,16 @@ public class Monster : MonoBehaviour
         Gizmos.DrawWireSphere((Vector2)transform.position + centerOffset, meleeAttackRange);
 
         // range attack range
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere((Vector2)transform.position + centerOffset, rangeAttackRange);
+        /*Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere((Vector2)transform.position + centerOffset, rangeAttackRange);*/
     }
 
     public void OnValidate(){
         if(isKillable){
-            healthBar.gameObject.SetActive(true);
+            // healthBar.gameObject.SetActive(true);
         }
         else{
-            healthBar.gameObject.SetActive(false);
+            // healthBar.gameObject.SetActive(false);
         }
     }
 
@@ -504,7 +436,18 @@ public class Monster : MonoBehaviour
         }
     }
 
-    #region Plaform Spawn
+    private void HandleCutsceneReachLight()
+    {
+        isCutscenePlay = true;
+        
+        canMove = false;
+        canChase = false;
+        canAttack = false;
+        
+        animator.SetTrigger("FlashOn");
+    }
+
+    /*#region Plaform Spawn
     public void MonsterOnSwitchWorld(bool switchToSpiritWorld)
     {
         if(switchToSpiritWorld)
@@ -546,12 +489,11 @@ public class Monster : MonoBehaviour
         }
     }
     
-    #endregion
+    #endregion*/
 
     public enum EnemyType
     {
         Melee,
         Range,
-        Shiled
     };
 }

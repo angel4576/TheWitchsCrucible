@@ -63,7 +63,7 @@ public class PhysicsCheck : MonoBehaviour
     {
         Check();
         SwitchPhysicsMaterial();
-        DetectFallAndShake();
+        // DetectFallAndShake();
     }
 
     private void Check()

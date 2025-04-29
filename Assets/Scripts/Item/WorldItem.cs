@@ -64,10 +64,12 @@ public class WorldItem : MonoBehaviour, IInteractable
         int curScene = DataManager.Instance.worldData.curSceneIndex;
         bool hasPlayerPickUpLantern = DataManager.Instance.playerData.hasPickedUpLantern;
 
-        if(curScene == 0 && !hasPlayerPickUpLantern) // in level 1 & has not picked up light before
+        if(GameSceneManager.Instance.GetCurrentSceneName() == GameSceneManager.Instance.level1Name // temp
+           && !hasPlayerPickUpLantern) // in level 1 & has not picked up light before
         {
             DataManager.Instance.playerData.hasPickedUpLantern = true;
             GameManager.Instance.OnLanternFirstPickedUp?.Invoke();
+            Debug.Log("[WorldItem] Trigger OnLanternFirstPickedUp");
         }
         DataManager.Instance.playerData.light = DataManager.Instance.playerData.maxLight;
         Debug.Log("Light picked up! Current light count: " + DataManager.Instance.playerData.light);

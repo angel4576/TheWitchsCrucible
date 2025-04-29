@@ -13,6 +13,7 @@ public class WorldControl : MonoBehaviour
     
     [Header("Monster")]
     public GameObject[] monsters;
+    public GameObject boss;
     
     [Header("Switch World Effect Settings")]
     public Transform playerTransform;
@@ -94,7 +95,25 @@ public class WorldControl : MonoBehaviour
         
         Physics2D.IgnoreLayerCollision(petLayerID, spiritWorldLayerID, true);
         Physics2D.IgnoreLayerCollision(petLayerID, realWorldLayerID, false);
+        
+        // Add listener
+        GameManager.Instance?.OnLanternFirstPickedUp.AddListener(SetCanSwitch);
 
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance?.OnLanternFirstPickedUp.RemoveListener(SetCanSwitch);
+    }
+
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        
     }
 
     void Update()
@@ -132,18 +151,31 @@ public class WorldControl : MonoBehaviour
         isToggling = false;
 
         // toggle monsters
+        if (boss != null) // temp
+        {
+            if (isRealWorld)
+            {
+                boss.SetActive(true);
+            }
+            else
+            {
+                boss.SetActive(false);
+            }
+        }
+        
         foreach (GameObject monster in monsters)
         {
             if (!monster.GetComponent<Monster>().isDead)
             {
-                monster.SetActive(!monster.activeSelf);
-                // monster.GetComponent<Monster>().MonsterOnSwitchWorld(!isRealWorld);
+                // monster.SetActive(!monster.activeSelf);
                 if (isRealWorld)
                 { 
+                    monster.SetActive(true);
                     DestroySpiritWorldPlatform();
                 }
                 else
                 {
+                    monster.SetActive(false);
                     SpawnSpiritWorldPlatform(monster);
                 }
             }

@@ -12,7 +12,7 @@ public class LightUIController : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        /*if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -20,7 +20,16 @@ public class LightUIController : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }*/
+        
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
         }
+
+        Instance = this;
+        
     }
 
     public void SetMaxLight ()

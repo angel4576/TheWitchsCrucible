@@ -9,7 +9,8 @@ public class MusicManager : MonoBehaviour
     public AudioClip RealMusic;     
     private AudioSource audioSource;
 
-    public Monster monster;
+    // public Monster monster;
+    public Boss boss;
     private WorldControl worldControl;
 
     private float pursuitMusicTime = 0f;
@@ -21,10 +22,15 @@ public class MusicManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         worldControl = FindObjectOfType<WorldControl>();
 
-        if (monster == null)
+        /*if (boss == null)
+        {
+            Debug.LogError("[Music Manager] Boss script not assigned!");
+        }*/
+        
+        /*if (monster == null)
         {
             Debug.LogError("Monster script not found in the scene!");
-        }
+        }*/
 
         if (worldControl == null)
         {
@@ -46,7 +52,14 @@ public class MusicManager : MonoBehaviour
     {
         if (worldControl.isRealWorld)
         {
-            return (monster != null && monster.isChasing) ? pursuitMusic : RealMusic;
+            if (boss != null)
+            {
+                return (boss != null && boss.isChasing) ? pursuitMusic : RealMusic;
+            }
+            else
+            {
+                return RealMusic;
+            }
         }
         else
         {

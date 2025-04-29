@@ -33,10 +33,6 @@ public class PlayerController : MonoBehaviour
     public bool jumpTriggered;
     private bool isJump;
 
-    [Header("Pet Control")]
-    public float petMoveDelayTime;
-    public float petJumpDelayTime;
-
     [Header("Lantern")]
     public Lantern lantern;
     private bool hasLantern;
@@ -53,7 +49,6 @@ public class PlayerController : MonoBehaviour
     // private bool isDead;
     public float deathDelay; // seconds before player dies and start the process of restarting
     
-
     [Header("Switch Effect")]
     public GameObject switchEffect;
     public Vector3 switchEffectOffset;
@@ -67,16 +62,16 @@ public class PlayerController : MonoBehaviour
 
     
     [Header("Attacks")]
-    public float meleeDamage;
-    public float meleeLightHeal;
-    [SerializeField]
-    private float meleeAttackSpeedPerSec, meleeAttackRange, rangeAttackCost, rangeAttackSpeedPerSec;
+    [HideInInspector]public float meleeDamage;
+    [HideInInspector]public float meleeLightHeal;
+    //[SerializeField]
+    [HideInInspector]private float meleeAttackSpeedPerSec, meleeAttackRange, rangeAttackCost, rangeAttackSpeedPerSec;
     public float rangeAttackDamage, rangeAttackRange;
-    [SerializeField]
-    private bool canAttack = true;
+    //[SerializeField]
+    [HideInInspector]private bool canAttack = true;
 
-    public GameObject meleeProj;
-    public GameObject rangedProj;
+    [HideInInspector]public GameObject meleeProj;
+    [HideInInspector]public GameObject rangedProj;
     
     [Header("Invulnerability")]
     public float invulnerabilityTime;
@@ -99,6 +94,9 @@ public class PlayerController : MonoBehaviour
     // Material
     private Material material;
     
+    // Cutscene control
+    private bool isCutscenePlay = false;
+    
     #region Lifecycle 
     private void Awake()
     {
@@ -107,8 +105,8 @@ public class PlayerController : MonoBehaviour
         // +=: register actions to action binding
         inputActions.Gameplay.Jump.started += Jump; // call jump when the moment corresponding button is pressed
         inputActions.Gameplay.Pause.started += Pause;
-        inputActions.Gameplay.Fire.started += MeleeAttack;
-        inputActions.Gameplay.RangeAttack.started += RangeAttack;
+        // inputActions.Gameplay.Fire.started += MeleeAttack;
+        // inputActions.Gameplay.RangeAttack.started += RangeAttack;
         
         dialogueController.SetInputAction(inputActions);
     }
@@ -116,12 +114,14 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         inputActions.Gameplay.Enable();
+        EventManager.OnCutsceneStart += HandleCutsceneStart;
     }
 
 
     private void OnDisable()
     {
         inputActions.Gameplay.Disable();
+        EventManager.OnCutsceneStart -= HandleCutsceneStart;
     }
 
     // Start is called before the first frame update
@@ -151,6 +151,14 @@ public class PlayerController : MonoBehaviour
         {
             DisableCloak();
         }
+        
+        GameManager.Instance?.RegisterPlayer(this);
+        GameManager.Instance?.OnLanternFirstPickedUp.AddListener(SetLanternStatus);
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance?.OnLanternFirstPickedUp.RemoveListener(SetLanternStatus);
     }
 
     // Update is called once per frame
@@ -181,12 +189,17 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        
+        
         if(isHurt)
             return;
         
         if(dialogueController != null && dialogueController.IsDialoguePlaying())
             return;
 
+        if (isCutscenePlay)
+            return;
+        
         Move();
         
         // Jump
@@ -211,7 +224,6 @@ public class PlayerController : MonoBehaviour
     #region Character Movement
     private void Move()
     {
-        
         if (inputDirection.y != 0)
         {
             inputDirection.x *= math.sqrt(2);
@@ -221,11 +233,7 @@ public class PlayerController : MonoBehaviour
         //     rb.velocity = new Vector2(0, rb.velocity.y);
         // else
         rb.velocity = new Vector2(inputDirection.x * speed, rb.velocity.y);
-
-        if (inputDirection.x != 0 && !pet.canMove)
-        {
-            // Invoke(nameof(ControlPetMovement), petMoveDelayTime);
-        }
+        
     }
 
     private void Jump(InputAction.CallbackContext context)
@@ -396,7 +404,7 @@ public class PlayerController : MonoBehaviour
     public void Die()
     {
         Debug.Log("Player died");
-        SceneManager.Instance.RestartFromCheckPoint();
+        // SceneManager.Instance.RestartFromCheckPoint();
         //SceneManager.Instance.ReloadScene();
     }
 
@@ -672,5 +680,10 @@ public class PlayerController : MonoBehaviour
         // reset the lantern to off
         // this is not working because the lantern's Start() is queued to be called in next frame
         //lantern.ResetLantern();
+    }
+
+    private void HandleCutsceneStart()
+    {
+        isCutscenePlay = true;
     }
 }
