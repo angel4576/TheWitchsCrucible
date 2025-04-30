@@ -1222,7 +1222,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
@@ -11228,7 +11227,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
@@ -18335,7 +18333,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
@@ -19650,7 +19647,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
@@ -36610,7 +36606,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1876244780
 Transform:
   m_ObjectHideFlags: 0
@@ -38753,7 +38749,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
