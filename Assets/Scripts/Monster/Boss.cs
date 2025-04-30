@@ -36,8 +36,12 @@ public class Boss : MonoBehaviour
     public float currentHealth;
     public bool isDead;
 
+    [Header("Scene Transition")]
+    public string nextSceneName;
+    
     [Header("For testing purposes")]
     public bool idleIfPlayerOutOfRange = false;
+    
     
     // status
     [HideInInspector]public bool isChasing;
@@ -128,7 +132,7 @@ public class Boss : MonoBehaviour
         canMove = false;
         canChase = false;
         canAttack = false;
-        // foundLantern = true;
+        foundLantern = true;
 
         EventManager.OnCutsceneReachLight += HandleCutsceneReachLight;
     }
@@ -255,15 +259,21 @@ public class Boss : MonoBehaviour
         {
             // Debug.Log("Monster melee attack");
             animator.SetTrigger("Lv1Attack");
-            KillPlayer();
-            
-            /*if (SceneManager.Instance.GetSceneConfiguration().enableEnemyInstantKill)
+
+            var sceneConfig = GameSceneManager.Instance.GetCurrentSceneConfig();
+            switch (sceneConfig.onBossHit)
             {
+                case BossHitBehavior.KillPlayer:
+                    KillPlayer();
+                    break;
+                case BossHitBehavior.SceneTransition:
+                    GameSceneManager.Instance.LoadGameScene(nextSceneName);
+                    break;
+                default:
+                    break;
             }
-            else
-            {
-                DamagePlayer(meleeAttackDamage, transform);
-            }*/
+            
+           
         }
 
         // wait for the cooldown

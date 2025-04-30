@@ -9,4 +9,7 @@ public class SceneConfig
     public string sceneName;
     public bool hasPickupLantern;
     public float lightStartValue;
+    
+    // Boss
+    public BossHitBehavior onBossHit;
 }

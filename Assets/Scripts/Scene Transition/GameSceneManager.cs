@@ -69,10 +69,17 @@ public class GameSceneManager : MonoBehaviour
             receivers.Add(receiver);
         }
     }
+
+    public SceneConfig GetCurrentSceneConfig()
+    {
+        SceneConfig config = sceneConfigs.Find(c => c.sceneName == currentSceneName);
+
+        return config;
+    }
     
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log($"[Game Scene Manager] Load Scene {scene.name} Complete");
+        Debug.Log($"[Game Scene Manager] Load Scene {scene.name} Complete; Current Scene Name: {currentSceneName}");
         ResumeGame();
 
         /*SceneConfig config = null;
@@ -121,6 +128,9 @@ public class GameSceneManager : MonoBehaviour
     {
         yield return FadeOutRoutine();
         
+        // Get current scene name
+        currentSceneName = sceneName;
+        
         // Unload old scene（except Persistent Scene）
         Scene current = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
         if (current.name != persistentName) // temp
@@ -132,8 +142,6 @@ public class GameSceneManager : MonoBehaviour
         yield return UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         UnityEngine.SceneManagement.SceneManager.SetActiveScene(UnityEngine.SceneManagement.SceneManager.GetSceneByName(sceneName));
         
-        // Get current scene name
-        currentSceneName = sceneName;
 
         yield return FadeInRoutine();
     }
