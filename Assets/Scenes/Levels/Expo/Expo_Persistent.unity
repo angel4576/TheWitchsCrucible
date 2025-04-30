@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e2de6c2e35a8b942ae992541e306ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstLevelScene: Expo_Level1
+  firstLevelScene: Level3
 --- !u!4 &499174137
 Transform:
   m_ObjectHideFlags: 0
@@ -510,7 +510,6 @@ MonoBehaviour:
   pursuitMusic: {fileID: 8300000, guid: b0f4b29e538a07643918bba2a2ebdec6, type: 3}
   SpiritMusic: {fileID: 8300000, guid: ea184a38543b6e341874f05023a309ee, type: 3}
   RealMusic: {fileID: 8300000, guid: 8678e9781097bed49b142f8c5b7dd917, type: 3}
-  monster: {fileID: 0}
   boss: {fileID: 0}
 --- !u!4 &1928272031
 Transform:

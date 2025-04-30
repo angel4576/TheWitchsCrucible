@@ -268,6 +268,6 @@ public class SceneManager : MonoBehaviour
 
         // Optionally, set FadeImage to inactive initially
         fadeImageObject.SetActive(false);
-        Debug.Log("FadeCanvas created");
+        // Debug.Log("FadeCanvas created");
     }
 }

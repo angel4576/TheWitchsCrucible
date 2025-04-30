@@ -317,6 +317,7 @@ public class WorldControl : MonoBehaviour
                 temp[0] = SpiritWorldObjects;
                 temp[1] = RealWorldObjects;
                 
+                Debug.Log("[World Control] Switching world");
                 canPlayEffect = true;
                 canSwitch = false;
                 
