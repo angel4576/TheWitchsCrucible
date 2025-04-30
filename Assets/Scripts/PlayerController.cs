@@ -676,10 +676,7 @@ public class PlayerController : MonoBehaviour
         // set boss entrance animation active
         monsterAnimation?.SetActive(true);
         monsterAppearController?.TriggerBossAppearance();
-
-        // reset the lantern to off
-        // this is not working because the lantern's Start() is queued to be called in next frame
-        //lantern.ResetLantern();
+        
     }
 
     private void HandleCutsceneStart()
