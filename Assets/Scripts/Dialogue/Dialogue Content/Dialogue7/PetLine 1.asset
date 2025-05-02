@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PetLine 1
   m_EditorClassIdentifier: 
   speakerName: Pet
-  content: "Okay,\u2026remain calm. "
+  content: Don't worry! I can help you!

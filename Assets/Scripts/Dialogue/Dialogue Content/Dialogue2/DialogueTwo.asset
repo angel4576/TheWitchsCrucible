@@ -16,3 +16,7 @@ MonoBehaviour:
   paragraphs:
   - "PET: It's really dark in here\u2026Come, quickly! Come pick up that light! So
     you can use your lantern!\r\nGIRL: Did\u2026did I just understand you\u2026? "
+  lines:
+  - {fileID: 11400000, guid: 1409fbd24c5358444a6659c98d81493d, type: 2}
+  - {fileID: 11400000, guid: e3afe8f8fea50b944b4484b11349c33c, type: 2}
+  - {fileID: 11400000, guid: f23aa0c69a146494c9bc0e5a6c78bb19, type: 2}

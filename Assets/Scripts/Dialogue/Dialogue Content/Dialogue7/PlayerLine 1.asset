@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerLine 1
   m_EditorClassIdentifier: 
   speakerName: Player
-  content: "The other world\u2026okay. "
+  content: Hello?

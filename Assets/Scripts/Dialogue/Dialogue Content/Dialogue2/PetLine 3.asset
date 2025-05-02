@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PetLine 3
   m_EditorClassIdentifier: 
   speakerName: Pet
-  content: Don't forget you can jump!
+  content: "Let\u2019s go"

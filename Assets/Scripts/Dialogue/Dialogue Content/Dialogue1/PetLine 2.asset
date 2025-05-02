@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PetLine 2
   m_EditorClassIdentifier: 
   speakerName: Pet
-  content: 'Come on, try to move! I hope you didn''t get broken just now! '
+  content: You've grown so much along the way! You've become so much braver!

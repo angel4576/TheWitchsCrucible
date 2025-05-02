@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: PetLine 2
   m_EditorClassIdentifier: 
   speakerName: Pet
-  content: "Whenever we come across something that we can\u2019t get past in this
-    world,"
+  content: 'Yes! I''m here! I''ll always be with you!
+
+'

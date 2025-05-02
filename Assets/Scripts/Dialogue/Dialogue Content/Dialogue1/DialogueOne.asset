@@ -18,8 +18,21 @@ MonoBehaviour:
   - 'PET: Yes! It''s me! Come on, try to move! I hope you didn''t get broken just
     now! Don''t forget you can jump!'
   lines:
-  - {fileID: 11400000, guid: 403153ba82dbd954a89fad48e1fbf096, type: 2}
-  - {fileID: 11400000, guid: eb967c0c454bdb74c8d0d3c311bb7608, type: 2}
   - {fileID: 11400000, guid: 96414f383a435624c92a6193d3c8417c, type: 2}
   - {fileID: 11400000, guid: 7eab01488594f7b44be4978a6bf89dd3, type: 2}
   - {fileID: 11400000, guid: 26339c1832b822e44865b37e2d056e3b, type: 2}
+  - {fileID: 11400000, guid: 6f784e1affffabf4ea2ca85ea468e89c, type: 2}
+  - {fileID: 11400000, guid: f8f53725680a4e941bc5fbc712c80457, type: 2}
+  - {fileID: 11400000, guid: ef8f32ea2b512b747950a1128ccd6bde, type: 2}
+  - {fileID: 11400000, guid: 66603ab331b0cd24d8dd653782ab3a76, type: 2}
+  - {fileID: 11400000, guid: 208d508e6b7d46544a53e32e91abc9f7, type: 2}
+  - {fileID: 11400000, guid: bf5cfcf100f4f7c4a9236534770e3d42, type: 2}
+  - {fileID: 11400000, guid: 60ec143fc68a1f9448fbc37d96f5b914, type: 2}
+  - {fileID: 11400000, guid: e2679db2b9badbc478e3ae53926422de, type: 2}
+  - {fileID: 11400000, guid: 0247663d2d147f94e91ca845b0c5e90f, type: 2}
+  - {fileID: 11400000, guid: 022e94efb763cde48b4a5471cc803342, type: 2}
+  - {fileID: 11400000, guid: a28e1ec4b77b23d4e9b64b4ddd4395f5, type: 2}
+  - {fileID: 11400000, guid: 85d0dbeedb9590947842540fc9efa538, type: 2}
+  - {fileID: 11400000, guid: 41dd112a7aa4bd5448a6e79a7385ed81, type: 2}
+  - {fileID: 11400000, guid: 403153ba82dbd954a89fad48e1fbf096, type: 2}
+  - {fileID: 11400000, guid: eb967c0c454bdb74c8d0d3c311bb7608, type: 2}

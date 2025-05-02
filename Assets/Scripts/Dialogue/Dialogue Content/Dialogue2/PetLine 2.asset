@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PetLine 2
   m_EditorClassIdentifier: 
   speakerName: Pet
-  content: 'Come on, try to move! I hope you didn''t get broken just now! '
+  content: "But don\u2019t worry, I\u2019ll stay with you the whole time!"

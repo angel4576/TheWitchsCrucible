@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerLine 2
   m_EditorClassIdentifier: 
   speakerName: Player
-  content: "And you\u2019re not going anywhere, right? "
+  content: ...Is anyone here?

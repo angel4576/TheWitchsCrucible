@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerLine 1
   m_EditorClassIdentifier: 
   speakerName: Player
-  content: Oh my Gosh! Bean!
+  content: "I never regret meeting you... \r"
