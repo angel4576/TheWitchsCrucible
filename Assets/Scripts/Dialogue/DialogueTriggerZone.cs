@@ -3,20 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class DialogueTriggerZone : MonoBehaviour
 {
+    [Header("Dialogue")]
     [SerializeField] private DialogueController dialogueControl;
     [SerializeField] private DialogueText dialogueTextToPlay;
     [SerializeField] private Transform player;
+    
     private float triggerXValue;
     private float triggerYValue;
     private float endTriggerXValue;
     private float endTriggerYValue;
+    
+    [Header("Audio")]
     [SerializeField] private AudioClip dialogueAudioClip; // Assign your audio clip here
-    [SerializeField] private bool SpiritOnly;
-
     private AudioSource audioSource;
+    
+    [SerializeField] private bool SpiritOnly;
+    
+    [Header("Player Light")]
+    [Tooltip("Whether this dialogue trigger can turn on player light")]
+    public bool canTriggerLight;
+    public PlayerLightController playerLight;
+    
     private bool hasTriggeredDialogue = false;
     private bool hasEndedDialogue = false;
 
@@ -38,6 +49,11 @@ public class DialogueTriggerZone : MonoBehaviour
         if (!other.CompareTag("Player"))
         {
             return;
+        }
+
+        if (canTriggerLight && playerLight != null)
+        {
+            playerLight.TurnOnLight();
         }
 
         if (!hasTriggeredDialogue)
