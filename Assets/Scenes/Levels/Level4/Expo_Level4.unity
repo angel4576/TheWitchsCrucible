@@ -520,8 +520,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  canTriggerLight: 0
-  playerLight: {fileID: 0}
 --- !u!1 &98921528
 GameObject:
   m_ObjectHideFlags: 0
@@ -985,8 +983,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 1
-  canTriggerLight: 0
-  playerLight: {fileID: 0}
 --- !u!1 &167080554
 GameObject:
   m_ObjectHideFlags: 0
@@ -1851,8 +1847,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 1
-  canTriggerLight: 0
-  playerLight: {fileID: 0}
 --- !u!1 &275347393
 GameObject:
   m_ObjectHideFlags: 0
@@ -5627,7 +5621,7 @@ GameObject:
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &918739923
 Transform:
   m_ObjectHideFlags: 0
@@ -5705,8 +5699,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  canTriggerLight: 1
-  playerLight: {fileID: 236773964}
 --- !u!1 &927372974
 GameObject:
   m_ObjectHideFlags: 0
@@ -6938,8 +6930,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  canTriggerLight: 0
-  playerLight: {fileID: 0}
 --- !u!1 &1154494398
 GameObject:
   m_ObjectHideFlags: 0
@@ -9415,8 +9405,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  canTriggerLight: 0
-  playerLight: {fileID: 0}
 --- !u!1 &1632679034
 GameObject:
   m_ObjectHideFlags: 0
@@ -9461,7 +9449,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956e8a4a02e5d294c999759529a4d808, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 917230992}
+  player: {fileID: 917230998}
+  pet: {fileID: 1313239724}
+  openWaitTime: 2
+  playerLight: {fileID: 236773964}
   dialogueController: {fileID: 1534087856}
   dialogueTextToPlay: {fileID: 11400000, guid: 61bd49d95eb50454f96cd34a8aa3758f, type: 2}
 --- !u!1 &1633755164
@@ -10246,8 +10237,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 1
-  canTriggerLight: 0
-  playerLight: {fileID: 0}
 --- !u!1 &1716224045
 GameObject:
   m_ObjectHideFlags: 0
@@ -11005,8 +10994,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  canTriggerLight: 0
-  playerLight: {fileID: 0}
 --- !u!1 &1811234046
 GameObject:
   m_ObjectHideFlags: 0
@@ -11183,8 +11170,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 1
-  canTriggerLight: 0
-  playerLight: {fileID: 0}
 --- !u!1001 &1845766441
 PrefabInstance:
   m_ObjectHideFlags: 0

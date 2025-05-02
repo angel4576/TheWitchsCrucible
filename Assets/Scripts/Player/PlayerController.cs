@@ -662,6 +662,20 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    #region Input System
+
+    public void DisableInput()
+    {
+        inputActions.Gameplay.Disable();
+    }
+
+    public void EnableInput()
+    {
+        inputActions.Gameplay.Enable();
+    }
+
+    #endregion
+    
     public bool isFacingRight()
     {
         return faceDir == 1;

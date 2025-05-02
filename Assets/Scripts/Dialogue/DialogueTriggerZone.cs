@@ -23,10 +23,10 @@ public class DialogueTriggerZone : MonoBehaviour
     
     [SerializeField] private bool SpiritOnly;
     
-    [Header("Player Light")]
+    /*[Header("Player Light")]
     [Tooltip("Whether this dialogue trigger can turn on player light")]
     public bool canTriggerLight;
-    public PlayerLightController playerLight;
+    public PlayerLightController playerLight;*/
     
     private bool hasTriggeredDialogue = false;
     private bool hasEndedDialogue = false;
@@ -51,10 +51,10 @@ public class DialogueTriggerZone : MonoBehaviour
             return;
         }
 
-        if (canTriggerLight && playerLight != null)
+        /*if (canTriggerLight && playerLight != null)
         {
             playerLight.TurnOnLight();
-        }
+        }*/
 
         if (!hasTriggeredDialogue)
         {
