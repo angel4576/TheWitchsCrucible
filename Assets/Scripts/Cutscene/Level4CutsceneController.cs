@@ -54,7 +54,7 @@ public class Level4CutsceneController : MonoBehaviour
         
         yield return new WaitForSeconds(5f);
         
-        petRenderer.enabled = true;
+        // petRenderer.enabled = true;
         
     }
 }
