@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e9ae63d8946264baf9f06a167b9ade, type: 3}
+  m_Name: Dialogue Five
+  m_EditorClassIdentifier: 
+  speakerName: 
+  paragraphs:
+  - "PET: It's really dark in here\u2026Come, quickly! Come pick up that light! So
+    you can use your lantern!\r\nGIRL: Did\u2026did I just understand you\u2026? "
+  lines:
+  - {fileID: 11400000, guid: 1129b168eebf77a42a3f81f2bc3dc5b9, type: 2}
+  - {fileID: 11400000, guid: ebb2b72ec2e523641846d4f450891ac3, type: 2}
+  - {fileID: 11400000, guid: f4749d4f96ea458449fa520bb1bd4c65, type: 2}
+  - {fileID: 11400000, guid: 1ade6d518f07e3b44a935fb4f69acc52, type: 2}
+  - {fileID: 11400000, guid: 76662fd2c4ade6040946b4396f0cda8c, type: 2}
+  - {fileID: 11400000, guid: ddba8230006ed8b4c80e4b9a31620f83, type: 2}
+  - {fileID: 11400000, guid: 5c2c487a7ad1eeb4eac201d59857b430, type: 2}

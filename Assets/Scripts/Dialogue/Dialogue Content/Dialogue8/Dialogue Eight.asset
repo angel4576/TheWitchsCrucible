@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e9ae63d8946264baf9f06a167b9ade, type: 3}
+  m_Name: Dialogue Eight
+  m_EditorClassIdentifier: 
+  speakerName: 
+  paragraphs:
+  - "PET: It's really dark in here\u2026Come, quickly! Come pick up that light! So
+    you can use your lantern!\r\nGIRL: Did\u2026did I just understand you\u2026? "
+  lines:
+  - {fileID: 11400000, guid: a2dce46bf7d8533449fbd3057574e28c, type: 2}
+  - {fileID: 11400000, guid: 0ff95650a6e2c334b9396d23cb471793, type: 2}
+  - {fileID: 11400000, guid: 6886104d0c01347408e76683ce9690c4, type: 2}
+  - {fileID: 11400000, guid: 898cabc3828a76b46866f23c262c71f1, type: 2}
+  - {fileID: 11400000, guid: 246ef5c6445a54241a264be7257e9b58, type: 2}
+  - {fileID: 11400000, guid: 7b7ef1ab766603e49ba22e4629558758, type: 2}
+  - {fileID: 11400000, guid: 899568ff427b05b40bd8979142661ae5, type: 2}
+  - {fileID: 11400000, guid: 9b64000c1a4460849a4094aedb7f654e, type: 2}
+  - {fileID: 11400000, guid: 756044b0cc757554fb69749f220f06de, type: 2}
+  - {fileID: 11400000, guid: b49ec2c68e0423a43a61d515e7b07800, type: 2}
+  - {fileID: 11400000, guid: 47b111ac91d486c42920c4a3428ac8b7, type: 2}
+  - {fileID: 11400000, guid: a8f625fdad37d5841a0359b73013ee37, type: 2}
+  - {fileID: 11400000, guid: 1f6a869aa977dcf47ab05993a0562339, type: 2}
+  - {fileID: 11400000, guid: aefde16c9df96d441a61ea6a6c495b0e, type: 2}
+  - {fileID: 11400000, guid: a839d484f5f22a04c880ce8ed2c5aa8d, type: 2}
+  - {fileID: 11400000, guid: 8ec494f8cb110d647b470173b5ceb845, type: 2}
