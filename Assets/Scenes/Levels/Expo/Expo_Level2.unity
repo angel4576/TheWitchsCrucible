@@ -32029,7 +32029,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   platforms:
   - {fileID: 1025536823}
-  - {fileID: 0}
   - {fileID: 244127537}
 --- !u!61 &1572395372
 BoxCollider2D:

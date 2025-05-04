@@ -5606,7 +5606,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
@@ -34087,8 +34086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ed3e221f32329489980f76c3f16b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsters:
-  - {fileID: 243817764}
+  monsters: []
   boss: {fileID: 243817764}
   playerTransform: {fileID: 917230993}
   spiritWorldMat: {fileID: 2100000, guid: a34d75db1a59ba44c98692a85e72fec5, type: 2}

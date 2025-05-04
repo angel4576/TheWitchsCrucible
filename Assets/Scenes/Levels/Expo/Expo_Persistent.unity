@@ -173,18 +173,22 @@ MonoBehaviour:
   - sceneName: Expo_Level1
     hasPickupLantern: 0
     lightStartValue: 0
+    canSwitchWorld: 0
     onBossHit: 0
   - sceneName: Expo_Level2
     hasPickupLantern: 1
     lightStartValue: 3
+    canSwitchWorld: 1
     onBossHit: 2
   - sceneName: Expo_Level3
     hasPickupLantern: 1
     lightStartValue: 3
+    canSwitchWorld: 0
     onBossHit: 1
   - sceneName: Expo_Level4
     hasPickupLantern: 1
     lightStartValue: 3
+    canSwitchWorld: 0
     onBossHit: 2
   fadeDuration: 1
   fadeCanvas: {fileID: 0}
@@ -219,7 +223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e2de6c2e35a8b942ae992541e306ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstLevelScene: Expo_Level3
+  firstLevelScene: Expo_Level2
 --- !u!4 &499174137
 Transform:
   m_ObjectHideFlags: 0
