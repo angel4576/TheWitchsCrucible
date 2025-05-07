@@ -7,11 +7,20 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+// Events for a dialogue line
 [System.Serializable]
 public class DialogueLineEventBinding
 {
     public string key;
     public UnityEvent onLineFinished;
+}
+
+// Events for a dialogue
+[System.Serializable]
+public class DialogueEventBinding
+{
+    public string key;
+    public UnityEvent onDialogueFinished;
 }
 
 public class DialogueController : MonoBehaviour
@@ -25,7 +34,8 @@ public class DialogueController : MonoBehaviour
     [Header("Dialogue Settings")] 
     public bool isAutoPlay;
     
-    [SerializeField] private List<DialogueLineEventBinding> dialogueEvents;
+    [SerializeField] private List<DialogueLineEventBinding> dialogueLineEvents;
+    [SerializeField] private List<DialogueEventBinding> dialogueEvents;
 
     
     [Header("Dialogue Asset")]
@@ -100,7 +110,7 @@ public class DialogueController : MonoBehaviour
             FinishParagraphEarly();
         }
         
-        BroadcastLineFinish(p);
+        // BroadcastLineFinish(p);
 
         if (paragraphs.Count == 0)
         {
@@ -172,6 +182,7 @@ public class DialogueController : MonoBehaviour
         {
             npcParent.SetTalking(false);
         }
+        
     }
 
     private IEnumerator TypeDialogueText(DialogueLine p)
@@ -195,6 +206,10 @@ public class DialogueController : MonoBehaviour
         }
 
         isTyping = false; // finish typing
+        
+        // Trigger line event
+        BroadcastLineFinish(p);
+        
         if (!isTyping)
         {
             // Wait for some time before automatically showing the next paragraph
@@ -216,6 +231,7 @@ public class DialogueController : MonoBehaviour
             }
 
         }
+        
     }
 
     private void FinishParagraphEarly()
@@ -223,6 +239,8 @@ public class DialogueController : MonoBehaviour
         StopCoroutine(typeDialogueCoroutine);
         NPCDialogueText.maxVisibleCharacters = p.content.Length;
         isTyping = false;
+        
+        BroadcastLineFinish(p);
     }
 
     public bool IsDialoguePlaying()
@@ -230,16 +248,31 @@ public class DialogueController : MonoBehaviour
         return isTyping || paragraphs.Count > 0;
     }
 
-    public void BroadcastLineFinish(DialogueLine line)
+    private void BroadcastLineFinish(DialogueLine line)
     {
         // line.OnLineFinished?.Invoke();
         if (string.IsNullOrEmpty(line.eventKey)) return;
 
-        foreach (var binding in dialogueEvents)
+        foreach (var binding in dialogueLineEvents)
         {
             if (binding.key == line.eventKey)
             {
                 binding.onLineFinished?.Invoke();
+                break;
+            }
+        }
+        
+    }
+
+    private void BroadcastDialogueFinish(DialogueText dialogueText)
+    {
+        if (string.IsNullOrEmpty(dialogueText.eventKey)) return;
+        
+        foreach (var binding in dialogueEvents)
+        {
+            if (binding.key == dialogueText.eventKey)
+            {
+                binding.onDialogueFinished?.Invoke();
                 break;
             }
         }

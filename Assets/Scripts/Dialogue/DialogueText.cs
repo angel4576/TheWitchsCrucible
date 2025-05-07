@@ -11,4 +11,6 @@ public class DialogueText : ScriptableObject
     public string[] paragraphs;
     
     public DialogueLine[] lines;
+    
+    public string eventKey;
 }

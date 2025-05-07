@@ -1386,8 +1386,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerLight: {fileID: 236773962}
-  maxOuterRadius: 40
-  maxIntensity: 1.5
+  maxOuterRadius: 35
+  maxIntensity: 1.4
 --- !u!1 &243817764
 GameObject:
   m_ObjectHideFlags: 0
@@ -4200,7 +4200,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 917230998}
   playerLight: {fileID: 236773964}
-  distance: 75.8
+  distance: 93.6
 --- !u!4 &740628146
 Transform:
   m_ObjectHideFlags: 0
@@ -8053,6 +8053,7 @@ MonoBehaviour:
   typeSpeed: 10
   autoNextDelay: 1.5
   isAutoPlay: 0
+  dialogueLineEvents: []
   dialogueEvents: []
   playerBubble: {fileID: 0}
   petBubble: {fileID: 0}
@@ -8952,23 +8953,7 @@ MonoBehaviour:
   typeSpeed: 10
   autoNextDelay: 1.5
   isAutoPlay: 0
-  dialogueEvents:
-  - key: TriggerHug
-    onLineFinished:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 712928637}
-          m_TargetAssemblyTypeName: HugCutsceneController, Assembly-CSharp
-          m_MethodName: StartHugSequence
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  dialogueLineEvents:
   - key: ShowPet
     onLineFinished:
       m_PersistentCalls:
@@ -8985,6 +8970,23 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - key: TriggerHug
+    onLineFinished:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 712928637}
+          m_TargetAssemblyTypeName: HugCutsceneController, Assembly-CSharp
+          m_MethodName: StartHugSequence
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  dialogueEvents: []
   playerBubble: {fileID: 21300000, guid: 46ca8fc653c1b9d42ae3eb416ce6d52c, type: 3}
   petBubble: {fileID: 0}
   playerIcon: {fileID: 21300000, guid: c8f6ecd6346fddf4c88e2fda4777bfbb, type: 3}
