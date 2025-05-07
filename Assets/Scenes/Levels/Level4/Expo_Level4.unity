@@ -520,7 +520,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  pet: {fileID: 1313239724}
 --- !u!1 &98921528
 GameObject:
   m_ObjectHideFlags: 0
@@ -984,7 +983,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 1
-  pet: {fileID: 0}
 --- !u!1 &167080554
 GameObject:
   m_ObjectHideFlags: 0
@@ -1849,7 +1847,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 1
-  pet: {fileID: 0}
 --- !u!1 &275347393
 GameObject:
   m_ObjectHideFlags: 0
@@ -5870,7 +5867,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  pet: {fileID: 0}
 --- !u!1 &927372974
 GameObject:
   m_ObjectHideFlags: 0
@@ -7102,7 +7098,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  pet: {fileID: 0}
 --- !u!1 &1154494398
 GameObject:
   m_ObjectHideFlags: 0
@@ -8058,6 +8053,7 @@ MonoBehaviour:
   typeSpeed: 10
   autoNextDelay: 1.5
   isAutoPlay: 0
+  dialogueEvents: []
   playerBubble: {fileID: 0}
   petBubble: {fileID: 0}
   playerIcon: {fileID: 0}
@@ -8956,6 +8952,39 @@ MonoBehaviour:
   typeSpeed: 10
   autoNextDelay: 1.5
   isAutoPlay: 0
+  dialogueEvents:
+  - key: TriggerHug
+    onLineFinished:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 712928637}
+          m_TargetAssemblyTypeName: HugCutsceneController, Assembly-CSharp
+          m_MethodName: StartHugSequence
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - key: ShowPet
+    onLineFinished:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 712928637}
+          m_TargetAssemblyTypeName: HugCutsceneController, Assembly-CSharp
+          m_MethodName: ShowPet
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   playerBubble: {fileID: 21300000, guid: 46ca8fc653c1b9d42ae3eb416ce6d52c, type: 3}
   petBubble: {fileID: 0}
   playerIcon: {fileID: 21300000, guid: c8f6ecd6346fddf4c88e2fda4777bfbb, type: 3}
@@ -9578,7 +9607,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  pet: {fileID: 0}
 --- !u!1 &1632679034
 GameObject:
   m_ObjectHideFlags: 0
@@ -10411,7 +10439,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 1
-  pet: {fileID: 0}
 --- !u!1 &1716224045
 GameObject:
   m_ObjectHideFlags: 0
@@ -11202,7 +11229,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  pet: {fileID: 0}
 --- !u!1 &1811234046
 GameObject:
   m_ObjectHideFlags: 0
@@ -11379,7 +11405,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 1
-  pet: {fileID: 0}
 --- !u!1001 &1845766441
 PrefabInstance:
   m_ObjectHideFlags: 0

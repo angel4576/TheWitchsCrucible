@@ -52,6 +52,17 @@ public class HugCutsceneController : MonoBehaviour
         hugTriggerReached = true;
     }
 
+    public void ShowPet()
+    {
+        StartCoroutine(ShowPetCoroutine());
+    }
+    
+    IEnumerator ShowPetCoroutine()
+    {
+        yield return new WaitForSeconds(0.1f);
+        petRenderer.enabled = true;
+    }
+    
     public void StartHugSequence()
     {
         StartCoroutine(HugSequence());

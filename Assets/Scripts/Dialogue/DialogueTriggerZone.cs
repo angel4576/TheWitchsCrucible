@@ -23,9 +23,10 @@ public class DialogueTriggerZone : MonoBehaviour
     
     [SerializeField] private bool SpiritOnly;
     
-    [Header("Pet")]
+    /*[Header("Pet")]
     [SerializeField] private Pet pet;
-    private MeshRenderer petRenderer;
+    private MeshRenderer petRenderer;*/
+    
     /*[Header("Player Light")]
     [Tooltip("Whether this dialogue trigger can turn on player light")]
     public bool canTriggerLight;
@@ -46,7 +47,7 @@ public class DialogueTriggerZone : MonoBehaviour
             audioSource.clip = dialogueAudioClip;
         }
         
-        petRenderer = pet.GetComponent<MeshRenderer>();
+        // petRenderer = pet.GetComponent<MeshRenderer>();
 
     }
 
@@ -62,10 +63,10 @@ public class DialogueTriggerZone : MonoBehaviour
             playerLight.TurnOnLight();
         }*/
 
-        if (petRenderer != null)
+        /*if (petRenderer != null)
         {
             StartCoroutine(ShowPet());
-        }
+        }*/
 
         if (!hasTriggeredDialogue)
         {
@@ -82,12 +83,6 @@ public class DialogueTriggerZone : MonoBehaviour
             }
         }
         
-    }
-
-    IEnumerator ShowPet()
-    {
-        yield return new WaitForSeconds(0.5f);
-        petRenderer.enabled = true;
     }
 
     void Update()

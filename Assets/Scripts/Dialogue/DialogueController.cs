@@ -3,8 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+
+[System.Serializable]
+public class DialogueLineEventBinding
+{
+    public string key;
+    public UnityEvent onLineFinished;
+}
 
 public class DialogueController : MonoBehaviour
 {
@@ -16,6 +24,9 @@ public class DialogueController : MonoBehaviour
     private PlayerInputControl inputActions;
     [Header("Dialogue Settings")] 
     public bool isAutoPlay;
+    
+    [SerializeField] private List<DialogueLineEventBinding> dialogueEvents;
+
     
     [Header("Dialogue Asset")]
     [SerializeField] private Sprite playerBubble;
@@ -88,6 +99,8 @@ public class DialogueController : MonoBehaviour
         {
             FinishParagraphEarly();
         }
+        
+        BroadcastLineFinish(p);
 
         if (paragraphs.Count == 0)
         {
@@ -215,6 +228,22 @@ public class DialogueController : MonoBehaviour
     public bool IsDialoguePlaying()
     {
         return isTyping || paragraphs.Count > 0;
+    }
+
+    public void BroadcastLineFinish(DialogueLine line)
+    {
+        // line.OnLineFinished?.Invoke();
+        if (string.IsNullOrEmpty(line.eventKey)) return;
+
+        foreach (var binding in dialogueEvents)
+        {
+            if (binding.key == line.eventKey)
+            {
+                binding.onLineFinished?.Invoke();
+                break;
+            }
+        }
+        
     }
     
     
