@@ -9,6 +9,7 @@ public static class EventManager
     public static event Action OnCutsceneStart;
     public static event Action OnCutsceneReachLight;
     public static event Action OnCutsceneEnd;
+    public static event Action OnCutscenePetReachPlayer;
 
     public static void BroadcastCutsceneStart()
     {
@@ -18,6 +19,11 @@ public static class EventManager
     public static void BroadcastCutsceneReachLight()
     {
         OnCutsceneReachLight?.Invoke();
+    }
+    
+    public static void BroadcastHugCutscenePetReachPlayer()
+    {
+        OnCutscenePetReachPlayer?.Invoke();
     }
 
 }

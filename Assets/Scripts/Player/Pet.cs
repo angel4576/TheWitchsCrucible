@@ -428,5 +428,13 @@ public class Pet : MonoBehaviour, IInteractable
             gameObject.SetActive(WorldControl.Instance.isRealWorld);
         ResetPosition();
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("HugTrigger"))
+        {
+            EventManager.BroadcastHugCutscenePetReachPlayer();
+        }
+    }
     
 }

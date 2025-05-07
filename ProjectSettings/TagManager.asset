@@ -13,6 +13,7 @@ TagManager:
   - RealWorld
   - UI
   - F_Interactable
+  - HugTrigger
   layers:
   - Default
   - TransparentFX
