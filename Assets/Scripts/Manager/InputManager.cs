@@ -27,7 +27,7 @@ public class InputManager : MonoBehaviour
     public void LockGameplayInput()
     {
         inputLockCount++;
-        inputActions.Disable();
+        inputActions.Gameplay.Disable();
         // Debug.Log($"Input Locked. Count = {inputLockCount}");
     }
 
@@ -36,7 +36,7 @@ public class InputManager : MonoBehaviour
         inputLockCount = Mathf.Max(0, inputLockCount - 1);
         if (inputLockCount == 0)
         {
-            inputActions.Enable();
+            inputActions.Gameplay.Enable();
             // Debug.Log("Input Re-enabled");
         }
     }

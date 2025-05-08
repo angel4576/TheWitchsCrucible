@@ -42,7 +42,7 @@ public class WorldControl : MonoBehaviour
 
     public bool canSwitch;
 
-    public PlayerInputControl playerInput;
+    private PlayerInputControl playerInput;
     private Pet pet;
     public UnityEvent onSwitchWorld;
 
@@ -63,10 +63,11 @@ public class WorldControl : MonoBehaviour
             Destroy(gameObject);
         }
 
-        playerInput = new PlayerInputControl();
-        playerInput.Enable();
+        /*playerInput = new PlayerInputControl();
+        playerInput.Enable();*/
+
+        playerInput = InputManager.Instance.GetActions();
         
-        playerInput.Gameplay.SwitchWorld.started += context => SwitchWorld(); // E key
     }
 
     void Start()
@@ -101,19 +102,21 @@ public class WorldControl : MonoBehaviour
 
     }
 
-    private void OnDestroy()
-    {
-        GameManager.Instance?.OnLanternFirstPickedUp.RemoveListener(SetCanSwitch);
-    }
-
     private void OnEnable()
     {
-        
+        // playerInput.Gameplay.SwitchWorld.started += context => SwitchWorld(); // E key
+        playerInput.Gameplay.SwitchWorld.started += SwitchWorld; // E key
+
     }
 
     private void OnDisable()
     {
-        
+        playerInput.Gameplay.SwitchWorld.started -= SwitchWorld; // E key
+    }
+    
+    private void OnDestroy()
+    {
+        GameManager.Instance?.OnLanternFirstPickedUp.RemoveListener(SetCanSwitch);
     }
 
     void Update()
@@ -294,7 +297,7 @@ public class WorldControl : MonoBehaviour
         
     }
     
-    public void SwitchWorld()
+    public void SwitchWorld(InputAction.CallbackContext context)
     {
         
         if (!PauseScreen.GetComponent<PauseManager>().isPaused 
