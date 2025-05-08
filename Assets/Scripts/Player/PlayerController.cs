@@ -103,10 +103,6 @@ public class PlayerController : MonoBehaviour
         // inputActions = new PlayerInputControl();
         inputActions = InputManager.Instance.GetActions();
         
-        // +=: register actions to action binding
-        inputActions.Gameplay.Jump.started += Jump; // call jump when the moment corresponding button is pressed
-        inputActions.Gameplay.Pause.started += Pause;
-        
         // inputActions.Gameplay.Fire.started += MeleeAttack;
         // inputActions.Gameplay.RangeAttack.started += RangeAttack;
         
@@ -115,6 +111,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
+        // +=: register actions to action binding
+        inputActions.Gameplay.Jump.started += Jump; // call jump when the moment corresponding button is pressed
+        inputActions.Gameplay.Pause.started += Pause;
+
         inputActions.Gameplay.Enable();
         EventManager.OnCutsceneStart += HandleCutsceneStart;
     }
@@ -122,6 +122,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
+        inputActions.Gameplay.Jump.started -= Jump;
+        inputActions.Gameplay.Pause.started -= Pause;
+        
         inputActions.Gameplay.Disable();
         EventManager.OnCutsceneStart -= HandleCutsceneStart;
     }
