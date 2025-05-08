@@ -100,11 +100,13 @@ public class PlayerController : MonoBehaviour
     #region Lifecycle 
     private void Awake()
     {
-        inputActions = new PlayerInputControl();
-
+        // inputActions = new PlayerInputControl();
+        inputActions = InputManager.Instance.GetActions();
+        
         // +=: register actions to action binding
         inputActions.Gameplay.Jump.started += Jump; // call jump when the moment corresponding button is pressed
         inputActions.Gameplay.Pause.started += Pause;
+        
         // inputActions.Gameplay.Fire.started += MeleeAttack;
         // inputActions.Gameplay.RangeAttack.started += RangeAttack;
         

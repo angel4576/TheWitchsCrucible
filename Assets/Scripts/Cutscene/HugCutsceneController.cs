@@ -72,7 +72,8 @@ public class HugCutsceneController : MonoBehaviour
 
     IEnumerator HugSequence()
     {
-        playerController.DisableInput();
+        // playerController.DisableGameplayInput();
+        InputManager.Instance.LockGameplayInput();
         
         hugTriggerReached = false;
             
