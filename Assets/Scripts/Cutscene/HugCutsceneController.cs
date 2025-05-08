@@ -11,8 +11,10 @@ public class HugCutsceneController : MonoBehaviour
     [SerializeField] private float xSpeed = 5f;
     [SerializeField] private float ySpeed = 5f;
     // [SerializeField] private float pounceDuration = 0.3f;
-    [SerializeField] private Vector3 hugOffset = new Vector3(-0.5f, 0, 0); // pos relative to player
     
+    [Header("Hug Settings")]
+    [SerializeField] private Vector3 hugOffset = new Vector3(-0.5f, 0, 0); // pos relative to player
+    [SerializeField] private float hugTime = 3f;
     [SerializeField] private GameObject hugPrefab;
     
     private PlayerController playerController;
@@ -74,7 +76,6 @@ public class HugCutsceneController : MonoBehaviour
     {
         // playerController.DisableGameplayInput();
         InputManager.Instance.LockGameplayInput();
-        
         hugTriggerReached = false;
             
         yield return new WaitForSeconds(1f);
@@ -91,7 +92,12 @@ public class HugCutsceneController : MonoBehaviour
         // Reach target position
         // Debug.Log("[Hug Cutscene] Pet reach hug position");
         StartHugging();
+        
+        yield return new WaitForSeconds(hugTime);
+        
+        AfterHug();
 
+        
     }
 
     private void StartHugging()
@@ -107,6 +113,18 @@ public class HugCutsceneController : MonoBehaviour
         playerRenderer.enabled = false;
         
         hugPrefab.SetActive(true);
+    }
+
+    private void AfterHug()
+    {
+        // Show characters and hide hug sprite
+        petRenderer.enabled = true;
+        petRb.isKinematic = false;
+        playerRenderer.enabled = true;
+        
+        hugPrefab.SetActive(false);
+        
+        InputManager.Instance.UnlockGameplayInput();
     }
 
     private Vector2 GetJumpPosition(float t)
