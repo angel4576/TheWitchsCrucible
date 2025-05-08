@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 using UnityEngine.InputSystem;
 
-public class Boss : MonoBehaviour
+public class Boss : MonoBehaviour, ICheckpointRestore
 {
     public Transform playerTransform;
     public PlayerController playerScript;
@@ -90,6 +90,7 @@ public class Boss : MonoBehaviour
         
         AddListeners();
     }
+    
 
     private void OnDestroy() 
     {
@@ -134,11 +135,13 @@ public class Boss : MonoBehaviour
         canAttack = false;
         foundLantern = true;
 
+        GameSceneManager.Instance?.RegisterCheckpointObject(this);
         EventManager.OnCutsceneReachLight += HandleCutsceneReachLight;
     }
 
     private void OnDisable()
     {
+        GameSceneManager.Instance?.UnregisterCheckpointObject(this);
         EventManager.OnCutsceneReachLight -= HandleCutsceneReachLight;
     }
 
@@ -506,4 +509,14 @@ public class Boss : MonoBehaviour
         Melee,
         Range,
     };
+
+    public void SaveToCheckpoint(CheckpointData data)
+    {
+        data.bossPosition = transform.position;
+    }
+
+    public void LoadFromCheckpoint(CheckpointData data)
+    {
+        transform.position = data.bossPosition;
+    }
 }

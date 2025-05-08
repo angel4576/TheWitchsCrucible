@@ -103,7 +103,7 @@ public class DataManager : MonoBehaviour
     {
         string json = JsonConvert.SerializeObject(checkpointData, Formatting.Indented);
         File.WriteAllText(checkpointDataPath, json);
-        Debug.Log("Checkpoint data saved.");
+        Debug.Log("[Data Manager] Checkpoint data saved");
     }
 
     // Load all data
@@ -190,8 +190,10 @@ public class CheckpointData
 {
     public string checkpointID;
     
+    // Player
     public Vec3 playerPosition;
     public float currentLight;
+    public bool hasPickedUpLantern;
     
     public Vec3 bossPosition;
     

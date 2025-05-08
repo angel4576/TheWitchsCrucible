@@ -105,6 +105,23 @@ public class GameSceneManager : MonoBehaviour
             
         }
     }
+
+    public void SaveCheckpoint()
+    {
+        foreach (var obj in checkpointObjects)
+        {
+            obj.SaveToCheckpoint(DataManager.Instance.checkpointData);
+        }
+    }
+
+    public void LoadCheckpoint()
+    {
+        Debug.Log("[Game Scene Manager] Load check point data");
+        foreach (var obj in checkpointObjects)
+        {
+            obj.LoadFromCheckpoint(DataManager.Instance.checkpointData);
+        }
+    }
     
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -114,16 +131,13 @@ public class GameSceneManager : MonoBehaviour
 
         // Reach checkpoint, restart from last checkpoint
         DataManager.Instance.LoadCheckpointData();
-        if (!string.IsNullOrEmpty(DataManager.Instance.checkpointData.checkpointID))
+        if (!string.IsNullOrEmpty(DataManager.Instance.checkpointData.checkpointID)) // if there is checkpoint data
         {
-            Debug.Log("[Game Scene Manager] Load check point data");
-            foreach (var obj in checkpointObjects)
-            {
-                obj.LoadFromCheckpoint(DataManager.Instance.checkpointData);
-            }
+            LoadCheckpoint();
         }
         else
         {
+            // Scene initial configuration
             ApplySceneConfig();
         }
         

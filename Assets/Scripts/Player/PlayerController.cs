@@ -708,6 +708,12 @@ public class PlayerController : MonoBehaviour, ICheckpointRestore
         isCutscenePlay = true;
     }
 
+    public void SaveToCheckpoint(CheckpointData data)
+    {
+        data.hasPickedUpLantern = true;
+        data.currentLight = 3;
+    }
+
     public void LoadFromCheckpoint(CheckpointData data)
     {
         transform.position = data.playerPosition;

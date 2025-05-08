@@ -14,8 +14,13 @@ public class CheckPoint : MonoBehaviour
             DataManager.Instance.checkpointData.checkpointID = checkpointID;
             DataManager.Instance.checkpointData.playerPosition = transform.position;
             
+            GameSceneManager.Instance.SaveCheckpoint();
+            
+            // Save to file
             DataManager.Instance.SaveCheckPointData();
             
         }
     }
+    
+    
 }
