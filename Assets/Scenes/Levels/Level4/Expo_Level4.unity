@@ -2617,7 +2617,7 @@ GameObject:
   - component: {fileID: 502639367}
   - component: {fileID: 502639366}
   m_Layer: 0
-  m_Name: Hug
+  m_Name: HugSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4201,6 +4201,7 @@ MonoBehaviour:
   player: {fileID: 917230998}
   playerLight: {fileID: 236773964}
   distance: 93.6
+  blackBackground: {fileID: 1134977892}
 --- !u!4 &740628146
 Transform:
   m_ObjectHideFlags: 0

@@ -13,6 +13,7 @@ public class LightZoneController : MonoBehaviour
 
     [Header("Light Zone")]
     public float distance;
+    [SerializeField] private GameObject blackBackground;
     
     // Start is called before the first frame update
     void Start()
@@ -31,6 +32,12 @@ public class LightZoneController : MonoBehaviour
         // Set player light
         playerLight.SetLightOuterRadius(t);
         playerLight.SetLightIntensity(t);
+
+        if (player.transform.position.x > end) // exceed dark area
+        {
+            playerLight.DisableLight();
+            blackBackground.SetActive(false);
+        }
     }
 
     private void OnDrawGizmos()

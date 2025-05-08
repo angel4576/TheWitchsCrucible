@@ -39,7 +39,7 @@ public class Level4CutsceneController : MonoBehaviour
     {
         playerRenderer.enabled = false;
         petRenderer.enabled = false;
-        player.DisableInput();
+        player.DisableGameplayInput();
         
         yield return new WaitForSeconds(openWaitTime);
         
@@ -50,7 +50,7 @@ public class Level4CutsceneController : MonoBehaviour
         playerLight.TurnOnLight();
         // Set player
         playerRenderer.enabled = true;
-        player.EnableInput();
+        player.EnableGameplayInput();
         
         yield return new WaitForSeconds(5f);
         

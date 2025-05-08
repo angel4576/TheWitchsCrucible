@@ -664,12 +664,12 @@ public class PlayerController : MonoBehaviour
 
     #region Input System
 
-    public void DisableInput()
+    public void DisableGameplayInput()
     {
         inputActions.Gameplay.Disable();
     }
 
-    public void EnableInput()
+    public void EnableGameplayInput()
     {
         inputActions.Gameplay.Enable();
     }

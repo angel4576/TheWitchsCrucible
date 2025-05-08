@@ -15,9 +15,10 @@ public class HugCutsceneController : MonoBehaviour
     
     [SerializeField] private GameObject hugPrefab;
     
-    private Rigidbody2D petRb; 
+    private PlayerController playerController;
     private MeshRenderer playerRenderer;
     private MeshRenderer petRenderer;
+    private Rigidbody2D petRb; 
     
     private bool hugTriggerReached = false;
 
@@ -26,6 +27,7 @@ public class HugCutsceneController : MonoBehaviour
     {
         petRb = pet.GetComponent<Rigidbody2D>();
         playerRenderer = player.GetComponent<MeshRenderer>();
+        playerController = player.GetComponent<PlayerController>();
         petRenderer = pet.GetComponent<MeshRenderer>();
         
         // StartHugSequence();
@@ -70,6 +72,8 @@ public class HugCutsceneController : MonoBehaviour
 
     IEnumerator HugSequence()
     {
+        playerController.DisableInput();
+        
         hugTriggerReached = false;
             
         yield return new WaitForSeconds(1f);

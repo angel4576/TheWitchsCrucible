@@ -47,6 +47,11 @@ public class PlayerLightController : MonoBehaviour
         t *= t;
         playerLight.pointLightOuterRadius = Mathf.Lerp(minOuterRadius, maxOuterRadius, t);
     }
+
+    public void DisableLight()
+    {
+        playerLight.enabled = false;
+    }
     
     
 }
