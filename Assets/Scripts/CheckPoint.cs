@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class CheckPoint : MonoBehaviour
 {
+    public string checkpointID;
     private void OnTriggerEnter2D(Collider2D other) 
     {
-        Debug.Log("Checkpoint reached");
         if (other.CompareTag("Player"))
         {
             Debug.Log("Player reached checkpoint");
-            //DataManager.Instance.playerData.checkPoint = transform.position;
-            DataManager.Instance.WriteCheckpointData(transform.position);
+            // Save check point data
+            DataManager.Instance.checkpointData.checkpointID = checkpointID;
+            DataManager.Instance.checkpointData.playerPosition = transform.position;
+            
+            DataManager.Instance.SaveCheckPointData();
+            
         }
     }
 }

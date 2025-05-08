@@ -14,14 +14,7 @@ public class PauseManager : MonoBehaviour
     
     private void Awake()
     {
-        /*
-        // Singleton checks
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        if (Instance != this) Destroy(gameObject);*/
+        
     }
 
     // Start is called before the first frame update
@@ -62,7 +55,7 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 1.0f;
     }
 
-    public void Restart()
+    public void RestartCurrentScene()
     {
         GameSceneManager.Instance?.RestartScene();
     }
@@ -72,7 +65,7 @@ public class PauseManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void RestartLevel()
+    /*public void RestartLevel()
     {
         Resume();
         if(DataManager.Instance != null){
@@ -83,10 +76,9 @@ public class PauseManager : MonoBehaviour
             string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneName);
         }
-        
-    }
+    }*/
 
-    public void StartFromCheckPoint()
+    /*public void StartFromCheckPoint()
     {
         //loadfromcheckpoint
         Resume();
@@ -99,5 +91,5 @@ public class PauseManager : MonoBehaviour
             string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneName);
         }
-    }
+    }*/
 }

@@ -80,7 +80,7 @@ public class WorldItem : MonoBehaviour, IInteractable
         gameObject.SetActive(false);
 
         //checkpoint
-        DataManager.Instance.WriteCheckpointData(transform.position);
+        // DataManager.Instance.WriteCheckpointData(transform.position);
 
     }
 

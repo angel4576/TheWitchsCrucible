@@ -32,6 +32,7 @@ public class GameSceneManager : MonoBehaviour
     private string currentSceneName;
     
     private List<ISceneReferenceReceiver> receivers = new List<ISceneReferenceReceiver>();
+    private List<ICheckpointRestore> checkpointObjects = new List<ICheckpointRestore>();
     
     private bool isReloading = false;
     // private SceneConfigurationData sceneConfig;
@@ -62,12 +63,15 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
-    public void Register(ISceneReferenceReceiver receiver)
+    public void RegisterCheckpointObject(ICheckpointRestore obj)
     {
-        if (!receivers.Contains(receiver))
-        {
-            receivers.Add(receiver);
-        }
+        if(!checkpointObjects.Contains(obj))
+            checkpointObjects.Add(obj);
+    }
+    
+    public void UnregisterCheckpointObject(ICheckpointRestore obj)
+    {
+        checkpointObjects.Remove(obj);
     }
 
     public SceneConfig GetCurrentSceneConfig()
@@ -76,13 +80,9 @@ public class GameSceneManager : MonoBehaviour
 
         return config;
     }
-    
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        Debug.Log($"[Game Scene Manager] Load Scene {scene.name} Complete; Current Scene Name: {currentSceneName}");
-        InputManager.Instance.ResetGameplayLock();
-        ResumeGame();
 
+    private void ApplySceneConfig()
+    {
         /*SceneConfig config = null;
         foreach (var c in sceneConfigs)
         {
@@ -92,7 +92,8 @@ public class GameSceneManager : MonoBehaviour
             }
         }*/
         
-        SceneConfig config = sceneConfigs.Find(c => c.sceneName == scene.name);
+        // SceneConfig config = sceneConfigs.Find(c => c.sceneName == scene.name);
+        SceneConfig config = GetCurrentSceneConfig();
         
         if (config != null)
         {
@@ -103,16 +104,28 @@ public class GameSceneManager : MonoBehaviour
             DataManager.Instance.playerData.light = config.lightStartValue;
             
         }
-        
-        
-        // save level start data for restart purpose
-        /*if(!isReloading)
-        {
-            DataManager.Instance.WriteLevelStartData();
-            DataManager.Instance.WriteCheckpointData(DataManager.Instance.levelStartData.position, true);
-        }
-        isReloading = false;*/
+    }
+    
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log($"[Game Scene Manager] Load Scene {scene.name} Complete; Current Scene Name: {currentSceneName}");
+        InputManager.Instance.ResetGameplayLock();
+        ResumeGame();
 
+        // Reach checkpoint, restart from last checkpoint
+        DataManager.Instance.LoadCheckpointData();
+        if (!string.IsNullOrEmpty(DataManager.Instance.checkpointData.checkpointID))
+        {
+            Debug.Log("[Game Scene Manager] Load check point data");
+            foreach (var obj in checkpointObjects)
+            {
+                obj.LoadFromCheckpoint(DataManager.Instance.checkpointData);
+            }
+        }
+        else
+        {
+            ApplySceneConfig();
+        }
         
     }
 

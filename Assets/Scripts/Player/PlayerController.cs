@@ -9,7 +9,7 @@ using UnityEngine.TextCore.Text;
 using Spine.Unity;
 using System.Linq;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, ICheckpointRestore
 {
     public PlayerInputControl inputActions;
     private Vector2 inputDirection;
@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
     
     // Cutscene control
     private bool isCutscenePlay = false;
-    
+
     #region Lifecycle 
     private void Awake()
     {
@@ -117,6 +117,8 @@ public class PlayerController : MonoBehaviour
 
         inputActions.Gameplay.Enable();
         EventManager.OnCutsceneStart += HandleCutsceneStart;
+        
+        GameSceneManager.Instance?.RegisterCheckpointObject(this);
     }
 
 
@@ -127,6 +129,9 @@ public class PlayerController : MonoBehaviour
         
         inputActions.Gameplay.Disable();
         EventManager.OnCutsceneStart -= HandleCutsceneStart;
+        
+        GameSceneManager.Instance?.UnregisterCheckpointObject(this);
+
     }
 
     // Start is called before the first frame update
@@ -701,5 +706,10 @@ public class PlayerController : MonoBehaviour
     private void HandleCutsceneStart()
     {
         isCutscenePlay = true;
+    }
+
+    public void LoadFromCheckpoint(CheckpointData data)
+    {
+        transform.position = data.playerPosition;
     }
 }

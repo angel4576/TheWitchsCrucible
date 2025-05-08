@@ -9,6 +9,8 @@ public class Vec3{
     public float y;
     public float z;
 
+    public Vec3() { }
+
     public Vec3(float x, float y, float z){
         this.x = x;
         this.y = y;
@@ -40,8 +42,8 @@ public class DataManager : MonoBehaviour
     private string playerDataPath;
     private string settingsDataPath;
     private string worldDataPath;
+    private string checkpointDataPath;
     private string configPath;
-    private string checkpointPath;
 
     [Header("Data")]
     public PlayerData playerData;
@@ -49,7 +51,6 @@ public class DataManager : MonoBehaviour
     public WorldData worldData;
     public ConfigData configData;
     public CheckpointData checkpointData;
-    public CheckpointData levelStartData;
 
     private void Awake()
     {
@@ -68,6 +69,7 @@ public class DataManager : MonoBehaviour
         Debug.Log(playerDataPath);
         settingsDataPath = Path.Combine(Application.persistentDataPath, "SettingsData.json");
         worldDataPath = Path.Combine(Application.persistentDataPath, "WorldData.json");
+        checkpointDataPath = Path.Combine(Application.persistentDataPath, "CheckpointData.json");
         configPath = Path.Combine(Application.streamingAssetsPath, "ConfigData.json");
 
         LoadAllData();
@@ -97,12 +99,25 @@ public class DataManager : MonoBehaviour
         Debug.Log("World data saved.");
     }
 
+    public void SaveCheckPointData()
+    {
+        string json = JsonConvert.SerializeObject(checkpointData, Formatting.Indented);
+        File.WriteAllText(checkpointDataPath, json);
+        Debug.Log("Checkpoint data saved.");
+    }
+
     // Load all data
     public void LoadAllData()
     {
         playerData = LoadData<PlayerData>(playerDataPath) ?? new PlayerData(); // 如果文件不存在，初始化新数据
         settingsData = LoadData<SettingsData>(settingsDataPath) ?? new SettingsData();
         worldData = LoadData<WorldData>(worldDataPath) ?? new WorldData();
+        // checkpointData = LoadData<CheckpointData>(checkpointDataPath) ?? new CheckpointData();
+    }
+
+    public void LoadCheckpointData()
+    {
+        checkpointData = LoadData<CheckpointData>(checkpointDataPath) ?? new CheckpointData();
     }
 
     // Load config data
@@ -111,186 +126,7 @@ public class DataManager : MonoBehaviour
         configData = LoadData<ConfigData>(configPath) ?? new ConfigData();
     }
 
-    // checkpoint
-    public void WriteCheckpointData(Vector3 position, bool isLevelStart = false)
-    {
-        checkpointData.position = position;
-        checkpointData.playerData = new PlayerData();
-        checkpointData.playerData.level = playerData.level;
-        checkpointData.playerData.maxHealth = playerData.maxHealth;
-        checkpointData.playerData.currentHealth = playerData.currentHealth;
-        checkpointData.playerData.light = playerData.light;
-        checkpointData.playerData.hasPickedUpLantern = playerData.hasPickedUpLantern;
-        checkpointData.playerData.canSwitchWorld = playerData.canSwitchWorld;
-
-        checkpointData.isInRealWorld = WorldControl.Instance.isRealWorld;
-        // when loading the scene, isRealWorld is not ready, so manually assigned true
-        if(isLevelStart){
-            checkpointData.isInRealWorld = true;
-        }
-        
-
-        WriteEnemies(checkpointData);
-        WriteItems(checkpointData);
-    }
-
-    public void WriteLevelStartData()
-    {
-        levelStartData.position = new Vec3(0, 0, 0);
-        Transform player = GameObject.FindGameObjectWithTag("Player").transform;
-        if(player != null)
-        {
-            levelStartData.position = new Vec3(player.position);
-        }
-        levelStartData.playerData = new PlayerData();
-        levelStartData.playerData.level = playerData.level;
-        levelStartData.playerData.maxHealth = playerData.maxHealth;
-        levelStartData.playerData.currentHealth = playerData.currentHealth;
-        levelStartData.playerData.light = playerData.light;
-        levelStartData.playerData.hasPickedUpLantern = playerData.hasPickedUpLantern;
-        levelStartData.playerData.canSwitchWorld = playerData.canSwitchWorld;
-
-        // assume in real world when level start
-        levelStartData.isInRealWorld = true;
-
-        // enermy
-        WriteEnemies(levelStartData);
-        WriteItems(levelStartData);
-    }
-
-    // WriteEnemies and WriteItems can be optimized by acquiring the reference once and storing it
-    public void WriteEnemies(CheckpointData data){
-        data.enemies = new List<EnemyData>();
-        //GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
-        List<Monster> monsters = GameManager.Instance.monsters;
-        foreach (Monster monster in monsters)
-        {
-            EnemyData enemyData = new EnemyData();
-            enemyData.position = new Vec3(monster.transform.position);
-            enemyData.rotation = new Vec3(monster.transform.eulerAngles);
-            enemyData.scale = new Vec3(monster.transform.localScale);
-
-            enemyData.monsterReference = monster;
-
-            data.enemies.Add(enemyData);
-        }
-    }
-
-    public void WriteItems(CheckpointData data){
-        data.items = new List<ItemData>();
-        // GameObject[] items = GameObject.FindGameObjectsWithTag("Interactable");
-        // foreach (GameObject item in items)
-        // {
-        //     ItemData itemData = new ItemData();
-        //     itemData.gameObject = item;
-        //     itemData.itemType = ItemData.ItemType.Light; // only lights for now
-        //     itemData.isInteracted = !item.activeSelf;
-        //     data.items.Add(itemData);
-        // }
-        List<WorldItem> items = GameManager.Instance.items;
-        foreach (WorldItem item in items)
-        {
-            ItemData itemData = new ItemData();
-            itemData.gameObject = item.gameObject;
-            itemData.itemType = ItemData.ItemType.Light; // only lights for now
-            itemData.isInteracted = !item.gameObject.activeSelf;
-            data.items.Add(itemData);
-        }
-    }
-
-    public void ResetDataToLastCheckpoint(Transform player = null){
-        // reset world
-        // to ensure the active status of monster is correct, switch world first
-        if(checkpointData.isInRealWorld != WorldControl.Instance.isRealWorld){
-            WorldControl.Instance.SwitchWorldNoInvoke();
-        }
-
-        // load player
-        if (player == null)
-        {
-            try{
-                player = GameObject.FindGameObjectWithTag("Player").transform;
-            }
-            catch{
-                Debug.Log("Player not found");
-            }
-        }
-        if(player != null){ 
-            player.position = checkpointData.position;
-            // remove any velocity on player
-            player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            // check lantern
-            if(!checkpointData.playerData.hasPickedUpLantern){
-                player.GetComponent<PlayerController>().lantern.gameObject.SetActive(false);
-            }
-        }
-        playerData = checkpointData.playerData;
-
-        // load enemies
-        foreach (EnemyData enemy in checkpointData.enemies)
-        {
-            // enable monster
-            bool isMonsterActive = enemy.monsterReference.gameObject.activeSelf;
-            enemy.monsterReference.gameObject.SetActive(true);
-
-            enemy.monsterReference.transform.position = enemy.position;
-            enemy.monsterReference.transform.eulerAngles = enemy.rotation;
-            enemy.monsterReference.transform.localScale = enemy.scale;
-
-            // check lantern
-            if(!checkpointData.playerData.hasPickedUpLantern){
-                enemy.monsterReference.lantern = null;
-            }
-            else{
-                enemy.monsterReference.lantern = player.GetComponentInChildren<Lantern>();
-            }
-
-            // reset monster status
-            if(!isMonsterActive){
-                enemy.monsterReference.gameObject.SetActive(false);
-            }
-
-        }
-        // GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
-        // for (int i = 0; i < monsters.Length; i++)
-        // {
-        //     monsters[i].transform.position = checkpointData.enemies[i].position;
-        //     monsters[i].transform.eulerAngles = checkpointData.enemies[i].rotation;
-        //     monsters[i].transform.localScale = checkpointData.enemies[i].scale;
-
-        //     // check lantern
-        //     if(!checkpointData.playerData.hasPickedUpLantern){
-        //         monsters[i].GetComponent<Monster>().lantern = null;
-        //     }
-        //     else{
-        //         monsters[i].GetComponent<Monster>().lantern = player.GetComponentInChildren<Lantern>();
-        //     }
-        // }
-
-        // load items
-        foreach (ItemData item in checkpointData.items)
-        {
-            if(item.itemType == ItemData.ItemType.Light && !item.isInteracted){
-                item.gameObject.SetActive(true);
-            }
-            else{
-                item.gameObject.SetActive(false);
-            }
-        }
-
-        
-
-        // reset lantern status to off
-        player.GetComponent<PlayerController>().lantern.ResetLantern();
-        
-        // fade in
-        StartCoroutine(SceneManager.Instance.FadeInRoutine());
-    }
-
-    public void ResetDataToLevelStart(){
-        playerData = levelStartData.playerData;
-        SceneManager.Instance.ReloadScene();
-    }
+  
 
     // template method for loading data
     private T LoadData<T>(string filePath) where T : class
@@ -352,12 +188,19 @@ public class ConfigData
 [System.Serializable]
 public class CheckpointData
 {
-    public Vec3 position;
+    public string checkpointID;
+    
+    public Vec3 playerPosition;
+    public float currentLight;
+    
+    public Vec3 bossPosition;
+    
+    /*public Vec3 position;
     public PlayerData playerData;
     public bool isInRealWorld;
-    
+
     public List<EnemyData> enemies;
-    public List<ItemData> items;
+    public List<ItemData> items;*/
 }
 
 [System.Serializable]
