@@ -2494,12 +2494,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e020aa7a663c24ba60645b513b17e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueControl: {fileID: 901468851}
+  dialogueControl: {fileID: 1276218510}
   dialogueTextToPlay: {fileID: 11400000, guid: b0f2241c646e1f74dbed5941f046e476, type: 2}
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  pet: {fileID: 1313239724}
 --- !u!1 &130826756
 GameObject:
   m_ObjectHideFlags: 0
@@ -12477,12 +12476,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e020aa7a663c24ba60645b513b17e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueControl: {fileID: 901468851}
+  dialogueControl: {fileID: 1276218510}
   dialogueTextToPlay: {fileID: 11400000, guid: 2d902b8b859a16248bba8b9bc6b169f3, type: 2}
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  pet: {fileID: 1313239724}
 --- !u!1 &561984392
 GameObject:
   m_ObjectHideFlags: 0
@@ -18437,12 +18435,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e020aa7a663c24ba60645b513b17e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueControl: {fileID: 901468851}
+  dialogueControl: {fileID: 1276218510}
   dialogueTextToPlay: {fileID: 11400000, guid: f3972a5ad49cba940af9c5d1f041cc2d, type: 2}
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  pet: {fileID: 1313239724}
 --- !u!1 &818659319
 GameObject:
   m_ObjectHideFlags: 0
@@ -20717,7 +20714,6 @@ GameObject:
   - component: {fileID: 901468848}
   - component: {fileID: 901468850}
   - component: {fileID: 901468849}
-  - component: {fileID: 901468851}
   m_Layer: 5
   m_Name: DialogueImage
   m_TagString: Untagged
@@ -20785,29 +20781,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 901468847}
   m_CullTransparentMesh: 1
---- !u!114 &901468851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 901468847}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0323299952351b47bf7997a343c694c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NameText: {fileID: 1527000398}
-  NPCDialogueText: {fileID: 1909892726}
-  typeSpeed: 10
-  autoNextDelay: 1.5
-  isAutoPlay: 0
-  playerBubble: {fileID: 21300000, guid: 46ca8fc653c1b9d42ae3eb416ce6d52c, type: 3}
-  petBubble: {fileID: 0}
-  playerIcon: {fileID: 21300000, guid: c8f6ecd6346fddf4c88e2fda4777bfbb, type: 3}
-  petIcon: {fileID: 21300000, guid: 521491bae09485049bb21c5664b6bb63, type: 3}
-  bubbleImage: {fileID: 901468849}
-  iconImage: {fileID: 887409270}
 --- !u!114 &910825043 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6829084733883315531, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
@@ -21147,7 +21120,7 @@ MonoBehaviour:
   hurtEffect: {fileID: 950501552}
   hurtParticles: {fileID: 1449556327}
   isHurt: 0
-  dialogueController: {fileID: 901468851}
+  dialogueController: {fileID: 1276218510}
 --- !u!50 &917230999
 Rigidbody2D:
   serializedVersion: 4
@@ -28291,6 +28264,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4932065096811226575, guid: 84910bcc93dcbd04ca2f405c215ddcea, type: 3}
   m_PrefabInstance: {fileID: 1266169684}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1276218509
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1276218511}
+  - component: {fileID: 1276218510}
+  m_Layer: 0
+  m_Name: DialogueController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1276218510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276218509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0323299952351b47bf7997a343c694c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NameText: {fileID: 1527000398}
+  NPCDialogueText: {fileID: 1909892726}
+  typeSpeed: 10
+  autoNextDelay: 1.5
+  isAutoPlay: 0
+  dialogueLineEvents: []
+  dialogueEvents: []
+  playerBubble: {fileID: 21300000, guid: 46ca8fc653c1b9d42ae3eb416ce6d52c, type: 3}
+  petBubble: {fileID: 0}
+  playerIcon: {fileID: 21300000, guid: c8f6ecd6346fddf4c88e2fda4777bfbb, type: 3}
+  petIcon: {fileID: 21300000, guid: 521491bae09485049bb21c5664b6bb63, type: 3}
+  bubbleImage: {fileID: 901468849}
+  iconImage: {fileID: 887409270}
+--- !u!4 &1276218511
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276218509}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1294110409
 GameObject:
   m_ObjectHideFlags: 0
@@ -28381,12 +28411,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e020aa7a663c24ba60645b513b17e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueControl: {fileID: 901468851}
+  dialogueControl: {fileID: 0}
   dialogueTextToPlay: {fileID: 11400000, guid: f4049a476c337ac449f14094dde8edb4, type: 2}
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  pet: {fileID: 1313239724}
 --- !u!1 &1301763330
 GameObject:
   m_ObjectHideFlags: 0
@@ -28489,7 +28518,6 @@ GameObject:
   - component: {fileID: 1313239718}
   - component: {fileID: 1313239717}
   - component: {fileID: 1313239726}
-  - component: {fileID: 1313239727}
   - component: {fileID: 1313239729}
   - component: {fileID: 1313239728}
   m_Layer: 0
@@ -28794,29 +28822,6 @@ MonoBehaviour:
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
   m_DefaultVelocity: {x: 0, y: -1, z: 0}
---- !u!114 &1313239727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1313239716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0323299952351b47bf7997a343c694c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NameText: {fileID: 0}
-  NPCDialogueText: {fileID: 0}
-  typeSpeed: 10
-  autoNextDelay: 1.5
-  isAutoPlay: 0
-  playerBubble: {fileID: 0}
-  petBubble: {fileID: 0}
-  playerIcon: {fileID: 0}
-  petIcon: {fileID: 0}
-  bubbleImage: {fileID: 0}
-  iconImage: {fileID: 0}
 --- !u!82 &1313239728
 AudioSource:
   m_ObjectHideFlags: 0
@@ -43552,12 +43557,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e020aa7a663c24ba60645b513b17e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueControl: {fileID: 901468851}
+  dialogueControl: {fileID: 1276218510}
   dialogueTextToPlay: {fileID: 11400000, guid: 105a1ba7e338e974593e53cec80ceac8, type: 2}
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  pet: {fileID: 1313239724}
 --- !u!1 &1963976783
 GameObject:
   m_ObjectHideFlags: 0
@@ -47689,3 +47693,4 @@ SceneRoots:
   - {fileID: 728673747}
   - {fileID: 1057402807}
   - {fileID: 950746251}
+  - {fileID: 1276218511}

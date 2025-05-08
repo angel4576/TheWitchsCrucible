@@ -1356,7 +1356,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
@@ -3227,7 +3226,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 1
-  pet: {fileID: 0}
 --- !u!1001 &159169099
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4923,7 +4921,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 1
-  pet: {fileID: 0}
 --- !u!1001 &262047638
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11429,7 +11426,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
@@ -17275,8 +17271,8 @@ Transform:
   - {fileID: 843247095}
   - {fileID: 1678453916}
   - {fileID: 19380921}
-  - {fileID: 2051436135}
   - {fileID: 1085531646}
+  - {fileID: 2051436135}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &917230994
@@ -17430,7 +17426,7 @@ MonoBehaviour:
   hurtEffect: {fileID: 446512127}
   hurtParticles: {fileID: 1085531647}
   isHurt: 0
-  dialogueController: {fileID: 1814932429}
+  dialogueController: {fileID: 1373981988}
 --- !u!50 &917230999
 Rigidbody2D:
   serializedVersion: 4
@@ -18536,7 +18532,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
@@ -19851,7 +19846,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
@@ -23411,7 +23405,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  pet: {fileID: 0}
 --- !u!1 &1154494398
 GameObject:
   m_ObjectHideFlags: 0
@@ -25718,7 +25711,6 @@ GameObject:
   - component: {fileID: 1313239718}
   - component: {fileID: 1313239717}
   - component: {fileID: 1313239726}
-  - component: {fileID: 1313239727}
   - component: {fileID: 1313239729}
   - component: {fileID: 1313239728}
   m_Layer: 10
@@ -26023,29 +26015,6 @@ MonoBehaviour:
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
   m_DefaultVelocity: {x: 0, y: -1, z: 0}
---- !u!114 &1313239727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1313239716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0323299952351b47bf7997a343c694c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NameText: {fileID: 0}
-  NPCDialogueText: {fileID: 0}
-  typeSpeed: 10
-  autoNextDelay: 1.5
-  isAutoPlay: 0
-  playerBubble: {fileID: 0}
-  petBubble: {fileID: 0}
-  playerIcon: {fileID: 0}
-  petIcon: {fileID: 0}
-  bubbleImage: {fileID: 0}
-  iconImage: {fileID: 0}
 --- !u!82 &1313239728
 AudioSource:
   m_ObjectHideFlags: 0
@@ -27277,6 +27246,63 @@ Transform:
   m_Children:
   - {fileID: 1336320242}
   - {fileID: 1097695164}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1373981987
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1373981989}
+  - component: {fileID: 1373981988}
+  m_Layer: 0
+  m_Name: DialogueController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1373981988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373981987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0323299952351b47bf7997a343c694c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NameText: {fileID: 23757982}
+  NPCDialogueText: {fileID: 1887232909}
+  typeSpeed: 10
+  autoNextDelay: 1.5
+  isAutoPlay: 0
+  dialogueLineEvents: []
+  dialogueEvents: []
+  playerBubble: {fileID: 21300000, guid: 46ca8fc653c1b9d42ae3eb416ce6d52c, type: 3}
+  petBubble: {fileID: 0}
+  playerIcon: {fileID: 21300000, guid: c8f6ecd6346fddf4c88e2fda4777bfbb, type: 3}
+  petIcon: {fileID: 21300000, guid: 521491bae09485049bb21c5664b6bb63, type: 3}
+  bubbleImage: {fileID: 1814932430}
+  iconImage: {fileID: 642054959}
+--- !u!4 &1373981989
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373981987}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1374529915 stripped
@@ -30815,12 +30841,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e020aa7a663c24ba60645b513b17e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueControl: {fileID: 1814932429}
+  dialogueControl: {fileID: 1373981988}
   dialogueTextToPlay: {fileID: 11400000, guid: 05d41fcce6a99ad4fb50ac73241539a3, type: 2}
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  pet: {fileID: 1313239724}
 --- !u!1001 &1529650798
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32493,7 +32518,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  pet: {fileID: 0}
 --- !u!1 &1598223348
 GameObject:
   m_ObjectHideFlags: 0
@@ -34505,7 +34529,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 1
-  pet: {fileID: 0}
 --- !u!1 &1716224045
 GameObject:
   m_ObjectHideFlags: 0
@@ -35637,7 +35660,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  pet: {fileID: 0}
 --- !u!1 &1811234046
 GameObject:
   m_ObjectHideFlags: 0
@@ -35740,7 +35762,6 @@ GameObject:
   - component: {fileID: 1814932428}
   - component: {fileID: 1814932431}
   - component: {fileID: 1814932430}
-  - component: {fileID: 1814932429}
   m_Layer: 5
   m_Name: DialogueImage
   m_TagString: Untagged
@@ -35770,29 +35791,6 @@ RectTransform:
   m_AnchoredPosition: {x: -340.7499, y: -135}
   m_SizeDelta: {x: 400, y: 251.66}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1814932429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1814932427}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0323299952351b47bf7997a343c694c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NameText: {fileID: 23757982}
-  NPCDialogueText: {fileID: 1887232909}
-  typeSpeed: 10
-  autoNextDelay: 1.5
-  isAutoPlay: 0
-  playerBubble: {fileID: 21300000, guid: 46ca8fc653c1b9d42ae3eb416ce6d52c, type: 3}
-  petBubble: {fileID: 0}
-  playerIcon: {fileID: 21300000, guid: c8f6ecd6346fddf4c88e2fda4777bfbb, type: 3}
-  petIcon: {fileID: 21300000, guid: 521491bae09485049bb21c5664b6bb63, type: 3}
-  bubbleImage: {fileID: 1814932430}
-  iconImage: {fileID: 642054959}
 --- !u!114 &1814932430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36221,7 +36219,6 @@ MonoBehaviour:
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 1
-  pet: {fileID: 0}
 --- !u!1 &1831975152
 GameObject:
   m_ObjectHideFlags: 0
@@ -39124,7 +39121,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
@@ -40788,12 +40784,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e020aa7a663c24ba60645b513b17e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueControl: {fileID: 1814932429}
+  dialogueControl: {fileID: 1373981988}
   dialogueTextToPlay: {fileID: 11400000, guid: 9c184dbe2eefeb44692bfca04793ea9b, type: 2}
   player: {fileID: 917230993}
   dialogueAudioClip: {fileID: 8300000, guid: 64ed322c217084e4ca3f6a8f0597a72f, type: 3}
   SpiritOnly: 0
-  pet: {fileID: 1313239724}
 --- !u!1 &2146861146
 GameObject:
   m_ObjectHideFlags: 0
@@ -41539,3 +41534,4 @@ SceneRoots:
   - {fileID: 1330100467}
   - {fileID: 231817806}
   - {fileID: 94807449}
+  - {fileID: 1373981989}

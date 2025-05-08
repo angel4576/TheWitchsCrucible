@@ -36,7 +36,8 @@ public class DialogueController : MonoBehaviour
     
     [SerializeField] private List<DialogueLineEventBinding> dialogueLineEvents;
     [SerializeField] private List<DialogueEventBinding> dialogueEvents;
-
+    
+    // [SerializeField] private Canvas dialogueCanvas;
     
     [Header("Dialogue Asset")]
     [SerializeField] private Sprite playerBubble;
@@ -63,6 +64,22 @@ public class DialogueController : MonoBehaviour
     
     // private bool isDialoguePlaying;
 
+    private void Start()
+    {
+        /*inputActions = InputManager.Instance.GetActions();
+        inputActions.UI.Confirm.performed += OnDialogueConfirmPressed;*/
+    }
+
+    private void OnEnable()
+    {
+        InputManager.Instance.GetActions().UI.Confirm.performed += OnDialogueConfirmPressed;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.Instance.GetActions().UI.Confirm.performed -= OnDialogueConfirmPressed;
+    }
+
     public void SetInputAction(PlayerInputControl actions)
     {
         inputActions = actions;
@@ -73,7 +90,9 @@ public class DialogueController : MonoBehaviour
 
     private void OnDialogueConfirmPressed(InputAction.CallbackContext obj)
     {
-        Debug.Log("UI F");
+        Debug.Log("[Dialogue Controller] UI F");
+        /*Debug.Log($"[DialogueController] confirm pressed on instance: {this}", this);
+        Debug.Log($"bubbleImage is null? {bubbleImage == null}");*/
         DisplayNextParagraph(dialogueTextGlobal);
     }
 
@@ -136,12 +155,19 @@ public class DialogueController : MonoBehaviour
     public void StartConversation(DialogueText dialogueText)
     {
         // Change input action map
-        inputActions.Gameplay.Disable();
-        inputActions.UI.Enable();
+        // inputActions.Gameplay.Disable();
+        InputManager.Instance.LockGameplayInput();
+        InputManager.Instance.GetActions().UI.Enable();
         
-        if (!gameObject.activeSelf)
+        /*if (!dialogueCanvas.enabled)
         {
-            gameObject.SetActive(true);
+             dialogueCanvas.enabled = true;   
+        }*/
+        
+        // Show dialogue bubble
+        if (!bubbleImage.gameObject.activeSelf)
+        {
+            bubbleImage.gameObject.SetActive(true);
         }
 
         // NameText.text = dialogueText.speakerName;
@@ -166,16 +192,23 @@ public class DialogueController : MonoBehaviour
 
     public void EndConversation()
     {
-        inputActions.UI.Disable();
-        inputActions.Gameplay.Enable();
+        // inputActions.Gameplay.Enable();
+        InputManager.Instance.UnlockGameplayInput();
+        InputManager.Instance.GetActions().UI.Disable();
         
         paragraphs.Clear();
         NPCDialogueText.text = "";
         conversationOver = false;
 
-        if (gameObject.activeSelf)
+        /*if (dialogueCanvas.enabled)
         {
-            gameObject.SetActive(false);
+            dialogueCanvas.enabled = false;   
+        }*/
+        
+        // Hide dialogue bubble
+        if (bubbleImage.gameObject.activeSelf)
+        {
+            bubbleImage.gameObject.SetActive(false);
         }
 
         if (parent is NPC npcParent)

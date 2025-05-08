@@ -11,7 +11,15 @@ public class InputManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
         Instance = this;
+        DontDestroyOnLoad(gameObject);
+        
         inputActions = new PlayerInputControl();
         inputActions.Enable();
     }
@@ -31,6 +39,12 @@ public class InputManager : MonoBehaviour
             inputActions.Enable();
             // Debug.Log("Input Re-enabled");
         }
+    }
+
+    public void ResetGameplayLock()
+    {
+        inputLockCount = 0;
+        inputActions.Gameplay.Enable();
     }
 
     public PlayerInputControl GetActions()

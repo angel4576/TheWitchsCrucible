@@ -80,6 +80,7 @@ public class GameSceneManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log($"[Game Scene Manager] Load Scene {scene.name} Complete; Current Scene Name: {currentSceneName}");
+        InputManager.Instance.ResetGameplayLock();
         ResumeGame();
 
         /*SceneConfig config = null;

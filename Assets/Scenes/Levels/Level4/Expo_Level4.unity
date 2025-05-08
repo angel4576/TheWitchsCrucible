@@ -4936,50 +4936,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 828216258}
   m_CullTransparentMesh: 1
---- !u!1 &832606692
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 832606693}
-  - component: {fileID: 832606694}
-  m_Layer: 0
-  m_Name: InputManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &832606693
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 832606692}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1824774617}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &832606694
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 832606692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 522698374d83e5940899d21227071c51, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &839789609
 GameObject:
   m_ObjectHideFlags: 0
@@ -7866,7 +7822,6 @@ GameObject:
   - component: {fileID: 1313239718}
   - component: {fileID: 1313239717}
   - component: {fileID: 1313239726}
-  - component: {fileID: 1313239727}
   - component: {fileID: 1313239729}
   - component: {fileID: 1313239728}
   m_Layer: 10
@@ -8171,31 +8126,6 @@ MonoBehaviour:
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
   m_DefaultVelocity: {x: 0, y: -1, z: 0}
---- !u!114 &1313239727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1313239716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0323299952351b47bf7997a343c694c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NameText: {fileID: 0}
-  NPCDialogueText: {fileID: 0}
-  typeSpeed: 10
-  autoNextDelay: 1.5
-  isAutoPlay: 0
-  dialogueLineEvents: []
-  dialogueEvents: []
-  playerBubble: {fileID: 0}
-  petBubble: {fileID: 0}
-  playerIcon: {fileID: 0}
-  petIcon: {fileID: 0}
-  bubbleImage: {fileID: 0}
-  iconImage: {fileID: 0}
 --- !u!82 &1313239728
 AudioSource:
   m_ObjectHideFlags: 0
@@ -11433,7 +11363,6 @@ Transform:
   - {fileID: 1787908893}
   - {fileID: 1553653607}
   - {fileID: 1928272031}
-  - {fileID: 832606693}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1831845024

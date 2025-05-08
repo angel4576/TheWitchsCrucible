@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour
         // inputActions.Gameplay.Fire.started += MeleeAttack;
         // inputActions.Gameplay.RangeAttack.started += RangeAttack;
         
-        dialogueController.SetInputAction(inputActions);
+        // dialogueController.SetInputAction(inputActions);
     }
 
     private void OnEnable()
