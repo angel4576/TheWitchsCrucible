@@ -413,18 +413,17 @@ public class PlayerController : MonoBehaviour, ICheckpointRestore
     // Player dies, for testing purposes
     public void Die()
     {
-        Debug.Log("Player died");
-        // SceneManager.Instance.RestartFromCheckPoint();
-        //SceneManager.Instance.ReloadScene();
+        Debug.Log("[Player Controller] Player died");
+        GameSceneManager.Instance.RestartScene();
     }
 
     IEnumerator DieCoroutine(){
         // wait for a few seconds before dying
         // disable player control
-        Debug.Log("death coroutine started");
+        // Debug.Log("death coroutine started");
         inputActions.Disable();
         yield return new WaitForSeconds(deathDelay);
-        Debug.Log("death coroutine ended");
+        // Debug.Log("death coroutine ended");
         Die();
     }
 
