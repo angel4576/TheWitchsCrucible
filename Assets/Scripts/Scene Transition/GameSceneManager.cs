@@ -131,7 +131,8 @@ public class GameSceneManager : MonoBehaviour
 
         // Reach checkpoint, restart from last checkpoint
         DataManager.Instance.LoadCheckpointData();
-        if (!string.IsNullOrEmpty(DataManager.Instance.checkpointData.checkpointID)) // if there is checkpoint data
+        if (!string.IsNullOrEmpty(DataManager.Instance.checkpointData.checkpointID) /* if there is checkpoint data */
+            && DataManager.Instance.checkpointData.sceneName == scene.name) /* if in the same scene */ 
         {
             LoadCheckpoint();
         }
@@ -178,9 +179,9 @@ public class GameSceneManager : MonoBehaviour
 
     public void RestartScene()
     {
-        // StartCoroutine(RestartWithFade());
         // UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneIndex);
-        StartCoroutine(RestartAdditiveScene(currentSceneName));
+        // StartCoroutine(RestartAdditiveScene(currentSceneName));
+        LoadGameScene(level1Name);
     }
 
     IEnumerator RestartAdditiveScene(string sceneName)

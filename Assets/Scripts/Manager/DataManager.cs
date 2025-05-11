@@ -189,6 +189,7 @@ public class ConfigData
 public class CheckpointData
 {
     public string checkpointID;
+    public string sceneName;
     
     // Player
     public Vec3 playerPosition;

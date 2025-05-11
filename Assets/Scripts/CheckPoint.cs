@@ -12,6 +12,8 @@ public class CheckPoint : MonoBehaviour
             Debug.Log("Player reached checkpoint");
             // Save check point data
             DataManager.Instance.checkpointData.checkpointID = checkpointID;
+            DataManager.Instance.checkpointData.sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            
             DataManager.Instance.checkpointData.playerPosition = transform.position;
             
             GameSceneManager.Instance.SaveCheckpoint();
