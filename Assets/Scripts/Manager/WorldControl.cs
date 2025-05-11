@@ -135,7 +135,7 @@ public class WorldControl : MonoBehaviour
         gameObject.SetActive(!gameObject.activeSelf);
     }
 
-    IEnumerator DelayToggleActive(GameObject[] gameObject, float delay)
+    IEnumerator DelayToggleActive(float delay)
     {
         if (delay > 0.00001f) // which means time to play hug animation
         {
@@ -296,15 +296,23 @@ public class WorldControl : MonoBehaviour
         }*/
         
     }
+
+    public void DoSwitchWorld()
+    {
+        Debug.Log("[World Control] Switch world");
+        canPlayEffect = true;
+        canSwitch = false;
+            
+        StartCoroutine(DelayToggleActive(1e-10f));
+    }
     
     public void SwitchWorld(InputAction.CallbackContext context)
     {
-        
         if (!PauseScreen.GetComponent<PauseManager>().isPaused 
             && DataManager.Instance.playerData.canSwitchWorld
             && canSwitch)
         {
-            float delay = 0.000000001f;
+            /*float delay = 0.000000001f;
             if (!SpiritWorldObjects.activeSelf && RealWorldObjects.activeSelf)
             {
                 // if real world -> spirit world, set delay for animation
@@ -320,13 +328,11 @@ public class WorldControl : MonoBehaviour
                 temp[0] = SpiritWorldObjects;
                 temp[1] = RealWorldObjects;
                 
-                Debug.Log("[World Control] Switching world");
-                canPlayEffect = true;
-                canSwitch = false;
                 
-                StartCoroutine(DelayToggleActive(temp, delay));
-                
-            }
+            }*/
+            
+            // Debug.Log($"phase: {context.phase}");
+            DoSwitchWorld();
             
         }
         

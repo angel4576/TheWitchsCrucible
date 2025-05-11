@@ -47,6 +47,11 @@ public class CutsceneController : MonoBehaviour
     
     IEnumerator PlayCutscene()
     {
+        // Switch back to real world
+        if (!WorldControl.Instance.isRealWorld)
+        {
+            WorldControl.Instance.DoSwitchWorld();
+        }
         player.inputActions.Gameplay.Disable();
         
         EventManager.BroadcastCutsceneStart();
