@@ -223,7 +223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e2de6c2e35a8b942ae992541e306ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstLevelScene: Expo_Level4
+  firstLevelScene: Expo_Level1
 --- !u!4 &499174137
 Transform:
   m_ObjectHideFlags: 0
@@ -290,45 +290,17 @@ MonoBehaviour:
     enemies: []
     items: []
   checkpointData:
-    position:
+    checkpointID: 
+    playerPosition:
       x: 0
       y: 0
       z: 0
-    playerData:
-      level: 1
-      maxHealth: 100
-      currentHealth: 100
-      light: 3
-      maxLight: 3
-      position:
-        x: 0
-        y: 0
-        z: 0
-      hasPickedUpLantern: 0
-      canSwitchWorld: 0
-    isInRealWorld: 0
-    enemies: []
-    items: []
-  levelStartData:
-    position:
+    currentLight: 0
+    hasPickedUpLantern: 0
+    bossPosition:
       x: 0
       y: 0
       z: 0
-    playerData:
-      level: 1
-      maxHealth: 100
-      currentHealth: 100
-      light: 3
-      maxLight: 3
-      position:
-        x: 0
-        y: 0
-        z: 0
-      hasPickedUpLantern: 0
-      canSwitchWorld: 0
-    isInRealWorld: 0
-    enemies: []
-    items: []
 --- !u!4 &1187270263
 Transform:
   m_ObjectHideFlags: 0
