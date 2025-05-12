@@ -195,6 +195,7 @@ public class CheckpointData
     public Vec3 playerPosition;
     public float currentLight;
     public bool hasPickedUpLantern;
+    public bool canSwitchWorld;
     
     public Vec3 bossPosition;
     

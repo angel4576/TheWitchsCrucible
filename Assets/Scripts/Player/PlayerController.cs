@@ -710,11 +710,17 @@ public class PlayerController : MonoBehaviour, ICheckpointRestore
     public void SaveToCheckpoint(CheckpointData data)
     {
         data.hasPickedUpLantern = true;
+        data.canSwitchWorld = true;
         data.currentLight = 3;
     }
 
     public void LoadFromCheckpoint(CheckpointData data)
     {
         transform.position = data.playerPosition;
+        lantern.gameObject.SetActive(true);
+        
+        DataManager.Instance.playerData.hasPickedUpLantern = data.hasPickedUpLantern;
+        DataManager.Instance.playerData.canSwitchWorld = data.canSwitchWorld;
+        DataManager.Instance.playerData.light = data.currentLight;
     }
 }
