@@ -20,6 +20,7 @@ public class HugCutsceneController : MonoBehaviour
     private PlayerController playerController;
     private MeshRenderer playerRenderer;
     private MeshRenderer petRenderer;
+    private Animator petAnimator;
     private Rigidbody2D petRb; 
     
     private bool hugTriggerReached = false;
@@ -31,6 +32,7 @@ public class HugCutsceneController : MonoBehaviour
         playerRenderer = player.GetComponent<MeshRenderer>();
         playerController = player.GetComponent<PlayerController>();
         petRenderer = pet.GetComponent<MeshRenderer>();
+        petAnimator = pet.GetComponent<Animator>();
         
         // StartHugSequence();
     }
@@ -82,6 +84,7 @@ public class HugCutsceneController : MonoBehaviour
         
         // Pet jumps to hug position
         petRb.velocity = new Vector2(xSpeed, ySpeed);
+        petAnimator.SetTrigger("JumpTrigger");
         
         /*while (!hugTriggerReached)
         {
