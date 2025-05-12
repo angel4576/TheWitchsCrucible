@@ -37,11 +37,15 @@ public class MonsterAppearanceController : MonoBehaviour
     {
         yield return new WaitForSeconds(animationDuration);
         
+        // Animation over
         gameObject.SetActive(false);
         
         // Set boss position
         if (boss != null)
             boss.transform.position = spawnPosition;
+        
+        // Activate player ability
+        WorldControl.Instance.SetCanSwitch(); // temp
     }
     
 }

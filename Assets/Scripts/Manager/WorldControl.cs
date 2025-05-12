@@ -98,7 +98,7 @@ public class WorldControl : MonoBehaviour
         Physics2D.IgnoreLayerCollision(petLayerID, realWorldLayerID, false);
         
         // Add listener
-        GameManager.Instance?.OnLanternFirstPickedUp.AddListener(SetCanSwitch);
+        // GameManager.Instance?.OnLanternFirstPickedUp.AddListener(SetCanSwitch);
 
     }
 
@@ -116,7 +116,7 @@ public class WorldControl : MonoBehaviour
     
     private void OnDestroy()
     {
-        GameManager.Instance?.OnLanternFirstPickedUp.RemoveListener(SetCanSwitch);
+        // GameManager.Instance?.OnLanternFirstPickedUp.RemoveListener(SetCanSwitch);
     }
 
     void Update()
