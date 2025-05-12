@@ -2242,7 +2242,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1932685660}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2271,7 +2271,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Restart from checkpoint
+  m_text: Restart From Last Checkpoint
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5841,7 +5841,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
@@ -22888,7 +22887,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1964528925}
         m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
-        m_MethodName: RestartCurrentScene
+        m_MethodName: RestartFromBeginning
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -43790,7 +43789,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.0000095367, y: -88}
-  m_SizeDelta: {x: 261.7563, y: 30}
+  m_SizeDelta: {x: 345.9, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1932685661
 MonoBehaviour:
@@ -43838,7 +43837,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1964528925}
         m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
-        m_MethodName: StartFromCheckPoint
+        m_MethodName: RestartFromLastCheckpoint
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

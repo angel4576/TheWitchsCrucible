@@ -55,7 +55,12 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 1.0f;
     }
 
-    public void RestartCurrentScene()
+    public void RestartFromBeginning()
+    {
+        GameSceneManager.Instance?.NewGame();
+    }
+    
+    public void RestartFromLastCheckpoint()
     {
         GameSceneManager.Instance?.RestartScene();
     }
@@ -64,32 +69,5 @@ public class PauseManager : MonoBehaviour
     {
         Application.Quit();
     }
-
-    /*public void RestartLevel()
-    {
-        Resume();
-        if(DataManager.Instance != null){
-            DataManager.Instance.ResetDataToLevelStart();
-        }
-        else{
-            // not suppose to be enter here
-            string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneName);
-        }
-    }*/
-
-    /*public void StartFromCheckPoint()
-    {
-        //loadfromcheckpoint
-        Resume();
-        if(DataManager.Instance != null){
-            //DataManager.Instance.ResetDataToLastCheckpoint();
-            SceneManager.Instance.RestartFromCheckPoint();
-        }
-        else{
-            // not suppose to be enter here
-            string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneName);
-        }
-    }*/
+    
 }

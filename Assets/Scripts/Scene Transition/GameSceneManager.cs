@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using System.IO;
 
 public class GameSceneManager : MonoBehaviour
 {
@@ -177,11 +178,21 @@ public class GameSceneManager : MonoBehaviour
         yield return FadeInRoutine();
     }
 
+    public void NewGame()
+    {
+        // New game, reset checkpoint data
+        string path = Path.Combine(Application.persistentDataPath, "CheckpointData.json");
+        if (File.Exists(path))
+            File.Delete(path);
+        
+        LoadGameScene(level1Name);
+    }
+
     public void RestartScene()
     {
         // UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneIndex);
         // StartCoroutine(RestartAdditiveScene(currentSceneName));
-        LoadGameScene(level1Name);
+        LoadGameScene(currentSceneName);
     }
 
     IEnumerator RestartAdditiveScene(string sceneName)
