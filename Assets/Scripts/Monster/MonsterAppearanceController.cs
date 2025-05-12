@@ -8,6 +8,8 @@ public class MonsterAppearanceController : MonoBehaviour
     public Vector3 spawnPosition;
     public float animationDuration;
     private bool hasAppeared;
+
+    [SerializeField] private bool canSetSwitch = false;
     
     // Start is called before the first frame update
     void Start()
@@ -45,7 +47,8 @@ public class MonsterAppearanceController : MonoBehaviour
             boss.transform.position = spawnPosition;
         
         // Activate player ability
-        WorldControl.Instance.SetCanSwitch(); // temp
+        if(canSetSwitch)
+            WorldControl.Instance.SetCanSwitch(); // temp
     }
     
 }

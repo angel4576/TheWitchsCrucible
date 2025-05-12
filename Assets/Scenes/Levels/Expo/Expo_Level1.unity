@@ -31641,6 +31641,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   checkpointID: Level1_2
+  relativePositionX: 45
+  relativePositionY: 20
 --- !u!212 &1390169994
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -31849,6 +31851,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   checkpointID: Level1_1
+  relativePositionX: 45
+  relativePositionY: 20
 --- !u!212 &1400597592
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -48429,6 +48433,10 @@ PrefabInstance:
       propertyPath: monster
       value: 
       objectReference: {fileID: 243817764}
+    - target: {fileID: 4349788503178249743, guid: 1f2a352c39598954fa4f4e4918d5ddde, type: 3}
+      propertyPath: canSetSwitch
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4659072436273559580, guid: 1f2a352c39598954fa4f4e4918d5ddde, type: 3}
       propertyPath: m_LocalPosition.x
       value: 59.16
