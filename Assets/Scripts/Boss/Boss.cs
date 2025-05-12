@@ -517,7 +517,15 @@ public class Boss : MonoBehaviour, ICheckpointRestore
 
     public void SaveToCheckpoint(CheckpointData data)
     {
-        data.bossPosition = transform.position;
+        /*if (WorldControl.Instance.isRealWorld)
+        {
+            data.bossPosition = transform.position;
+        }
+        else
+        {
+            data.bossPosition = new Vector3(playerTransform.position.x - 20, playerTransform.position.y + 20
+                , playerTransform.position.z);
+        }*/
     }
 
     public void LoadFromCheckpoint(CheckpointData data)
