@@ -5018,6 +5018,10 @@ PrefabInstance:
       value: Lantern
       objectReference: {fileID: 0}
     - target: {fileID: 1768861060538850848, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768861060538850848, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
@@ -5073,6 +5077,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5967458435746332400, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
+      propertyPath: m_Intensity
+      value: 225
+      objectReference: {fileID: 0}
+    - target: {fileID: 5967458435746332400, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
+      propertyPath: m_LightOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5967458435746332400, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
+      propertyPath: m_FalloffIntensity
+      value: 0.055
+      objectReference: {fileID: 0}
+    - target: {fileID: 5967458435746332400, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
+      propertyPath: m_PointLightInnerRadius
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5967458435746332400, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
+      propertyPath: m_PointLightOuterRadius
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6829084733883315531, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
       propertyPath: PauseMenu
       value: 
@@ -5082,8 +5106,16 @@ PrefabInstance:
       value: 0.17
       objectReference: {fileID: 0}
     - target: {fileID: 6829084733883315531, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
+      propertyPath: lightIntensity
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6829084733883315531, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
       propertyPath: maxLightRadius
-      value: 6
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6829084733883315531, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
+      propertyPath: minLightIntensity
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6829084733883315531, guid: 6126fde4c9ba5de43aff51cc518aeee5, type: 3}
       propertyPath: OnLanternActivated.m_PersistentCalls.m_Calls.Array.size
@@ -8465,7 +8497,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1336320242
 Transform:
   m_ObjectHideFlags: 0
@@ -9792,7 +9824,7 @@ Transform:
   m_GameObject: {fileID: 1581102659}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 30.583298, y: -28.689829, z: 0}
+  m_LocalPosition: {x: 20.184351, y: -28.689829, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10761,6 +10793,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
+  - {fileID: 2100000, guid: d1c3ff4efcd9c694e80d0e6b1509f4cd, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
   - {fileID: 2100000, guid: a060dcdfe0941b44ebc2830d8521b293, type: 2}
   - {fileID: 2100000, guid: 6f78062d8d7b57e4a8fdc69886984885, type: 2}
