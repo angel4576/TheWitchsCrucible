@@ -122,7 +122,8 @@ public class Lantern : MonoBehaviour
     // Toggles the lantern on/off when left mouse button is pressed
     private void ToggleLantern()
     {
-        if (!PauseMenu.GetComponent<PauseManager>().isPaused)
+        if (!PauseMenu.GetComponent<PauseManager>().isPaused
+            && DataManager.Instance.playerData.light > 0)
         {
             // Debug.Log("checking lantern status");
             if (isLanternOn)

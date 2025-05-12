@@ -210,6 +210,11 @@ public class Boss : MonoBehaviour, ICheckpointRestore
             canMove = false; // stop moving while attacking
         }
         
+        if (DataManager.Instance.playerData.light <= 0)
+        {
+            animator.SetTrigger("FlashOff");
+        }
+        
         FlipDirection();
         
     }
