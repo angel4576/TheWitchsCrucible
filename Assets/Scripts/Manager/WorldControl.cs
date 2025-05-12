@@ -72,13 +72,13 @@ public class WorldControl : MonoBehaviour
 
     void Start()
     {
-        SpiritWorldObjects = GameObject.FindGameObjectsWithTag("SpiritWorld")[0];
-        RealWorldObjects = GameObject.FindGameObjectsWithTag("RealWorld")[0];
+        /*SpiritWorldObjects = GameObject.FindGameObjectsWithTag("SpiritWorld")[0];
+        RealWorldObjects = GameObject.FindGameObjectsWithTag("RealWorld")[0];*/
         pet = GameObject.FindGameObjectWithTag("Pet").GetComponent<Pet>();
         
         // SpiritWorldObjects.SetActive(false);
-        SpiritWorldObjects.SetActive(true);
-        RealWorldObjects.SetActive(true);
+        /*SpiritWorldObjects.SetActive(true);
+        RealWorldObjects.SetActive(true);*/
         
         isRealWorld = true;
 
