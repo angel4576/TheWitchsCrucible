@@ -291,12 +291,14 @@ MonoBehaviour:
     items: []
   checkpointData:
     checkpointID: 
+    sceneName: 
     playerPosition:
       x: 0
       y: 0
       z: 0
     currentLight: 0
     hasPickedUpLantern: 0
+    canSwitchWorld: 0
     bossPosition:
       x: 0
       y: 0
