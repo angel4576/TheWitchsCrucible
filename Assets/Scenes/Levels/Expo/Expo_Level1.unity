@@ -6023,8 +6023,8 @@ MonoBehaviour:
   animationDuration: 5
   moveSpeed: 9
   chaseRange: 250
-  centerOffset: {x: 16.4, y: 1.14}
-  meleeAttackRange: 11
+  centerOffset: {x: 7.2, y: 1.14}
+  meleeAttackRange: 16.12
   meleeAttackDelay: 0.2
   meleeAttackCooldown: 0.8
   isKillable: 0
