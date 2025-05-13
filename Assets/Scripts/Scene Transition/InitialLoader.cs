@@ -6,10 +6,21 @@ using System.IO;
 
 public class InitialLoader : MonoBehaviour
 {
-    [Tooltip("Set First Scene Name")]
-    public string firstLevelScene = "Level1";
+    [Tooltip("Set Menu Scene Name")]
+    public string menuName = "Menu";
 
     void Start()
+    {
+        // NewGame();
+        LoadMainMenu();
+    }
+
+    public void LoadMainMenu()
+    {
+        GameSceneManager.Instance?.LoadGameScene(menuName);
+    }
+
+    /*public void NewGame()
     {
         // New game, reset checkpoint data
         string path = Path.Combine(Application.persistentDataPath, "CheckpointData.json");
@@ -18,6 +29,6 @@ public class InitialLoader : MonoBehaviour
         
         // Load first scene（additive）
         // UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(firstLevelScene, LoadSceneMode.Additive);
-        GameSceneManager.Instance.LoadGameScene(firstLevelScene);
-    }
+        GameSceneManager.Instance?.LoadGameScene(menuName);
+    }*/
 }

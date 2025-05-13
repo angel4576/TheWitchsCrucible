@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Levels/Expo/Expo_Persistent.unity
     guid: dd270a203c0e33f45bac0302814eab89
   - enabled: 1
+    path: Assets/Scenes/Menu/Menu.unity
+    guid: 5e329fabfbb0c7e4c8cd756c6e679a93
+  - enabled: 1
     path: Assets/Scenes/Levels/Expo/Expo_Level1.unity
     guid: e8fa784fda985424d9654b0dc69325a5
   - enabled: 1

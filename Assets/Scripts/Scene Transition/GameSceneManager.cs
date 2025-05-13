@@ -14,6 +14,7 @@ public class GameSceneManager : MonoBehaviour
 
     [Header("Scene Names")] 
     public string persistentName;
+    public string mainMenuScene;
     public string level1Name;
     public string level2Name;
 
@@ -186,6 +187,16 @@ public class GameSceneManager : MonoBehaviour
             File.Delete(path);
         
         LoadGameScene(level1Name);
+    }
+
+    public void ReturnToMenu()
+    {
+        // New game, reset checkpoint data
+        string path = Path.Combine(Application.persistentDataPath, "CheckpointData.json");
+        if (File.Exists(path))
+            File.Delete(path);
+        
+        LoadGameScene(mainMenuScene);
     }
 
     public void RestartScene()

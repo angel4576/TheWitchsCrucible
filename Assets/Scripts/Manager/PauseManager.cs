@@ -57,7 +57,8 @@ public class PauseManager : MonoBehaviour
 
     public void RestartFromBeginning()
     {
-        GameSceneManager.Instance?.NewGame();
+        GameSceneManager.Instance?.ReturnToMenu();
+        // GameSceneManager.Instance?.NewGame();
     }
     
     public void RestartFromLastCheckpoint()
